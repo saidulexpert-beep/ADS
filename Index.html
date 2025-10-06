@@ -84,9 +84,7 @@
         .nav-link-premium:hover { color: #333333; }
         .nav-link-premium.active { color: #007bff; }
         .nav-link-premium .icon { width: 24px; height: 24px; }
-        .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: rgba(0, 123, 255, 0.2); border: 1px solid rgba(0, 123, 255, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); transition: all 0.3s ease; color: #ffffff; }
-        .center-home-link:hover { transform: translateY(-20px) scale(1.15); }
-        .center-home-link .icon { width: 32px; height: 32px; color: #fff; }
+        
         .header { border-bottom: 1px solid #e0e0e0; background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -121,7 +119,6 @@
         .ad-slide { min-width: 100%; background-size: cover; background-position: center; }
         #ads-dots .dot { height: 6px; width: 6px; }
         
-        /* UPDATED Premium Loader Styles */
         #loader { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem; transition: opacity 0.5s ease; }
         #loader .logo-container { animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards, breath 2.5s ease-in-out infinite 1s; }
         #loader .loader-text { animation: fadeInText 1s ease-in-out 0.5s forwards; opacity: 0; font-weight: bold; font-size: 1.5rem; }
@@ -130,15 +127,12 @@
         @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes breath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         
-        /* Tutorial Page */
         .video-container-16-9 { position: relative; padding-top: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background-color: #e0e0e0; }
         .video-container-16-9 iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Review Card */
         .review-card-new { background-color: #f9f9f9; border: 1px solid #eee; }
         .star-rating i { color: #facc15; }
         
-        /* PIN Modal */
         .pin-input {
             width: 40px; height: 50px; text-align: center; font-size: 1.5rem;
             border: 2px solid #ddd; border-radius: 8px; margin: 0 5px;
@@ -151,7 +145,6 @@
             outline: none;
         }
 
-        /* UPDATED Spinner for Loading */
         .premium-loader-spinner {
             width: 56px;
             height: 56px;
@@ -168,22 +161,6 @@
         }
         @keyframes spin {
             to { transform: rotate(1turn); }
-        }
-
-        /* New Modal Close Button Style */
-        .modal-close-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background-color: #e5e7eb;
-            color: #4b5563;
-            border-radius: 9999px;
-            padding: 4px;
-            transition: background-color 0.2s;
-            cursor: pointer;
-        }
-        .modal-close-btn:hover {
-            background-color: #d1d5db;
         }
         
         /* NEW: Floating Action Button (FAB) Styles */
@@ -261,7 +238,6 @@
                     <p class="marquee-content">
 💌 MAIL SHOP-এ আপনাকে স্বাগতম!
 ✨ আমাদের সব সার্ভিস এখন চালু!
-📩 এখানে পাবেন ১০০% ভালো কোয়ালিটির মেইল।
 ⚡ কোনো সমস্যা হলে আমরা সঙ্গে সঙ্গে সমাধান করি।
 🕐 আমরা ২৪ ঘণ্টা সার্ভিস দিয়ে থাকি।
 💬 যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের সাপোর্ট টিমের সাথে।
@@ -320,17 +296,6 @@
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
             </div>
 
-            <div id="ads-task-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">Ads Tasks</h2>
-                <p class="text-gray-600 text-center mb-4">কাজ করে টাকা ইনকাম করুন।</p>
-                <div id="ads-task-list" class="space-y-4">
-                    </div>
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold mb-3">Completed Tasks History</h3>
-                    <div id="ads-history-list" class="space-y-3"></div>
-                </div>
-            </div>
-
             <div id="updates-page" class="p-4 space-y-6 sub-page">
                 <h2 class="text-xl font-bold text-center text-gray-800">Update</h2>
                 <div id="updates-content" class="space-y-4"></div>
@@ -345,6 +310,25 @@
                 <h2 class="text-xl font-bold text-center text-gray-800">Tutorials</h2>
                 <p class="text-sm text-gray-600 text-center">নিচের তালিকা থেকে আপনার প্রয়োজনীয় ভিডিওটি দেখুন।</p>
                 <div id="tutorial-list" class="space-y-5"></div>
+                
+                <div id="refer-earn-section" class="mt-8 pt-6 border-t border-gray-200">
+                    <h2 class="text-xl font-bold text-center text-gray-800 mb-4">Refer & Earn</h2>
+                    <div class="card-bg p-5 rounded-xl space-y-4">
+                        <label for="referral-link-input" class="block text-sm font-medium text-gray-600">আপনার রেফারেল লিঙ্ক</label>
+                        <div class="flex items-center gap-2">
+                            <input id="referral-link-input" type="text" readonly class="w-full p-3 rounded-lg input-field font-mono text-sm" placeholder="লিঙ্ক লোড হচ্ছে...">
+                            <button id="copy-referral-link-btn" class="btn-gradient p-3 rounded-lg flex-shrink-0">
+                                <i data-lucide="copy" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold mb-3">আপনার রেফারেল তালিকা</h3>
+                        <div id="referral-list" class="space-y-3">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="profile-page" class="p-4 space-y-6 sub-page">
@@ -378,8 +362,8 @@
                        <a href="https://t.me/SAIDULHP" target="_blank" class="text-gray-600 hover:text-sky-500 transition-colors">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.65 12c-.88-.25-.89-1.02.2-1.3l15.67-6.11c.8-.32 1.45.19 1.18 1.1l-2.53 11.64c-.23.95-1.17 1.17-1.87.73l-4.5-3.33-2.15 2.07c-.24.24-.45.46-.8.46-.42 0-.59-.16-.69-.53z"/></svg>
                        </a>
-<a href="http://tiktok.com/@saidulexpert" target="_blank" class="text-gray-600 hover:text-black transition-colors">
-    <img src="https://i.postimg.cc/hPdCfhKD/download.png" alt="Description of the image" class="w-8 h-8">                      
+                       <a href="http://tiktok.com/@saidulexpert" target="_blank" class="text-gray-600 hover:text-black transition-colors">
+                           <img src="https://i.postimg.cc/hPdCfhKD/download.png" alt="Description of the image" class="w-8 h-8">                      
                        </a>
                     </div>
                 </div>
@@ -433,19 +417,6 @@
                 </div>
             </div>
 
-            <div id="admin-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center text-gray-800">Admin Panel</h2>
-                <div class="card-bg p-5 rounded-xl space-y-4">
-                    <h3 class="font-semibold text-lg text-gray-800">Add New Ads Task</h3>
-                    <div><label for="task-title" class="block text-sm font-medium text-gray-600 mb-1">Task Title</label><input id="task-title" type="text" placeholder="e.g., Watch YouTube Video" class="w-full p-3 rounded-lg input-field"></div>
-                    <div><label for="task-instructions" class="block text-sm font-medium text-gray-600 mb-1">Task Instructions</label><textarea id="task-instructions" rows="3" placeholder="Explain what the user needs to do to get the key." class="w-full p-3 rounded-lg input-field"></textarea></div>
-                    <div><label for="task-url" class="block text-sm font-medium text-gray-600 mb-1">Task URL</label><input id="task-url" type="url" placeholder="https://..." class="w-full p-3 rounded-lg input-field"></div>
-                    <div><label for="task-reward" class="block text-sm font-medium text-gray-600 mb-1">Reward Amount (BDT)</label><input id="task-reward" type="number" placeholder="e.g., 5" class="w-full p-3 rounded-lg input-field"></div>
-                    <div><label for="task-key" class="block text-sm font-medium text-gray-600 mb-1">Completion Key</label><input id="task-key" type="text" placeholder="The secret key user will submit" class="w-full p-3 rounded-lg input-field"></div>
-                    <button id="add-task-btn" class="w-full p-3 rounded-lg btn-gradient">Add Ads Task</button>
-                </div>
-            </div>
-            
             <div id="recharge-page" class="p-4 space-y-6 sub-page">
                 <div class="relative flex items-center justify-center mb-4">
                     <button onclick="navigateTo('features-page')" class="absolute left-0 p-2 rounded-full hover:bg-gray-100 transition-colors">
@@ -527,11 +498,10 @@
         </main>
 
         <nav class="bottom-nav">
+            <a href="#" class="nav-link-premium active" data-page="home-page"><i data-lucide="home" class="icon"></i><span>Home</span></a>
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
             <a href="#" class="nav-link-premium" data-page="tutorial-page"><i data-lucide="video" class="icon"></i><span>Tutorial</span></a>            
-            <a href="#" class="nav-link-premium center-home-link active" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
-            <a href="#" class="nav-link-premium" data-page="ads-task-page"><i data-lucide="clipboard-check" class="icon"></i><span>Ads</span></a> <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
-            <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
+            <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
     </div>
     
@@ -603,8 +573,8 @@
         </div>
     </div>
 
+
     <script type="module">
-        const ADMIN_UID = "7358825471";
         const firebaseConfig = {
           apiKey: "AIzaSyBVVPZnmrPhlYTVqWGB3reMM352UclMo4E",
           authDomain: "mail-shop-f861c.firebaseapp.com",
@@ -616,7 +586,7 @@
         };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, writeBatch, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -690,16 +660,23 @@
                 userData = userSnap.data();
             } else {
                 const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
+                let referredBy = null;
+                if (startParam && startParam.startsWith('ref_')) {
+                    referredBy = startParam.split('_')[1];
+                }
                 userData = { 
                     tgChatId: tgChatId,
                     name: userName,
                     username: currentUserTg.username || null,
+                    photo_url: currentUserTg.photo_url || null,
                     balance: 0, 
                     createdAt: serverTimestamp(), 
                     isBlocked: false,
                     pin: null,
-                    pinFailAttempts: [], 
-                    featuresLockedUntil: null 
+                    pinFailAttempts: [],
+                    featuresLockedUntil: null,
+                    referredBy: referredBy
                 };
                 await setDoc(userRef, userData);
             }
@@ -711,9 +688,6 @@
 
             await fetchAppConfig();
             
-            if (tgChatId === ADMIN_UID) {
-                document.getElementById('admin-nav-link').classList.remove('hidden');
-            }
             updateUI();
             showMainPage('app-container');
             navigateTo('home-page');
@@ -722,7 +696,7 @@
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { mails: [] };
+            appConfig = configSnap.exists() ? configSnap.data() : {};
         }
         
         function updateUI() {
@@ -745,18 +719,16 @@
             });
 
             document.getElementById('fab-updates-plus').classList.toggle('visible', pageId === 'updates-page');
-            document.getElementById('fab-common-telegram').classList.toggle('visible', pageId === 'home-page' || pageId === 'ads-task-page');
+            document.getElementById('fab-common-telegram').classList.toggle('visible', pageId === 'home-page');
             document.getElementById('fab-features-whatsapp').classList.toggle('visible', pageId === 'features-page');
             
             const pageLoadFunctions = {
                 'home-page': loadHomePageAds,
                 'pay-page': loadPaymentHistory,
-                'ads-task-page': loadAdsTasks, // NEW
                 'updates-page': () => { loadUpdates(); loadReviews(); },
-                'admin-page': () => {}, // Admin page is static now
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
-                'tutorial-page': loadTutorials,
+                'tutorial-page': loadTutorialPageContent,
                 'recharge-page': () => { 
                     loadRechargeHistory(); 
                     setupDynamicAmountHandlers('recharge');
@@ -775,10 +747,8 @@
             document.getElementById('header-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('add-task-btn').addEventListener('click', handleAddTask); // MODIFIED
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
-
             document.getElementById('more-features-btn').addEventListener('click', handleFeaturesClick);
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-recharge-btn').addEventListener('click', () => navigateTo('recharge-page'));
@@ -786,14 +756,16 @@
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
             document.getElementById('submit-recharge-btn').addEventListener('click', handleRechargeRequest);
             document.getElementById('submit-send-btn').addEventListener('click', handleSendRequest);
-            
             document.getElementById('set-pin-btn').addEventListener('click', handleSetPin);
             document.getElementById('enter-pin-btn').addEventListener('click', handleEnterPin);
             document.getElementById('cancel-pin-set-btn').addEventListener('click', () => document.getElementById('pin-set-modal').classList.add('hidden'));
             document.getElementById('cancel-pin-enter-btn').addEventListener('click', () => document.getElementById('pin-enter-modal').classList.add('hidden'));
-            
             document.getElementById('alert-ok-btn').addEventListener('click', () => {
                  document.getElementById('custom-alert').classList.add('hidden');
+            });
+            document.getElementById('copy-referral-link-btn').addEventListener('click', (e) => {
+                const linkInput = document.getElementById('referral-link-input');
+                copyToClipboard(linkInput.value, e.currentTarget);
             });
         }
         
@@ -1039,10 +1011,9 @@
                 const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
                 document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
 
-                // Updated to reflect income from tasks instead of selling
-                const incomeQuery = query(collection(db, "users", userData.tgChatId, "completed_ads_tasks"));
+                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", userData.tgChatId), where("status", "==", "approved"));
                 const incomeSnapshot = await getDocs(incomeQuery);
-                const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().reward, 0);
+                const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
                 document.getElementById('total-income-display').textContent = `৳${totalIncome.toFixed(2)}`;
 
                 const receivedQuery = query(collection(db, "transfers"), where("toId", "==", userData.tgChatId));
@@ -1335,7 +1306,7 @@
                 loader.style.display = 'none';
             }
         }
-        
+
         async function handleEnterPin() {
             const enteredPin = document.getElementById('enter-pin').value;
             const userRef = doc(db, "users", userData.tgChatId);
@@ -1379,174 +1350,54 @@
                 }
             }
         }
-        
-        // --- NEW ADS TASK FUNCTIONS ---
 
-        async function loadAdsTasks() {
-            const taskListEl = document.getElementById('ads-task-list');
-            taskListEl.innerHTML = getLoadingHTML();
-            await loadAdsHistory(); // Load history concurrently
-
-            try {
-                const tasksQuery = query(collection(db, "ads_tasks"), where("isActive", "==", true), orderBy("createdAt", "desc"));
-                const completedTasksQuery = collection(db, "users", userData.tgChatId, "completed_ads_tasks");
-
-                const [tasksSnapshot, completedSnapshot] = await Promise.all([
-                    getDocs(tasksQuery),
-                    getDocs(completedTasksQuery)
-                ]);
-
-                const completedTaskIds = new Set(completedSnapshot.docs.map(doc => doc.id));
-
-                const availableTasks = tasksSnapshot.docs.filter(doc => !completedTaskIds.has(doc.id));
-
-                if (availableTasks.length === 0) {
-                    taskListEl.innerHTML = '<p class="text-center text-gray-600 card-bg p-4 rounded-lg">বর্তমানে কোনো নতুন কাজ নেই।</p>';
-                    return;
-                }
-
-                taskListEl.innerHTML = availableTasks.map(doc => {
-                    const task = doc.data();
-                    const taskId = doc.id;
-                    return `
-                        <div class="card-bg p-4 rounded-xl space-y-3">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-lg text-gray-800">${task.title}</h3>
-                                <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Reward: ৳${task.reward}</span>
-                            </div>
-                            <p class="text-gray-600 text-sm whitespace-pre-wrap">${task.instructions}</p>
-                            <div class="pt-3 border-t space-y-3">
-                                <a href="${task.url}" target="_blank" class="btn-gradient w-full py-2 rounded-lg text-md text-center block">Start Task & Get Key</a>
-                                <div class="flex items-center gap-2">
-                                    <input type="text" class="input-field w-full p-2 rounded-lg" placeholder="Enter Your Key Here">
-                                    <button class="btn-gradient px-4 py-2 rounded-lg" onclick="submitTaskKey('${taskId}', this)">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-            } catch (error) {
-                console.error("Error loading ads tasks: ", error);
-                taskListEl.innerHTML = '<p class="text-center text-red-500">কাজ লোড করতে সমস্যা হয়েছে।</p>';
-            }
+        function loadTutorialPageContent() {
+            loadTutorials();
+            loadReferralData();
         }
         
-        async function loadAdsHistory() {
-            const historyListEl = document.getElementById('ads-history-list');
-            historyListEl.innerHTML = getLoadingHTML();
+        async function loadReferralData() {
+            const referralListEl = document.getElementById('referral-list');
+            const referralLinkInput = document.getElementById('referral-link-input');
+            referralListEl.innerHTML = getLoadingHTML();
+
+            const botUsername = appConfig.botUsername || "YOUR_BOT_USERNAME"; // config থেকে bot username আনুন
+            const refLink = `https://t.me/${botUsername}?start=ref_${userData.tgChatId}`;
+            referralLinkInput.value = refLink;
+
             try {
-                const historyQuery = query(collection(db, "users", userData.tgChatId, "completed_ads_tasks"), orderBy("completedAt", "desc"));
-                const snapshot = await getDocs(historyQuery);
+                const q = query(collection(db, "users"), where("referredBy", "==", userData.tgChatId), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
 
                 if (snapshot.empty) {
-                    historyListEl.innerHTML = '<p class="text-center text-gray-600">আপনি এখনও কোনো কাজ সম্পন্ন করেননি।</p>';
+                    referralListEl.innerHTML = '<p class="text-gray-600 text-center">আপনি এখনো কাউকে রেফার করেননি।</p>';
                     return;
                 }
 
-                historyListEl.innerHTML = snapshot.docs.map(doc => {
-                    const historyItem = doc.data();
-                    const date = historyItem.completedAt.toDate().toLocaleString('en-GB');
-                    return `
-                        <div class="card-bg p-3 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p class="font-semibold text-gray-800">${historyItem.title}</p>
-                                <p class="text-xs text-gray-500">${date}</p>
-                            </div>
-                            <p class="font-bold text-lg text-green-600">+৳${historyItem.reward.toFixed(2)}</p>
-                        </div>
-                    `;
+                referralListEl.innerHTML = snapshot.docs.map(doc => {
+                    const referredUser = doc.data();
+                    const joinDate = referredUser.createdAt ? referredUser.createdAt.toDate().toLocaleDateString('en-GB') : 'Unknown';
+                    
+                    let avatarHtml = '';
+                    if (referredUser.photo_url) {
+                        avatarHtml = `<img src="${referredUser.photo_url}" class="w-12 h-12 rounded-full object-cover" alt="Profile Picture">`;
+                    } else {
+                        const initials = (referredUser.name.split(' ')[0]?.[0] || '') + (referredUser.name.split(' ')[1]?.[0] || '');
+                        avatarHtml = `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><span class="text-lg font-bold text-gray-500">${initials.toUpperCase()}</span></div>`;
+                    }
+
+                    return `<div class="card-bg p-3 rounded-lg flex items-center gap-4">
+                                ${avatarHtml}
+                                <div class="flex-1">
+                                    <p class="font-bold text-gray-800">${referredUser.name}</p>
+                                    <p class="text-xs text-gray-500">Joined on: ${joinDate}</p>
+                                </div>
+                            </div>`;
                 }).join('');
-            } catch (error) {
-                 console.error("Error loading ads history: ", error);
-                 historyListEl.innerHTML = '<p class="text-center text-red-500">হিস্ট্রি লোড করা যায়নি।</p>';
-            }
-        }
-
-        window.submitTaskKey = async function(taskId, buttonElement) {
-            const keyInput = buttonElement.previousElementSibling;
-            const submittedKey = keyInput.value.trim();
-            if (!submittedKey) return showAlert("অনুগ্রহ করে আপনার KEY লিখুন।");
-            
-            loader.style.display = 'flex';
-            
-            const taskRef = doc(db, "ads_tasks", taskId);
-            const userRef = doc(db, "users", userData.tgChatId);
-            const completedTaskRef = doc(db, "users", userData.tgChatId, "completed_ads_tasks", taskId);
-
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const [taskDoc, userDoc, completedDoc] = await Promise.all([
-                        transaction.get(taskRef),
-                        transaction.get(userRef),
-                        transaction.get(completedTaskRef)
-                    ]);
-                    
-                    if (!taskDoc.exists()) throw "এই কাজটি আর উপলব্ধ নেই।";
-                    if (completedDoc.exists()) throw "আপনি ইতিমধ্যে এই কাজটি সম্পন্ন করেছেন।";
-                    
-                    const taskData = taskDoc.data();
-                    if (taskData.key !== submittedKey) throw "আপনার দেওয়া KEY সঠিক নয়।";
-                    
-                    const userData = userDoc.data();
-                    const newBalance = (userData.balance || 0) + taskData.reward;
-
-                    transaction.update(userRef, { balance: newBalance });
-                    transaction.set(completedTaskRef, {
-                        title: taskData.title,
-                        reward: taskData.reward,
-                        completedAt: serverTimestamp()
-                    });
-                });
                 
-                showAlert("অভিনন্দন! আপনার পুরস্কার আপনার ব্যালেন্সে যোগ করা হয়েছে।");
-                await initUserSession(); // Re-fetch user data to update balance
-                await loadAdsTasks(); // Reload the tasks page
-
-            } catch (error) {
-                showAlert(typeof error === 'string' ? error : "একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।");
-            } finally {
-                loader.style.display = 'none';
-            }
-        }
-        
-        async function handleAddTask() {
-            const title = document.getElementById('task-title').value;
-            const instructions = document.getElementById('task-instructions').value;
-            const url = document.getElementById('task-url').value;
-            const reward = parseFloat(document.getElementById('task-reward').value);
-            const key = document.getElementById('task-key').value;
-
-            if (!title || !instructions || !url || !reward || !key) {
-                return showAlert("Please fill in all fields.");
-            }
-            if (reward <= 0) return showAlert("Reward must be a positive number.");
-
-            loader.style.display = 'flex';
-
-            try {
-                await addDoc(collection(db, "ads_tasks"), {
-                    title: title,
-                    instructions: instructions,
-                    url: url,
-                    reward: reward,
-                    key: key,
-                    isActive: true,
-                    createdAt: serverTimestamp()
-                });
-
-                showAlert("New Ads Task added successfully!");
-                document.getElementById('task-title').value = '';
-                document.getElementById('task-instructions').value = '';
-                document.getElementById('task-url').value = '';
-                document.getElementById('task-reward').value = '';
-                document.getElementById('task-key').value = '';
-
-            } catch (error) {
-                console.error("Error adding task: ", error);
-                showAlert("Failed to add the task.");
-            } finally {
-                loader.style.display = 'none';
+            } catch (e) {
+                console.error("Error loading referral list: ", e);
+                referralListEl.innerHTML = '<p class="text-red-600 text-center">রেফারেল তালিকা লোড করা যায়নি।</p>';
             }
         }
     </script>
