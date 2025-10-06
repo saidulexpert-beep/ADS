@@ -1361,7 +1361,7 @@
             const referralLinkInput = document.getElementById('referral-link-input');
             referralListEl.innerHTML = getLoadingHTML();
 
-            const botUsername = appConfig.botUsername || "YOUR_BOT_USERNAME"; // config থেকে bot username আনুন
+            const botUsername = appConfig.botUsername || "bd_Storebot/Botshop"; // config থেকে bot username আনুন
             const refLink = `https://t.me/${botUsername}?start=ref_${userData.tgChatId}`;
             referralLinkInput.value = refLink;
 
