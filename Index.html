@@ -114,28 +114,6 @@
             -webkit-backdrop-filter: blur(10px); 
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* --- START: Task Styles --- */
-        .app-task-card { background-color: #ffffff; border: 1px solid #e9ecef; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
-        .app-task-header { display: flex; align-items: center; justify-content: space-between; }
-        .app-task-info { display: flex; align-items: center; gap: 12px; }
-        .app-task-info img { width: 40px; height: 40px; border-radius: 8px; object-fit: contain; background-color: #f1f3f5; }
-        .app-task-title { font-weight: 600; font-size: 16px; color: #212121; }
-        .app-task-reward { font-size: 13px; font-weight: 500; color: #0d6efd;  }
-        .app-task-details-content { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e9ecef; font-size: 14px; color: #6c757d; }
-        .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-        .status-pending { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; }
-        .status-approved { background-color: rgba(40, 167, 69, 0.15); color: #28a745; }
-        .status-rejected { background-color: rgba(220, 53, 69, 0.15); color: #dc3545; }
-        /* --- END: Task Styles --- */
-        /* Banner Styles */
-        .banner-wrapper { position: relative; width: 100%; padding-top: 56.25%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
-        .banner-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1); }
-        .slide { min-width: 100%; position: relative; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .dots { position: absolute; bottom: 12px; width: 100%; text-align: center; z-index: 10; }
-        .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #adb5bd; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
-        .dot.active { background: #0d6efd; }
-        
         /* Loader Styles */
         #loader { display: flex; } /* Make loader visible by default */
         #loader .container { --uib-size: 45px; --uib-color: #0d6efd; --uib-speed: 1.75s; --uib-bg-opacity: .1; height: 31.25px; width: 50px; }
@@ -165,7 +143,7 @@
 
         <main class="flex-grow pb-20">
             <div id="home-page" class="p-4 space-y-6 sub-page">
-                <div class="banner-wrapper">
+                 <div class="banner-wrapper">
                     <div class="banner-inner" id="slides">
                         <div class="slide active"><a href="http://t.me/DIGITAL_0WORKBOT/payment" target="_blank"><img src="https://i.postimg.cc/mkpQJG7f/IMG-20251003-182618-383.jpg" alt="Slide 1"></a><div class="caption">কম দামে MAIL কিনুন</div></div>
                         <div class="slide"><a href="https://t.me/income_by_digital_work_job" target="_blank"><img src="https://i.postimg.cc/LXXkTXZ0/Grey-Blue-Illustration-Refer-a-Friend-Instagram-Post-1080-x-720-px-20250917-223749-0000.png" alt="Slide 2"></a><div class="caption">বেশি বেশি রেফার করুন</div></div>
@@ -246,26 +224,39 @@
             </div>
 
             <div id="withdraw-page" class="p-4 space-y-6 sub-page">    
-                <div class="card-bg p-5 rounded-xl space-y-5 hidden">
+                <div class="card-bg p-5 rounded-xl space-y-5">
                     <div>
-                        <h3 class="font-semibold text-lg flex items-center gap-2"><i data-lucide="send-to-back" class="w-6 h-6 text-[#0d6efd]"></i><span>Make a Withdrawal</span></h3>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="send-to-back" class="w-6 h-6 text-[#0d6efd]"></i><span>Make a Withdrawal</span></h3>
                         <div class="text-center my-4 p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">
                             <p class="text-gray-600">Your Current Balance</p>
                             <p id="withdraw-balance-display" class="text-2xl font-bold">৳0.00</p>
                             <p class="text-xs text-gray-500 mt-2">Minimum Withdrawal: <span id="min-withdraw-display" class="font-bold">৳0.00</span></p>
                         </div>
                         <div class="space-y-4">
-                             <div><label for="withdraw-method" class="block text-sm font-medium text-gray-600 mb-2">পেমেন্ট মাধ্যম</label><select id="withdraw-method" class="w-full p-3 rounded-lg input-field"><option value="">কোন মাধ্যমে টাকা নিবেন?</option><option value="Nagad">নগদ</option><option value="bKash">বিকাশ</option><option value="Rocket">রকেট</option></select></div>
-                            <div><label for="withdraw-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label><input id="withdraw-amount" type="number" placeholder="e.g., 500" class="w-full p-3 rounded-lg input-field"></div>
-                            <div><label for="recipient-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার পেমেন্ট নম্বর</label><input id="recipient-number" type="text" placeholder="যে নম্বরে টাকা গ্রহণ করবেন" class="w-full p-3 rounded-lg input-field"></div>
+                             <div>
+                                <label for="withdraw-method" class="block text-sm font-medium text-gray-600 mb-2">পেমেন্ট মাধ্যম</label>
+                                <select id="withdraw-method" class="w-full p-3 rounded-lg input-field">
+                                    <option value="">কোন মাধ্যমে টাকা নিবেন?</option>
+                                    <option value="Nagad">নগদ</option>
+                                    <option value="bKash">বিকাশ</option>
+                                    <option value="Rocket">রকেট</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="withdraw-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label>
+                                <input id="withdraw-amount" type="number" placeholder="e.g., 500" class="w-full p-3 rounded-lg input-field" oninput="calculateWithdrawFee()">
+                                <div id="fee-calculation-display" class="text-sm mt-2 p-3 bg-gray-50 rounded-lg text-center space-y-1">
+                                    </div>
+                            </div>
+                            <div>
+                                <label for="recipient-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার পেমেন্ট নম্বর</label>
+                                <input id="recipient-number" type="text" placeholder="যে নম্বরে টাকা গ্রহণ করবেন" class="w-full p-3 rounded-lg input-field">
+                            </div>
                             <button id="withdraw-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Withdrawal</button>
                         </div>
                     </div>
                 </div>
 
-                <a href="http://t.me/DIGITAL_0WORKBOT/payment" target="_blank" class="block w-full p-3 rounded-lg btn-gradient font-bold text-lg text-center">
-                    Withdraw now
-                </a>
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold mb-3">Withdrawal History</h3>
                     <div id="withdrawal-history-list" class="space-y-3"></div>
@@ -387,16 +378,6 @@
                 </div>
             </div>
 
-            <div id="admin-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-xl font-bold text-center">Admin Panel</h2>
-                <div class="card-bg p-5 rounded-xl space-y-4">
-                    <h3 class="font-semibold text-lg">Add New Mails</h3>
-                    <p class="text-sm text-gray-500">ফরম্যাট: <code class="bg-gray-100 p-1 rounded">email|password|refresh_token|client_id</code></p>
-                    <div><label for="mail-type-select" class="block text-sm font-medium text-gray-700 mb-1">Mail Type</label><select id="mail-type-select" class="w-full p-3 rounded-lg input-field"></select></div>
-                    <div><label for="mail-data-textarea" class="block text-sm font-medium text-gray-700 mb-1">Mail Data (one per line)</label><textarea id="mail-data-textarea" rows="10" placeholder="mail@example.com|password|refresh_token|client_id" class="w-full p-3 rounded-lg input-field font-mono text-xs"></textarea></div>
-                    <button id="add-mails-btn" class="w-full p-3 rounded-lg btn-gradient">Add Mails to Stock</button>
-                </div>
-            </div>
         </main>
 
         <nav class="bottom-nav">
@@ -405,7 +386,6 @@
             <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
             <a href="#" class="nav-link-premium" data-page="tasks-page"><i data-lucide="list-checks" class="icon"></i><span>Tasks</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
-            <a href="#" id="admin-nav-link" class="nav-link-premium hidden" data-page="admin-page"><i data-lucide="shield" class="icon"></i><span>Admin</span></a>
         </nav>
     </div>
     
@@ -456,10 +436,6 @@
     </div>
     
     <script type="module">
-        // =================================================================================
-        const ADMIN_UID = "7358825471"; // MODIFIED: This should be your Telegram User ID as a string.
-        // =================================================================================
-
         const firebaseConfig = {
           apiKey: "AIzaSyCEPKLp_o_Cm01Tt_Yl2YEBXSdy_3gd128",
           authDomain: "digital-work-job-e39c7.firebaseapp.com",
@@ -522,10 +498,6 @@
                 return;
             }
             
-            if (currentUserId === ADMIN_UID) { 
-                document.getElementById('admin-nav-link').classList.remove('hidden');
-            }
-            
             updateUI();
             showMainPage('app-container');
             navigateTo('home-page');
@@ -542,10 +514,9 @@
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
-                // NEW: If user exists, ensure referral code is set to their ID if it's missing
                 if (!userData.referralCode) {
                     await updateDoc(userRef, { referralCode: currentUserId });
-                    userData.referralCode = currentUserId; // Update local data
+                    userData.referralCode = currentUserId;
                 }
             } else {
                 const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
@@ -558,11 +529,10 @@
                     createdAt: serverTimestamp(),
                     isBlocked: false,
                     isActivated: false,
-                    referralCode: currentUserId, // NEW: Set referral code to own ID on creation
+                    referralCode: currentUserId, 
                     referredBy: null 
                 };
                 
-                // NEW: Capture referral from start parameter
                 const startParam = window.Telegram.WebApp.initDataUnsafe?.start_param;
                 if (startParam && startParam !== currentUserId) {
                     newUserData.referredBy = startParam;
@@ -620,7 +590,6 @@
                 'pay-page': loadPaymentHistory,
                 'sell-page': () => { loadSellItems(); loadSellHistory(); },
                 'updates-page': loadUpdates,
-                'admin-page': populateAdminMailTypes,
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tasks-page': ldTasks,
@@ -639,8 +608,6 @@
             
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('withdraw-btn').addEventListener('click', handleWithdrawRequest);
-
-            document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
             
             document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
             document.getElementById('sell-modal-cancel').addEventListener('click', () => document.getElementById('sell-modal').classList.add('hidden'));
@@ -654,7 +621,7 @@
             document.getElementById('features-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', handleSend);
-            // MODIFIED: Copy referral link instead of just the code
+
             document.getElementById('copy-referral-btn').addEventListener('click', () => {
                 const referralLink = `https://t.me/mail_storebot/mail?startapp=${currentUserId}`;
                 copyToClipboard(referralLink, document.getElementById('copy-referral-btn'));
@@ -690,7 +657,6 @@
                     if (referrerId) {
                         const referrerRef = doc(db, "users", referrerId);
                         const referrerSnap = await transaction.get(referrerRef);
-                        // Only give bonus if referrer exists and is activated
                         if (referrerSnap.exists() && referrerSnap.data().isActivated) {
                             const referralBonus = appConfig.referralBonus || 0;
                             transaction.update(referrerRef, { balance: increment(referralBonus) });
@@ -727,18 +693,24 @@
                 leaderElement.textContent = 'You joined without a referral.';
             }
 
+            // NEW: Load Telegram Profile Picture
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
-            const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            document.getElementById('profile-initials').textContent = initials;
-            profilePic.classList.add('hidden');
-            avatarDiv.classList.remove('hidden');
-
+            if (currentUser.photo_url) {
+                profilePic.src = currentUser.photo_url;
+                profilePic.classList.remove('hidden');
+                avatarDiv.classList.add('hidden');
+            } else {
+                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('profile-initials').textContent = initials;
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+            }
+            
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
             document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
-            // MODIFIED: Display the user's referral code (their ID)
-            document.getElementById('referral-code-display').textContent = userData.referralCode || "অ্যাক্টিভ করুন";
+            document.getElementById('referral-code-display').textContent = userData.referralCode || "Loading...";
 
             const activationStatusElement = document.getElementById('profile-activation-status');
             if (userData.isActivated) {
@@ -749,10 +721,8 @@
                 activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700';
             }
             
-            // MODIFIED: Dynamic Account Details Section
             const detailsContainer = document.getElementById('account-details-content');
             if (userData.mobileNumber) {
-                // If details are already linked, show them
                 detailsContainer.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <img src="https://i.postimg.cc/JzmGSXBX/images.jpg" alt="WhatsApp" class="w-5 h-5">
@@ -764,9 +734,7 @@
                     <p class="text-xs text-center text-gray-400 pt-2">আপনার তথ্য সেভ করা আছে। পরিবর্তনের জন্য সাপোর্টে যোগাযোগ করুন।</p>
                 `;
             } else {
-                // If details are not linked, show a form
                 let referralFieldHTML = '';
-                // Only show referral input if the user was not referred via link
                 if (!userData.referredBy) {
                     referralFieldHTML = `
                     <div>
@@ -789,7 +757,6 @@
             lucide.createIcons();
         }
 
-        // MODIFIED: Function to link WhatsApp/Referral for the first time
         async function handleLinkAccountDetails() {
             const mobile = document.getElementById('link-mobile').value.trim();
             const referralCodeInput = document.getElementById('link-referral');
@@ -810,7 +777,6 @@
                 const userRef = doc(db, "users", currentUserId);
                 const updateData = { mobileNumber: mobile };
                 
-                // Handle referral code if entered and user doesn't have a referrer yet
                 if (referralCode && !userData.referredBy) {
                     if (referralCode === currentUserId) {
                         loader.style.display = 'none';
@@ -894,6 +860,26 @@
             }
         }
         
+        // NEW: Calculate withdraw fee dynamically
+        window.calculateWithdrawFee = function() {
+            const amountInput = document.getElementById('withdraw-amount');
+            const displayArea = document.getElementById('fee-calculation-display');
+            const amount = parseFloat(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                displayArea.innerHTML = '';
+                return;
+            }
+
+            const fee = amount * 0.05; // 5% fee
+            const netAmount = amount - fee;
+
+            displayArea.innerHTML = `
+                <p>Fee (5%): <span class="font-bold text-red-500">- ৳${fee.toFixed(2)}</span></p>
+                <p>You will receive: <span class="font-bold text-green-500">৳${netAmount.toFixed(2)}</span></p>
+            `;
+        }
+
         async function loadWithdrawPage() {
             if (!userData.isActivated) {
                 showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন টাকা তোলার জন্য।");
@@ -903,6 +889,8 @@
             const minWithdraw = appConfig.minWithdraw || 100;
             document.getElementById('withdraw-balance-display').textContent = `৳${(userData.balance || 0).toFixed(2)}`;
             document.getElementById('min-withdraw-display').textContent = `৳${minWithdraw.toFixed(2)}`;
+            document.getElementById('withdraw-amount').value = '';
+            calculateWithdrawFee();
             loadWithdrawHistory();
         }
 
@@ -917,13 +905,18 @@
             if (amount < minWithdraw) return showAlert(`সর্বনিম্ন ৳${minWithdraw.toFixed(2)} টাকা তোলা যাবে।`);
             if (amount > userData.balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
 
+            const fee = amount * 0.05;
+            const netAmount = amount - fee;
+
             loader.style.display = 'flex';
             try {
                 await addDoc(collection(db, "withdrawals"), {
                     userId: currentUserId,
                     userName: userData.name,
                     method: method,
-                    amount: amount,
+                    amount: amount, // Gross amount
+                    fee: fee,
+                    netAmount: netAmount, // Net amount to be paid
                     number: number,
                     status: "pending",
                     requestedAt: serverTimestamp()
@@ -937,10 +930,9 @@
                 updateUI();
                 
                 document.getElementById('withdraw-method').value = '';
-                document.getElementById('withdraw-amount').value = '';
                 document.getElementById('recipient-number').value = '';
                 
-                loadWithdrawPage();
+                loadWithdrawPage(); // This will also clear the amount field and fee display
             } catch (error) {
                 showAlert("উইথড্র অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
                 console.error("Withdrawal Error: ", error);
@@ -1173,49 +1165,6 @@
             }
         }
 
-        function populateAdminMailTypes() {
-            const selectEl = document.getElementById('mail-type-select');
-            selectEl.innerHTML = '<option value="">Select mail type...</option>';
-            (appConfig.mails || []).forEach(mail => {
-                selectEl.innerHTML += `<option value="${mail.stockKey}">${mail.type}</option>`;
-            });
-        }
-
-        async function handleAddMails() {
-            const stockKey = document.getElementById('mail-type-select').value;
-            const mailDataRaw = document.getElementById('mail-data-textarea').value;
-            if (!stockKey || !mailDataRaw.trim()) return showAlert("Please select a mail type and provide mail data.");
-            
-            const lines = mailDataRaw.trim().split('\n').filter(line => line.trim() !== '');
-            if (lines.length === 0) return showAlert("No valid mail data found.");
-            
-            loader.style.display = 'flex';
-            try {
-                const batch = writeBatch(db);
-                let addedCount = 0;
-                lines.forEach(line => {
-                    const parts = line.trim().split('|');
-                    if (parts.length === 4) {
-                        const mailDocRef = doc(collection(db, stockKey));
-                        batch.set(mailDocRef, { 
-                            email: parts[0], password: parts[1], refresh_token: parts[2], client_id: parts[3], 
-                            isSold: false, createdAt: serverTimestamp() 
-                        });
-                        addedCount++;
-                    }
-                });
-                if (addedCount > 0) {
-                    await batch.commit();
-                    showAlert(`Successfully added ${addedCount} new mails to the stock.`);
-                    document.getElementById('mail-data-textarea').value = '';
-                } else showAlert("No valid mails were found to add. Ensure the format is correct.");
-            } catch (error) { 
-                showAlert("An error occurred while adding mails."); 
-            } finally { 
-                loader.style.display = 'none'; 
-            }
-        }
-
         function showAlert(message) {
             document.getElementById('alert-message').innerText = message;
             document.getElementById('custom-alert').classList.remove('hidden');
@@ -1337,7 +1286,7 @@
             
             const sendFeeRate = 0.05; // 5% fee
             const feeAmount = amount * sendFeeRate;
-            const totalDeductionFromSender = amount + feeAmount; // Sender pays amount + fee
+            const totalDeductionFromSender = amount + feeAmount; 
 
             if (totalDeductionFromSender > userData.balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
 
@@ -1356,7 +1305,7 @@
                     if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
                     
                     transaction.update(senderRef, { balance: increment(-totalDeductionFromSender) });
-                    transaction.update(recipientRef, { balance: increment(amount) }); // Recipient gets the full amount
+                    transaction.update(recipientRef, { balance: increment(amount) }); 
 
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, {
@@ -1378,20 +1327,6 @@
             }
         }
         
-        function getTaskIcon(task) {
-            if (task.appLogoUrl) {
-                return { type: 'image', src: task.appLogoUrl, icon: 'image', color: '' };
-            }
-            const lowerTitle = task.title.toLowerCase();
-            if (lowerTitle.includes('youtube')) return { type: 'icon', icon: 'youtube', color: 'text-red-500' };
-            if (lowerTitle.includes('tiktok')) return { type: 'icon', icon: 'music', color: 'text-black' }; 
-            if (lowerTitle.includes('facebook')) return { type: 'icon', icon: 'facebook', color: 'text-blue-500' };
-            if (lowerTitle.includes('instagram')) return { type: 'icon', icon: 'instagram', color: 'text-pink-500' };
-            if (lowerTitle.includes('telegram')) return { type: 'icon', icon: 'send', color: 'text-sky-400' };
-            if (lowerTitle.includes('app') || lowerTitle.includes('download')) return { type: 'icon', icon: 'download', color: 'text-green-400' };
-            return { type: 'icon', icon: 'list-checks', color: 'text-gray-400' };
-        }
-
         async function ldTasks() {
             if (!userData.isActivated) {
                 showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন টাস্ক দেখার জন্য।");
@@ -1419,18 +1354,12 @@
                     const taskDiv = document.createElement("div");
                     taskDiv.className = "card-bg p-4 rounded-xl space-y-3";
                     
-                    const { type: iconType, icon: iconName, src: imgSrc, color } = getTaskIcon(task);
-
                     const completionsQuery = query(collection(db, "taskSubmissions"), where("taskId", "==", task.id), where("status", "==", "approved"));
                     const completionsSnap = await getDocs(completionsQuery);
                     const completionCount = completionsSnap.size;
                     const displayCount = (task.baseCompletions || 53) + completionCount;
-
-                    let iconHtml = iconType === 'image' && imgSrc 
-                        ? `<img src="${imgSrc}" class="w-8 h-8 rounded-full object-cover" alt="App Logo">`
-                        : `<i data-lucide="${iconName}" class="w-8 h-8 ${color}"></i>`;
-
-                    let headerHTML = `<div class="flex items-center justify-between"><div class="flex items-center gap-4"><div class="bg-gray-100 p-3 rounded-full flex items-center justify-center">${iconHtml}</div><div><h3 class="text-lg font-bold">${task.title}</h3><p class="text-sm text-gray-400">Reward: <span class="font-semibold text-[#0d6efd]">৳${task.reward || 0}</span></p></div></div><div class="text-right"><button class="btn-outline-accent px-3 py-1 rounded-full text-sm" onclick="toggleVideoTaskDetails('${task.id}')">Details</button><div class="mt-2"><span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">TOTAL ✅ ${displayCount}</span></div></div></div>`;
+                    
+                    let headerHTML = `<div class="flex items-center justify-between"><div class="flex items-center gap-4"><div><h3 class="text-lg font-bold">${task.title}</h3><p class="text-sm text-gray-400">Reward: <span class="font-semibold text-[#0d6efd]">৳${task.reward || 0}</span></p></div></div><div class="text-right"><button class="btn-outline-accent px-3 py-1 rounded-full text-sm" onclick="toggleVideoTaskDetails('${task.id}')">Details</button><div class="mt-2"><span class="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">TOTAL ✅ ${displayCount}</span></div></div></div>`;
 
                     let contentHTML = `<div id="task-details-${task.id}" class="hidden mt-2 p-3 bg-gray-50 rounded-lg border"><p class="text-sm text-gray-600 whitespace-pre-wrap">${task.description || 'Watch the video and find the code.'}</p></div>`;
 
