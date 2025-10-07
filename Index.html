@@ -293,9 +293,20 @@
                 <div><h3 class="text-lg font-semibold mb-3 mt-8">Your Sell History</h3><div id="sell-history-list" class="space-y-3"></div></div>
             </div>
 
-            <div id="updates-page" class="p-4 space-y-6 sub-page">
+            <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center">Latest Updates</h2>
                 <div id="updates-content" class="space-y-4"><p class="text-center text-gray-500">Loading updates...</p></div>
+                
+                <div id="user-reviews-section" class="mt-8">
+                    <h3 class="text-xl font-bold text-center mb-4">User Reviews</h3>
+                    <div id="user-reviews-list" class="space-y-4">
+                        <p class="text-center text-gray-500">Loading reviews...</p>
+                    </div>
+                </div>
+
+                <a id="add-review-fab" href="#" target="_blank" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform">
+                    <i data-lucide="plus" class="w-8 h-8 text-white"></i>
+                </a>
             </div>
 
             <div id="profile-page" class="p-4 space-y-6 sub-page">
@@ -523,10 +534,9 @@
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
-                // NEW: Force-correct the referral code if it doesn't match the user's ID
                 if (userData.referralCode !== currentUserId) {
                     await updateDoc(userRef, { referralCode: currentUserId });
-                    userData.referralCode = currentUserId; // Update local data immediately
+                    userData.referralCode = currentUserId; 
                 }
             } else {
                 const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
@@ -575,7 +585,15 @@
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { mails: [], sellableItems: [], activationFee: 50, referralBonus: 10, minWithdraw: 100 };
+            appConfig = configSnap.exists() ? configSnap.data() : { 
+                mails: [], 
+                sellableItems: [], 
+                activationFee: 50, 
+                referralBonus: 10, 
+                minWithdraw: 100,
+                withdrawFeePercent: 5, // NEW: Default withdrawal fee percentage
+                addReviewLink: '#' // NEW: Default review link
+            };
         }
         
         function updateUI() {
@@ -869,40 +887,36 @@
             }
         }
         
-        // MODIFIED: Calculate withdraw fee with new logic
+        // --- MODIFIED WITHDRAWAL CALCULATION ---
         window.calculateWithdrawFee = function() {
             const amountInput = document.getElementById('withdraw-amount');
             const displayArea = document.getElementById('fee-calculation-display');
             const amountToReceive = parseFloat(amountInput.value);
+            
+            const feePercent = appConfig.withdrawFeePercent || 5;
+            const feeRate = feePercent / 100;
 
             if (isNaN(amountToReceive) || amountToReceive <= 0) {
                 displayArea.innerHTML = '';
                 return;
             }
 
-            const fee = amountToReceive * 0.05; // 5% fee on the amount to receive
+            const fee = amountToReceive * feeRate;
             const totalDeduction = amountToReceive + fee;
             
-            // NEW: Prevent typing more than the balance allows
-            const maxReceivable = userData.balance / 1.05;
+            const maxReceivable = userData.balance / (1 + feeRate);
             if (amountToReceive > maxReceivable) {
                 amountInput.value = Math.floor(maxReceivable);
-                // Recalculate after correcting the value
                 const correctedAmount = parseFloat(amountInput.value);
-                const correctedFee = correctedAmount * 0.05;
-                const correctedTotal = correctedAmount + correctedFee;
+                const correctedFee = correctedAmount * feeRate;
                 displayArea.innerHTML = `
-                    <p class="text-red-500 text-xs">আপনার ব্যালেন্সের চেয়ে বেশি টাকা তোলা যাবে না।</p>
-                    <p>Fee (5%): <span class="font-bold text-red-500">+ ৳${correctedFee.toFixed(2)}</span></p>
-                    <p>Total Deducted: <span class="font-bold text-gray-800">৳${correctedTotal.toFixed(2)}</span></p>
+                    <p class="text-red-500 text-xs mb-2">আপনার ব্যালেন্সের চেয়ে বেশি টাকা তোলা যাবে না।</p>
+                    <p>Withdrawal Fee (${feePercent}%): <span class="font-bold text-red-500">৳${correctedFee.toFixed(2)}</span></p>
                 `;
                 return;
             }
 
-            displayArea.innerHTML = `
-                <p>Fee (5%): <span class="font-bold text-red-500">+ ৳${fee.toFixed(2)}</span></p>
-                <p>Total Deducted from Balance: <span class="font-bold text-green-600">৳${totalDeduction.toFixed(2)}</span></p>
-            `;
+            displayArea.innerHTML = `<p>Withdrawal Fee (${feePercent}%): <span class="font-bold text-red-500">৳${fee.toFixed(2)}</span></p>`;
         }
 
         async function loadWithdrawPage() {
@@ -924,12 +938,13 @@
             const amountToReceive = parseFloat(document.getElementById('withdraw-amount').value);
             const number = document.getElementById('recipient-number').value.trim();
             const minWithdraw = appConfig.minWithdraw || 100;
+            const feeRate = (appConfig.withdrawFeePercent || 5) / 100;
 
             if (!method || !amountToReceive || !number) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
             if (isNaN(amountToReceive) || amountToReceive <= 0) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
             if (amountToReceive < minWithdraw) return showAlert(`সর্বনিম্ন ৳${minWithdraw.toFixed(2)} টাকা তোলা যাবে।`);
 
-            const fee = amountToReceive * 0.05;
+            const fee = amountToReceive * feeRate;
             const totalDeduction = amountToReceive + fee;
 
             if (totalDeduction > userData.balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
@@ -940,9 +955,9 @@
                     userId: currentUserId,
                     userName: userData.name,
                     method: method,
-                    amount: totalDeduction, // Gross amount deducted
+                    amount: totalDeduction, 
                     fee: fee,
-                    netAmount: amountToReceive, // Net amount to be paid to user
+                    netAmount: amountToReceive,
                     number: number,
                     status: "pending",
                     requestedAt: serverTimestamp()
@@ -1133,61 +1148,130 @@
             } catch (error) { historyList.innerHTML = '<p class="text-red-500 text-center">Could not load sell history.</p>'; }
         }
         
+        // --- MODIFIED UPDATES & NEW REVIEWS SECTION ---
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
+            const reviewFab = document.getElementById('add-review-fab');
             updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
+
+            // Setup review button link from config
+            reviewFab.href = appConfig.addReviewLink || '#';
+
             try {
-                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(1));
+                // Fetch multiple updates
+                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
-                if (snapshot.empty) return updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
+
+                if (snapshot.empty) {
+                    updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
+                } else {
+                    let allUpdatesHtml = '';
+                    for (const docSnap of snapshot.docs) {
+                        const updateData = docSnap.data();
+                        const updateId = docSnap.id;
+                        const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
+                        const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
+
+                        const isLiked = userVote === 'liked';
+                        const isDisliked = userVote === 'disliked';
+                        let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
+                        
+                        allUpdatesHtml += `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold">${updateData.title}</h3><p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isLiked ? 'text-blue-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isDisliked ? 'text-red-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
+                    }
+                    updatesContainer.innerHTML = allUpdatesHtml;
+                }
                 
-                const updateDoc = snapshot.docs[0];
-                const updateData = updateDoc.data();
-                const updateId = updateDoc.id;
-                const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
-                const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
-                
-                const isLiked = userVote === 'liked';
-                const isDisliked = userVote === 'disliked';
-                let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
-                
-                updatesContainer.innerHTML = `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold">${updateData.title}</h3><p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn" class="like-dislike-btn p-2 rounded-full transition-colors ${isLiked ? 'text-blue-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span id="like-count" class="font-semibold text-sm">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn" class="like-dislike-btn p-2 rounded-full transition-colors ${isDisliked ? 'text-red-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''}><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span id="dislike-count" class="font-semibold text-sm">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
                 lucide.createIcons();
-                document.getElementById('like-btn').onclick = () => handleVote('like', updateId);
-                document.getElementById('dislike-btn').onclick = () => handleVote('dislike', updateId);
-            } catch(e) { 
-                updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`; 
+                await loadUserReviews(); // Load reviews after updates
+            } catch (e) {
+                console.error("Error loading updates:", e);
+                updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
             }
         }
 
-        async function handleVote(voteType, updateId) {
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>';
+                } else {
+                    stars += '<i data-lucide="star" class="w-4 h-4 text-gray-300"></i>';
+                }
+            }
+            return stars;
+        }
+
+        async function loadUserReviews() {
+            const reviewsList = document.getElementById('user-reviews-list');
+            reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
+            try {
+                // Assuming reviews are stored in a top-level collection named 'app_reviews'
+                const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(5));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
+                    return;
+                }
+
+                reviewsList.innerHTML = snapshot.docs.map(doc => {
+                    const review = doc.data();
+                    const starsHtml = renderStars(review.rating || 5);
+                    return `
+                    <div class="card-bg p-4 rounded-xl">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-lg">
+                                ${review.userName.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-semibold">${review.userName}</h4>
+                                    <div class="flex items-center">${starsHtml}</div>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">${review.reviewText}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                reviewsList.innerHTML = '<p class="text-center text-red-500">Could not load reviews.</p>';
+            }
+        }
+
+        window.handleVote = async function(voteType, updateId) {
             if (!userData.isActivated) {
                 showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ভোট দেওয়ার জন্য।");
                 checkActivation(); 
                 return;
             }
-            loader.style.display = 'flex';
+            const likeBtn = document.getElementById(`like-btn-${updateId}`);
+            const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
             const updateRef = doc(db, "updates", updateId);
             const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
+            
             try {
                 await runTransaction(db, async (transaction) => {
                     const userInteractionDoc = await transaction.get(userInteractionRef);
                     if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
                     
-                    const updateDoc = await transaction.get(updateRef);
-                    if (!updateDoc.exists()) throw new Error("Update not found.");
-                    
                     const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
                     transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
                     transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
                 });
-                showAlert("Your vote has been submitted successfully!");
-                loadUpdates();
+                // Optimistically update UI
+                const countElement = document.getElementById(`${voteType}-count-${updateId}`);
+                countElement.textContent = parseInt(countElement.textContent) + 1;
+                if(voteType === 'like') likeBtn.classList.add('text-blue-600');
+                if(voteType === 'dislike') dislikeBtn.classList.add('text-red-600');
             } catch (e) {
                 showAlert(e.message || "Failed to submit your vote.");
-            } 
-            finally {
-                loader.style.display = 'none';
+                likeBtn.disabled = false;
+                dislikeBtn.disabled = false;
             }
         }
 
