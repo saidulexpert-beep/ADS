@@ -160,11 +160,19 @@
                     </div>
                     <div class="dots" id="dots"></div>
                 </div>
-                <div class="card-bg p-5 rounded-xl">
+                
+                <div class="card-bg p-5 rounded-xl text-center">
                     <p class="text-gray-500 text-sm mb-1">Your Balance</p>
-                    <div class="flex items-center justify-between">
-                        <p id="balance-display" class="text-4xl font-bold">৳0.00</p>
-                        <button id="home-deposit-btn" class="btn-gradient px-6 py-2 rounded-lg">Deposit</button>
+                    <p id="balance-display" class="text-4xl font-bold mb-4">৳0.00</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button id="home-deposit-btn" class="flex items-center justify-center gap-2 p-3 rounded-lg bg-green-100 text-green-700 font-bold hover:bg-green-200 transition-colors btn">
+                            <i data-lucide="arrow-down-circle" class="w-5 h-5"></i>
+                            <span>Deposit</span>
+                        </button>
+                        <button id="home-withdraw-btn" class="flex items-center justify-center gap-2 p-3 rounded-lg bg-red-100 text-red-700 font-bold hover:bg-red-200 transition-colors btn">
+                            <i data-lucide="arrow-up-circle" class="w-5 h-5"></i>
+                            <span>Withdraw</span>
+                        </button>
                     </div>
                 </div>
                 <section>
@@ -204,7 +212,8 @@
                 </section>
             </div>
             
-            <div id="pay-page" class="p-4 space-y-6 sub-page">
+            <div id="pay-page" class="p-4 space-y-6 sub-page relative">
+                <button onclick="goBack()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
                 <h2 class="text-xl font-bold text-center">Pay Center</h2>
                 <div class="card-bg p-5 rounded-xl space-y-5">
                     <div>
@@ -232,8 +241,9 @@
                 <div class="mt-6"><h3 class="text-lg font-semibold mb-3">Payment History</h3><div id="payment-history-list" class="space-y-3"></div></div>
             </div>
 
-            <div id="withdraw-page" class="p-4 space-y-6 sub-page">    
-                <div class="card-bg p-5 rounded-xl space-y-5">
+            <div id="withdraw-page" class="p-4 space-y-6 sub-page relative">    
+                <button onclick="goBack()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                <div class="card-bg p-5 rounded-xl space-y-5 mt-10">
                     <div>
                         <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="send-to-back" class="w-6 h-6 text-[#0d6efd]"></i><span>Make a Withdrawal</span></h3>
                         <div class="text-center my-4 p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">
@@ -398,7 +408,32 @@
                 </div>
             </div>
 
-        </main>
+            <div id="send-page" class="p-4 space-y-6 sub-page relative">    
+                <button onclick="goBack()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                <div class="card-bg p-5 rounded-xl space-y-5 mt-10">
+                    <div>
+                        <h3 class="font-semibold text-lg flex items-center gap-2 mb-4"><i data-lucide="send" class="w-6 h-6 text-[#0d6efd]"></i><span>Send Balance</span></h3>
+                        <div class="text-center my-4 p-3 rounded-lg border border-dashed border-blue-500/50 bg-blue-500/10">
+                            <p class="text-gray-600">Your Current Balance</p>
+                            <p id="send-balance-display" class="text-2xl font-bold">৳0.00</p>
+                        </div>
+                        <div class="space-y-4">
+                             <div>
+                                <label for="recipient-id" class="block text-sm font-medium text-gray-600 mb-2">Recipient's User ID</label>
+                                <input id="recipient-id" type="text" placeholder="Enter the user ID to send money to" class="w-full p-3 rounded-lg input-field">
+                            </div>
+                            <div>
+                                <label for="send-amount" class="block text-sm font-medium text-gray-600 mb-2">Amount to Send</label>
+                                <input id="send-amount" type="number" placeholder="e.g., 100" class="w-full p-3 rounded-lg input-field" oninput="calculateSendFee()">
+                                <div id="send-fee-calculation-display" class="text-sm mt-2 p-3 bg-gray-50 rounded-lg text-center space-y-1">
+                                </div>
+                            </div>
+                            <button id="send-submit-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Transfer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </main>
 
         <nav class="bottom-nav">
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
@@ -476,6 +511,7 @@
         let currentUserId = null; 
         let userData = null;
         let appConfig = {};
+        let previousPageId = 'home-page'; // For back button navigation
         
         const loader = document.getElementById('loader');
         const activationPrompt = document.getElementById('activation-prompt');
@@ -520,7 +556,7 @@
             
             updateUI();
             showMainPage('app-container');
-            navigateTo('home-page');
+            navigateTo('home-page', true); // Initial navigation
             checkActivation();
         }
 
@@ -591,8 +627,8 @@
                 activationFee: 50, 
                 referralBonus: 10, 
                 minWithdraw: 100,
-                withdrawFeePercent: 5, // NEW: Default withdrawal fee percentage
-                addReviewLink: '#' // NEW: Default review link
+                withdrawFeePercent: 5,
+                addReviewLink: '#'
             };
         }
         
@@ -607,13 +643,26 @@
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
+        
+        function goBack() {
+            navigateTo(previousPageId || 'home-page');
+        }
+        window.goBack = goBack;
 
-        function navigateTo(pageId) {
+        function navigateTo(pageId, isInitial = false) {
+            if (!isInitial) {
+                const currentPage = document.querySelector('.sub-page.active');
+                if (currentPage) {
+                    previousPageId = currentPage.id;
+                }
+            }
+
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             document.querySelectorAll('.nav-link-premium').forEach(link => {
                 link.classList.toggle('active', link.dataset.page === pageId);
             });
+
             const pageLoadFunctions = {
                 'pay-page': loadPaymentHistory,
                 'sell-page': () => { loadSellItems(); loadSellHistory(); },
@@ -621,7 +670,8 @@
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tasks-page': ldTasks,
-                'withdraw-page': loadWithdrawPage
+                'withdraw-page': loadWithdrawPage,
+                'send-page': loadSendPage // Added new page loader
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
@@ -633,9 +683,11 @@
             
             document.getElementById('header-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
+            document.getElementById('home-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page')); // New button listener
             
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('withdraw-btn').addEventListener('click', handleWithdrawRequest);
+            document.getElementById('send-submit-btn').addEventListener('click', handleSendRequest); // New button listener
             
             document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
             document.getElementById('sell-modal-cancel').addEventListener('click', () => document.getElementById('sell-modal').classList.add('hidden'));
@@ -648,7 +700,7 @@
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
-            document.getElementById('features-send-btn').addEventListener('click', handleSend);
+            document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page')); // Changed to navigate
 
             document.getElementById('copy-referral-btn').addEventListener('click', () => {
                 const referralLink = `https://t.me/mail_storebot/mail?startapp=${currentUserId}`;
@@ -887,7 +939,6 @@
             }
         }
         
-        // --- MODIFIED WITHDRAWAL CALCULATION ---
         window.calculateWithdrawFee = function() {
             const amountInput = document.getElementById('withdraw-amount');
             const displayArea = document.getElementById('fee-calculation-display');
@@ -1148,17 +1199,14 @@
             } catch (error) { historyList.innerHTML = '<p class="text-red-500 text-center">Could not load sell history.</p>'; }
         }
         
-        // --- MODIFIED UPDATES & NEW REVIEWS SECTION ---
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
             const reviewFab = document.getElementById('add-review-fab');
             updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
 
-            // Setup review button link from config
             reviewFab.href = appConfig.addReviewLink || '#';
 
             try {
-                // Fetch multiple updates
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
 
@@ -1182,7 +1230,7 @@
                 }
                 
                 lucide.createIcons();
-                await loadUserReviews(); // Load reviews after updates
+                await loadUserReviews();
             } catch (e) {
                 console.error("Error loading updates:", e);
                 updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
@@ -1205,7 +1253,6 @@
             const reviewsList = document.getElementById('user-reviews-list');
             reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
             try {
-                // Assuming reviews are stored in a top-level collection named 'app_reviews'
                 const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(5));
                 const snapshot = await getDocs(q);
 
@@ -1263,7 +1310,6 @@
                     transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
                     transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
                 });
-                // Optimistically update UI
                 const countElement = document.getElementById(`${voteType}-count-${updateId}`);
                 countElement.textContent = parseInt(countElement.textContent) + 1;
                 if(voteType === 'like') likeBtn.classList.add('text-blue-600');
@@ -1379,20 +1425,55 @@
             showAlert(message);
         }
 
-        async function handleSend() {
+        // --- NEW SEND PAGE FUNCTIONS ---
+        async function loadSendPage() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ব্যালেন্স পাঠানোর জন্য।");
+                checkActivation();
+                return;
+            }
+            document.getElementById('send-balance-display').textContent = `৳${(userData.balance || 0).toFixed(2)}`;
+            document.getElementById('recipient-id').value = '';
+            document.getElementById('send-amount').value = '';
+            calculateSendFee();
+        }
+
+        window.calculateSendFee = function() {
+            const amountInput = document.getElementById('send-amount');
+            const displayArea = document.getElementById('send-fee-calculation-display');
+            const amountToSend = parseFloat(amountInput.value);
+            
+            const feePercent = 5; // 5% fee for sending
+            const feeRate = feePercent / 100;
+
+            if (isNaN(amountToSend) || amountToSend <= 0) {
+                displayArea.innerHTML = '';
+                return;
+            }
+
+            const fee = amountToSend * feeRate;
+            const totalDeduction = amountToSend + fee;
+            
+            if (totalDeduction > userData.balance) {
+                displayArea.innerHTML = `<p class="text-red-500">Total with fee (৳${totalDeduction.toFixed(2)}) exceeds your balance.</p>`;
+            } else {
+                displayArea.innerHTML = `<p>Transfer Fee (${feePercent}%): <span class="font-bold text-red-500">৳${fee.toFixed(2)}</span></p>
+                                        <p>Total to be Deducted: <span class="font-bold">৳${totalDeduction.toFixed(2)}</span></p>`;
+            }
+        }
+
+        async function handleSendRequest() {
             if (!userData.isActivated) {
                 showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ব্যালেন্স পাঠানোর জন্য।");
                 checkActivation(); 
                 return;
             }
-            const recipientId = prompt("যাকে ব্যালেন্স পাঠাবেন তার User ID দিন:");
-            if (!recipientId || recipientId.trim() === '') return;
-            if (recipientId.trim() === currentUserId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
+            const recipientId = document.getElementById('recipient-id').value.trim();
+            const amount = parseFloat(document.getElementById('send-amount').value);
 
-            const amountStr = prompt("কত টাকা পাঠাতে চান?");
-            if (!amountStr || isNaN(parseFloat(amountStr))) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
-            const amount = parseFloat(amountStr);
-            if (amount <= 0) return showAlert("পাঠানোর পরিমাণ অবশ্যই শূন্যের বেশি হতে হবে।");
+            if (!recipientId) return showAlert("অনুগ্রহ করে প্রাপকের User ID দিন।");
+            if (recipientId === currentUserId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
+            if (isNaN(amount) || amount <= 0) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
             
             const sendFeeRate = 0.05; // 5% fee
             const feeAmount = amount * sendFeeRate;
@@ -1404,7 +1485,7 @@
 
             loader.style.display = 'flex';
             const senderRef = doc(db, "users", currentUserId);
-            const recipientRef = doc(db, "users", recipientId.trim());
+            const recipientRef = doc(db, "users", recipientId);
 
             try {
                 await runTransaction(db, async (transaction) => {
@@ -1419,16 +1500,16 @@
 
                     const transferLogRef = doc(collection(db, "transfers"));
                     transaction.set(transferLogRef, {
-                        fromId: currentUserId, fromName: userData.name, toId: recipientId.trim(),
+                        fromId: currentUserId, fromName: userData.name, toId: recipientId,
                         toName: recipientDoc.data().name, amount: amount, fee: feeAmount, timestamp: serverTimestamp()
                     });
                 });
                 
-                userData.balance -= totalDeductionFromSender;
+                await fetchUserData();
                 updateUI();
                 showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।\nচার্জ বাবদ ৳${feeAmount.toFixed(2)} কাটা হয়েছে।`);
-                loadFeaturesPage();
-
+                loadSendPage(); // Reload the send page to clear fields
+                loadFeaturesPage(); // Also update the features page stats
             } catch (error) {
                 console.error("Transfer failed: ", error);
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
