@@ -26,18 +26,6 @@
             border-color: #0d6efd;
             box-shadow: 0 6px 20px rgba(13, 110, 253, 0.1);
         }
-        .premium-card {
-            background-color: #ffffff;
-            border-radius: 1rem; /* 16px */
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .premium-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px -6px rgba(13, 110, 253, 0.15);
-        }
         .text-accent-gradient {
             background: linear-gradient(to right, #0d6efd, #0b5ed7);
             -webkit-background-clip: text;
@@ -48,7 +36,6 @@
             transform: scale(1); 
             border: none;
             cursor: pointer;
-            border-radius: 0.5rem; /* 8px */
         }
         .btn:active, .btn-gradient:active, .btn-outline-accent:active { transform: scale(0.96); }
         .btn-gradient { 
@@ -65,7 +52,6 @@
             background-color: transparent;
             border: 1px solid #0d6efd; 
             color: #0d6efd; 
-            font-weight: 600;
         }
         .btn-outline-accent:hover { 
             background-color: #0d6efd; 
@@ -84,7 +70,6 @@
             border: 1px solid #ced4da; 
             transition: all 0.2s ease;
             color: #212529;
-            border-radius: 0.5rem;
         }
         .input-field:focus {
             border-color: #0d6efd;
@@ -138,7 +123,8 @@
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #adb5bd; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
         .dot.active { background: #0d6efd; }
         
-        #loader { display: flex; }
+        /* Loader Styles */
+        #loader { display: flex; } /* Make loader visible by default */
         #loader .container { --uib-size: 45px; --uib-color: #0d6efd; --uib-speed: 1.75s; --uib-bg-opacity: .1; height: 31.25px; width: 50px; }
         #loader .car { stroke: var(--uib-color); stroke-dasharray: 100; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; animation: travel var(--uib-speed) ease-in-out infinite, fade var(--uib-speed) ease-out infinite; }
         #loader .track { stroke-linecap: round; stroke-linejoin: round; stroke: var(--uib-color); opacity: var(--uib-bg-opacity); }
@@ -189,7 +175,6 @@
                         </button>
                     </div>
                 </div>
-                
                 <section>
                     <h2 class="text-lg font-semibold px-2 mb-3">Menu</h2>
                     <div class="space-y-3">
@@ -245,11 +230,11 @@
                         </div>
                         <p class="text-sm text-gray-500 mb-4 text-center border-t border-gray-200 pt-4">টাকা পাঠানোর পর নিচের ফর্মটি পূরণ করুন:</p>
                         <div class="space-y-4">
-                             <div><label for="deposit-method" class="block text-sm font-medium text-gray-600 mb-2">পেমেন্ট মাধ্যম</label><select id="deposit-method" class="w-full p-3 input-field"><option value="">কোন মাধ্যমে টাকা পাঠিয়েছেন?</option><option value="Nagad">নগদ</option><option value="bKash">বিকাশ</option><option value="Rocket">রকেট</option><option value="Binance">Binance</option></select></div>
-                            <div><label for="deposit-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label><input id="deposit-amount" type="number" placeholder="e.g., 100" class="w-full p-3 input-field"></div>
-                            <div><label for="sender-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার পেমেন্ট নম্বর</label><input id="sender-number" type="text" placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full p-3 input-field"></div>
-                            <div><label for="deposit-txid" class="block text-sm font-medium text-gray-600 mb-2">Transaction ID (TrxID)</label><input id="deposit-txid" type="text" placeholder="টাকা পাঠানোর পর পাওয়া TrxID" class="w-full p-3 input-field"></div>
-                            <button id="deposit-btn" class="w-full p-3 btn-gradient">Submit Deposit</button>
+                             <div><label for="deposit-method" class="block text-sm font-medium text-gray-600 mb-2">পেমেন্ট মাধ্যম</label><select id="deposit-method" class="w-full p-3 rounded-lg input-field"><option value="">কোন মাধ্যমে টাকা পাঠিয়েছেন?</option><option value="Nagad">নগদ</option><option value="bKash">বিকাশ</option><option value="Rocket">রকেট</option><option value="Binance">Binance</option></select></div>
+                            <div><label for="deposit-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (BDT)</label><input id="deposit-amount" type="number" placeholder="e.g., 100" class="w-full p-3 rounded-lg input-field"></div>
+                            <div><label for="sender-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার পেমেন্ট নম্বর</label><input id="sender-number" type="text" placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full p-3 rounded-lg input-field"></div>
+                            <div><label for="deposit-txid" class="block text-sm font-medium text-gray-600 mb-2">Transaction ID (TrxID)</label><input id="deposit-txid" type="text" placeholder="টাকা পাঠানোর পর পাওয়া TrxID" class="w-full p-3 rounded-lg input-field"></div>
+                            <button id="deposit-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Deposit</button>
                         </div>
                     </div>
                 </div>
@@ -269,7 +254,7 @@
                         <div class="space-y-4">
                              <div>
                                 <label for="withdraw-method" class="block text-sm font-medium text-gray-600 mb-2">পেমেন্ট মাধ্যম</label>
-                                <select id="withdraw-method" class="w-full p-3 input-field">
+                                <select id="withdraw-method" class="w-full p-3 rounded-lg input-field">
                                     <option value="">কোন মাধ্যমে টাকা নিবেন?</option>
                                     <option value="Nagad">নগদ</option>
                                     <option value="bKash">বিকাশ</option>
@@ -278,15 +263,15 @@
                             </div>
                             <div>
                                 <label for="withdraw-amount" class="block text-sm font-medium text-gray-600 mb-2">টাকার পরিমাণ (আপনি পাবেন)</label>
-                                <input id="withdraw-amount" type="number" placeholder="e.g., 500" class="w-full p-3 input-field" oninput="calculateWithdrawFee()">
+                                <input id="withdraw-amount" type="number" placeholder="e.g., 500" class="w-full p-3 rounded-lg input-field" oninput="calculateWithdrawFee()">
                                 <div id="fee-calculation-display" class="text-sm mt-2 p-3 bg-gray-50 rounded-lg text-center space-y-1">
                                     </div>
                             </div>
                             <div>
                                 <label for="recipient-number" class="block text-sm font-medium text-gray-600 mb-2">আপনার পেমেন্ট নম্বর</label>
-                                <input id="recipient-number" type="text" placeholder="যে নম্বরে টাকা গ্রহণ করবেন" class="w-full p-3 input-field">
+                                <input id="recipient-number" type="text" placeholder="যে নম্বরে টাকা গ্রহণ করবেন" class="w-full p-3 rounded-lg input-field">
                             </div>
-                            <button id="withdraw-btn" class="w-full p-3 btn-gradient">Submit Withdrawal</button>
+                            <button id="withdraw-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Withdrawal</button>
                         </div>
                     </div>
                 </div>
@@ -391,22 +376,25 @@
             </div>
 
             <div id="tasks-page" class="p-4 space-y-6 sub-page">
-                <h2 class="text-2xl font-bold text-center text-accent-gradient">Tasks Center</h2>
-                <p class="text-gray-500 text-center -mt-4">Complete tasks from different categories to earn rewards.</p>
-
-                <div id="task-categories-container" class="space-y-3">
-                    <p class="text-center text-gray-500">Loading task categories...</p>
-                </div>
-
-                <div id="task-list-container" class="hidden">
-                    <div class="flex items-center mb-4">
-                        <button id="back-to-categories-btn" class="p-2 rounded-full hover:bg-gray-100"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
-                        <h3 id="task-list-title" class="text-xl font-bold text-center flex-grow -ml-10">Category Tasks</h3>
+                <div>
+                    <h2 class="text-xl font-bold text-center">🎯 Complete Tasks & Earn</h2>
+                    <p class="text-gray-400 text-center mb-4">কাজের বিভাগ নির্বাচন করুন</p>
+                    <div class="card-bg p-4 rounded-xl text-center mb-6">
+                        <p class="text-sm text-gray-500 mb-1">TOTAL Approved Tasks</p>
+                        <p id="total-tasks-approved-display" class="text-xl font-bold text-blue-500">0</p>
                     </div>
-                    <div id="task-list-content" class="space-y-4">
+                    <div id="task-category-list" class="space-y-4">
                         </div>
                 </div>
             </div>
+
+            <div id="task-list-page" class="p-4 space-y-6 sub-page relative">
+                <button onclick="goBackToCategories()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                <h2 id="task-list-title" class="text-xl font-bold text-center mt-2">Tasks</h2>
+                <div id="task-list-container" class="space-y-4">
+                    </div>
+            </div>
+
 
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
@@ -428,7 +416,7 @@
                     <div id="transfer-history-list" class="space-y-3"><p class="text-gray-500 text-center">No transfer history found.</p></div>
                 </div>
             </div>
-            
+
             <div id="send-page" class="p-4 space-y-6 sub-page relative">    
                 <button onclick="goBack()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
                 <div class="card-bg p-5 rounded-xl space-y-5 mt-10">
@@ -441,21 +429,20 @@
                         <div class="space-y-4">
                              <div>
                                 <label for="recipient-id" class="block text-sm font-medium text-gray-600 mb-2">Recipient's User ID</label>
-                                <input id="recipient-id" type="text" placeholder="Enter the user ID to send money to" class="w-full p-3 input-field">
+                                <input id="recipient-id" type="text" placeholder="Enter the user ID to send money to" class="w-full p-3 rounded-lg input-field">
                             </div>
                             <div>
                                 <label for="send-amount" class="block text-sm font-medium text-gray-600 mb-2">Amount to Send</label>
-                                <input id="send-amount" type="number" placeholder="e.g., 100" class="w-full p-3 input-field" oninput="calculateSendFee()">
+                                <input id="send-amount" type="number" placeholder="e.g., 100" class="w-full p-3 rounded-lg input-field" oninput="calculateSendFee()">
                                 <div id="send-fee-calculation-display" class="text-sm mt-2 p-3 bg-gray-50 rounded-lg text-center space-y-1">
                                 </div>
                             </div>
-                            <button id="send-submit-btn" class="w-full p-3 btn-gradient">Submit Transfer</button>
+                            <button id="send-submit-btn" class="w-full p-3 rounded-lg btn-gradient">Submit Transfer</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </main>
+            </main>
 
         <nav class="bottom-nav">
             <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
@@ -511,6 +498,19 @@
             <button id="deposit-details-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Got It!</button>
         </div>
     </div>
+
+    <div id="manual-task-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
+            <h3 id="manual-task-modal-title" class="text-xl font-bold text-center text-accent-gradient">Submit Task</h3>
+            <p id="manual-task-modal-description" class="text-sm text-gray-500 text-center"></p>
+            <div id="manual-task-modal-fields" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                </div>
+            <div class="flex gap-3 pt-2">
+                <button id="manual-task-modal-cancel" class="w-full p-3 rounded-lg btn-outline-accent">Cancel</button>
+                <button id="manual-task-modal-submit" class="w-full p-3 rounded-lg btn-gradient">Submit</button>
+            </div>
+        </div>
+    </div>
     
     <script type="module">
         const firebaseConfig = {
@@ -524,7 +524,7 @@
         };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, writeBatch, updateDoc, increment, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -533,8 +533,8 @@
         let currentUserId = null; 
         let userData = null;
         let appConfig = {};
-        let previousPageId = 'home-page';
-        let allTasks = []; // Cache for tasks
+        let previousPageId = 'home-page'; 
+        let currentCategory = null; // To store the selected task category
         
         const loader = document.getElementById('loader');
         const activationPrompt = document.getElementById('activation-prompt');
@@ -553,6 +553,7 @@
                 }
                 
                 currentUserId = String(currentUser.id);
+
                 await initializeAppLogic();
 
             } catch (e) {
@@ -567,108 +568,794 @@
             lucide.createIcons();
             setupEventListeners();
             setupBanner();
+            
             await fetchOrCreateUser();
+
             if (userData && userData.isBlocked) {
                 showAlert("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
                 document.getElementById('app-container').classList.add('hidden');
                 return;
             }
+            
             updateUI();
             showMainPage('app-container');
-            navigateTo('home-page', true);
+            navigateTo('home-page', true); // Initial navigation
             checkActivation();
         }
 
-        // --- USER AND CONFIG FUNCTIONS ---
         async function fetchOrCreateUser() {
             if (!currentUserId) return;
+            
             await fetchAppConfig();
+            
             const userRef = doc(db, "users", currentUserId);
             const userSnap = await getDoc(userRef);
+
             if (userSnap.exists()) {
                 userData = userSnap.data();
                 if (userData.referralCode !== currentUserId) {
                     await updateDoc(userRef, { referralCode: currentUserId });
-                    userData.referralCode = currentUserId;
+                    userData.referralCode = currentUserId; 
                 }
             } else {
                 const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
-                const newUserData = { uid: currentUserId, name: fullName || currentUser.username || 'New User', username: currentUser.username || '', mobileNumber: null, balance: 0, createdAt: serverTimestamp(), isBlocked: false, isActivated: false, referralCode: currentUserId, referredBy: null };
+                const newUserData = {
+                    uid: currentUserId,
+                    name: fullName || currentUser.username || 'New User',
+                    username: currentUser.username || '',
+                    mobileNumber: null,
+                    balance: 0,
+                    createdAt: serverTimestamp(),
+                    isBlocked: false,
+                    isActivated: false,
+                    referralCode: currentUserId, 
+                    referredBy: null 
+                };
+                
                 const startParam = window.Telegram.WebApp.initDataUnsafe?.start_param;
-                if (startParam && startParam !== currentUserId) newUserData.referredBy = startParam;
+                if (startParam && startParam !== currentUserId) {
+                    newUserData.referredBy = startParam;
+                }
+
                 await setDoc(userRef, newUserData);
                 userData = newUserData;
             }
         }
+
+        function checkActivation() {
+            if (currentUser && userData && !userData.isActivated) {
+                const activationFee = appConfig.activationFee || 0;
+                document.getElementById('activation-message').innerText = `আপনার অ্যাকাউন্টটি ব্যবহার করার জন্য অ্যাক্টিভ করা প্রয়োজন। অ্যাক্টিভেশন ফি: ৳${activationFee.toFixed(2)}`;
+                activationPrompt.classList.remove('hidden');
+                lucide.createIcons();
+                return false;
+            }
+            activationPrompt.classList.add('hidden');
+            return true;
+        }
+
         async function fetchUserData() {
             if (!currentUserId) return;
             const userRef = doc(db, "users", currentUserId);
             const userSnap = await getDoc(userRef);
             if (userSnap.exists()) userData = userSnap.data();
         }
+
         async function fetchAppConfig() {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
-            appConfig = configSnap.exists() ? configSnap.data() : { sellableItems: [], activationFee: 50, referralBonus: 10, minWithdraw: 100, withdrawFeePercent: 5, addReviewLink: '#' };
+            appConfig = configSnap.exists() ? configSnap.data() : { 
+                mails: [], 
+                sellableItems: [], 
+                activationFee: 50, 
+                referralBonus: 10, 
+                minWithdraw: 100,
+                withdrawFeePercent: 5,
+                addReviewLink: '#'
+            };
         }
-
-        // --- UI AND NAVIGATION ---
+        
         function updateUI() {
             if (!userData) return;
             const balance = (userData.balance || 0).toFixed(2);
             document.getElementById('balance-display').textContent = `৳${balance}`;
             document.getElementById('header-balance-display').textContent = `৳${balance}`;
         }
+
         function showMainPage(pageId) {
             document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
-        function goBack() { navigateTo(previousPageId || 'home-page'); }
+        
+        function goBack() {
+            navigateTo(previousPageId || 'home-page');
+        }
         window.goBack = goBack;
+
         function navigateTo(pageId, isInitial = false) {
             if (!isInitial) {
                 const currentPage = document.querySelector('.sub-page.active');
-                if (currentPage) previousPageId = currentPage.id;
+                if (currentPage) {
+                    previousPageId = currentPage.id;
+                }
+            } else {
+                 previousPageId = 'home-page';
             }
+
             document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-link-premium').forEach(link => link.classList.toggle('active', link.dataset.page === pageId));
-            const pageLoadFunctions = { 'pay-page': loadPaymentHistory, 'sell-page': () => { loadSellItems(); loadSellHistory(); }, 'updates-page': loadUpdates, 'profile-page': loadProfilePage, 'features-page': loadFeaturesPage, 'tasks-page': loadTaskCategories, 'withdraw-page': loadWithdrawPage, 'send-page': loadSendPage };
+            document.querySelectorAll('.nav-link-premium').forEach(link => {
+                link.classList.toggle('active', link.dataset.page === pageId);
+            });
+
+            const pageLoadFunctions = {
+                'pay-page': loadPaymentHistory,
+                'sell-page': () => { loadSellItems(); loadSellHistory(); },
+                'updates-page': loadUpdates,
+                'profile-page': loadProfilePage,
+                'features-page': loadFeaturesPage,
+                'tasks-page': loadTaskCategories, // Modified
+                'task-list-page': loadTasksByCategory, // New
+                'withdraw-page': loadWithdrawPage,
+                'send-page': loadSendPage
+            };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
             lucide.createIcons();
         }
         window.navigateTo = navigateTo;
+
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
+            
             document.getElementById('header-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('home-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
-            document.getElementById('home-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
+            document.getElementById('home-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page')); 
+            
             document.getElementById('deposit-btn').addEventListener('click', handleDepositRequest);
             document.getElementById('withdraw-btn').addEventListener('click', handleWithdrawRequest);
             document.getElementById('send-submit-btn').addEventListener('click', handleSendRequest);
+            
             document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
             document.getElementById('sell-modal-cancel').addEventListener('click', () => document.getElementById('sell-modal').classList.add('hidden'));
             document.getElementById('deposit-details-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.remove('hidden'));
             document.getElementById('deposit-details-ok-btn').addEventListener('click', () => document.getElementById('deposit-details-modal').classList.add('hidden'));
+            
             document.getElementById('sell-page-more-features-btn').addEventListener('click', () => { if(checkActivation()) navigateTo('features-page'); });
             document.getElementById('more-features-btn').addEventListener('click', () => { if(checkActivation()) navigateTo('features-page'); });
+            
             document.getElementById('features-deposit-btn').addEventListener('click', () => navigateTo('pay-page'));
             document.getElementById('features-withdraw-btn').addEventListener('click', () => navigateTo('withdraw-page'));
             document.getElementById('features-receive-btn').addEventListener('click', handleReceive);
             document.getElementById('features-send-btn').addEventListener('click', () => navigateTo('send-page'));
-            document.getElementById('copy-referral-btn').addEventListener('click', () => copyToClipboard(`https://t.me/mail_storebot/mail?startapp=${currentUserId}`, document.getElementById('copy-referral-btn')));
+
+            document.getElementById('copy-referral-btn').addEventListener('click', () => {
+                const referralLink = `https://t.me/mail_storebot/mail?startapp=${currentUserId}`;
+                copyToClipboard(referralLink, document.getElementById('copy-referral-btn'));
+            });
             document.getElementById('activate-account-btn').addEventListener('click', handleActivation);
             document.getElementById('close-activation-prompt').addEventListener('click', () => activationPrompt.classList.add('hidden'));
-            document.getElementById('back-to-categories-btn').addEventListener('click', () => {
-                document.getElementById('task-list-container').classList.add('hidden');
-                document.getElementById('task-categories-container').classList.remove('hidden');
-            });
+
+            // New event listeners for manual task modal
+            document.getElementById('manual-task-modal-cancel').addEventListener('click', () => document.getElementById('manual-task-modal').classList.add('hidden'));
         }
+        
+        async function handleActivation() {
+            const activationFee = appConfig.activationFee || 0;
+            if (userData.balance < activationFee) {
+                showAlert(`আপনার ব্যালেন্স কম। অ্যাকাউন্ট অ্যাক্টিভ করতে ৳${activationFee.toFixed(2)} প্রয়োজন। অনুগ্রহ করে ডিপোজিট করুন।`);
+                activationPrompt.classList.add('hidden');
+                navigateTo('pay-page');
+                return;
+            }
+
+            if (!confirm(`আপনি কি ৳${activationFee.toFixed(2)} দিয়ে আপনার অ্যাকাউন্টটি অ্যাক্টিভ করতে চান?`)) return;
+            
+            loader.style.display = 'flex';
+            const userRef = doc(db, "users", currentUserId);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists() || userDoc.data().isActivated) throw "অ্যাকাউন্ট ইতিমধ্যে অ্যাক্টিভ আছে।";
+                    if (userDoc.data().balance < activationFee) throw "অপর্যাপ্ত ব্যালেন্স।";
+
+                    const updateData = { balance: increment(-activationFee), isActivated: true };
+                    transaction.update(userRef, updateData);
+
+                    const referrerId = userDoc.data().referredBy;
+                    if (referrerId) {
+                        const referrerRef = doc(db, "users", referrerId);
+                        const referrerSnap = await transaction.get(referrerRef);
+                        if (referrerSnap.exists() && referrerSnap.data().isActivated) {
+                            const referralBonus = appConfig.referralBonus || 0;
+                            transaction.update(referrerRef, { balance: increment(referralBonus) });
+                        }
+                    }
+                });
+
+                await fetchUserData(); 
+                updateUI();
+                activationPrompt.classList.add('hidden');
+                showAlert("অভিনন্দন! আপনার অ্যাকাউন্ট সফলভাবে অ্যাক্টিভ করা হয়েছে।");
+                loadProfilePage();
+
+            } catch (error) {
+                console.error("Activation failed:", error);
+                showAlert(typeof error === 'string' ? error : "অ্যাকাউন্ট অ্যাক্টিভ করতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function loadProfilePage() {
+            if (!userData) return;
+            
+            const leaderElement = document.getElementById('profile-leader');
+            leaderElement.textContent = ''; 
+            if (userData.referredBy) {
+                const referrerRef = doc(db, "users", userData.referredBy);
+                const referrerSnap = await getDoc(referrerRef);
+                leaderElement.innerHTML = referrerSnap.exists() 
+                    ? `Your Leader: <span class="text-accent-gradient">${referrerSnap.data().name}</span>`
+                    : 'Leader not found';
+            } else {
+                leaderElement.textContent = 'You joined without a referral.';
+            }
+
+            const profilePic = document.getElementById('profile-pic');
+            const avatarDiv = document.getElementById('profile-initials-avatar');
+            if (currentUser.photo_url) {
+                profilePic.src = currentUser.photo_url;
+                profilePic.classList.remove('hidden');
+                avatarDiv.classList.add('hidden');
+            } else {
+                const initials = userData.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('profile-initials').textContent = initials;
+                profilePic.classList.add('hidden');
+                avatarDiv.classList.remove('hidden');
+            }
+            
+            document.getElementById('profile-name').textContent = userData.name;
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
+            document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
+            document.getElementById('referral-code-display').textContent = userData.referralCode || "Loading...";
+
+            const activationStatusElement = document.getElementById('profile-activation-status');
+            if (userData.isActivated) {
+                activationStatusElement.textContent = 'Active Account';
+                activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700';
+            } else {
+                activationStatusElement.textContent = 'Inactive Account';
+                activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700';
+            }
+            
+            const detailsContainer = document.getElementById('account-details-content');
+            if (userData.mobileNumber) {
+                detailsContainer.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <img src="https://i.postimg.cc/JzmGSXBX/images.jpg" alt="WhatsApp" class="w-5 h-5">
+                        <div>
+                            <p class="text-xs text-gray-500">Active WhatsApp Number</p>
+                            <p class="font-semibold text-gray-800">${userData.mobileNumber}</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-center text-gray-400 pt-2">আপনার তথ্য সেভ করা আছে। পরিবর্তনের জন্য সাপোর্টে যোগাযোগ করুন।</p>
+                `;
+            } else {
+                let referralFieldHTML = '';
+                if (!userData.referredBy) {
+                    referralFieldHTML = `
+                    <div>
+                        <label for="link-referral" class="block text-sm font-medium text-gray-600 mb-1">Referral Code (Optional)</label>
+                        <input id="link-referral" type="text" placeholder="আপনার বন্ধুর রেফার কোড দিন" class="w-full p-3 rounded-lg input-field">
+                    </div>`;
+                }
+                
+                detailsContainer.innerHTML = `
+                    <p class="text-sm text-center text-gray-600 pb-2">আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে WhatsApp নম্বর যোগ করুন। এটি শুধুমাত্র একবারই করা যাবে।</p>
+                    <div>
+                        <label for="link-mobile" class="block text-sm font-medium text-gray-600 mb-1">Active WhatsApp Number</label>
+                        <input id="link-mobile" type="tel" placeholder="01xxxxxxxxx" class="w-full p-3 rounded-lg input-field">
+                    </div>
+                    ${referralFieldHTML}
+                    <button id="link-details-btn" class="w-full p-3 mt-2 rounded-lg btn-gradient">Save Details</button>
+                `;
+                document.getElementById('link-details-btn').addEventListener('click', handleLinkAccountDetails);
+            }
+            lucide.createIcons();
+        }
+
+        async function handleLinkAccountDetails() {
+            const mobile = document.getElementById('link-mobile').value.trim();
+            const referralCodeInput = document.getElementById('link-referral');
+            const referralCode = referralCodeInput ? referralCodeInput.value.trim() : null;
+
+            if (!mobile) return showAlert("অনুগ্রহ করে আপনার WhatsApp নম্বরটি পূরণ করুন।");
+            if (!/^01\d{9}$/.test(mobile)) return showAlert("অনুগ্রহ করে একটি সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন যা 01 দিয়ে শুরু হয়।");
+            
+            loader.style.display = 'flex';
+            try {
+                const mobileQuery = query(collection(db, "users"), where("mobileNumber", "==", mobile), limit(1));
+                const mobileSnapshot = await getDocs(mobileQuery);
+                if (!mobileSnapshot.empty) {
+                    loader.style.display = 'none';
+                    return showAlert("এই WhatsApp নম্বরটি দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট লিঙ্ক করা হয়েছে।");
+                }
+                
+                const userRef = doc(db, "users", currentUserId);
+                const updateData = { mobileNumber: mobile };
+                
+                if (referralCode && !userData.referredBy) {
+                    if (referralCode === currentUserId) {
+                        loader.style.display = 'none';
+                        return showAlert("আপনি নিজের রেফার কোড ব্যবহার করতে পারবেন না।");
+                    }
+                    const referrerRef = doc(db, "users", referralCode);
+                    const referrerSnap = await getDoc(referrerRef);
+                    if (!referrerSnap.exists()) {
+                         loader.style.display = 'none';
+                        return showAlert("দুঃখিত, এই রেফার কোডটি সঠিক নয়।");
+                    }
+                    updateData.referredBy = referralCode;
+                }
+                
+                await updateDoc(userRef, updateData);
+                await fetchUserData(); 
+                showAlert("আপনার তথ্য সফলভাবে যোগ করা হয়েছে।");
+                loadProfilePage();
+
+            } catch (error) {
+                console.error("Link details error:", error);
+                showAlert("তথ্য যোগ করতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function handleDepositRequest() {
+            const method = document.getElementById('deposit-method').value;
+            const amount = parseInt(document.getElementById('deposit-amount').value);
+            const senderNumber = document.getElementById('sender-number').value.trim();
+            const transactionId = document.getElementById('deposit-txid').value.trim();
+            if (!method || !amount || amount <= 0 || !senderNumber || !transactionId) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            loader.style.display = 'flex';
+            try {
+                const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
+                const querySnapshot = await getDocs(depositQuery);
+                if (!querySnapshot.empty) {
+                    loader.style.display = 'none';
+                    return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
+                }
+                await addDoc(collection(db, "deposits"), {
+                    userId: currentUserId, userName: userData.name, method: method, amount: amount,
+                    senderNumber: senderNumber, transactionId: transactionId, status: "pending", requestedAt: serverTimestamp()
+                });
+                showAlert("আপনার ডিপোজিট অনুরোধ সফলভাবে জমা হয়েছে।");
+                document.getElementById('deposit-method').value = '';
+                document.getElementById('deposit-amount').value = '';
+                document.getElementById('sender-number').value = '';
+                document.getElementById('deposit-txid').value = '';
+                loadPaymentHistory();
+            } catch (error) {
+                showAlert("ডিপোজিট অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        async function loadPaymentHistory() {
+            const historyList = document.getElementById('payment-history-list');
+            historyList.innerHTML = '<p class="text-gray-500">হিস্টি লোড হচ্ছে...</p>';
+            try {
+                const q = query(collection(db, "deposits"), where("userId", "==", currentUserId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-500 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>';
+
+                historyList.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    let statusColor, statusIcon;
+                    switch (item.status) {
+                        case 'approved': statusColor = 'text-green-500'; statusIcon = 'check-circle-2'; break;
+                        case 'rejected': statusColor = 'text-red-500'; statusIcon = 'x-circle'; break;
+                        default: statusColor = 'text-yellow-500'; statusIcon = 'hourglass';
+                    }
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold">${item.type || 'Deposit'} - ${item.method}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg">৳${item.amount}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                historyList.innerHTML = '<p class="text-red-500 text-center">হিস্টি লোড করা যায়নি।</p>';
+            }
+        }
+        
+        window.calculateWithdrawFee = function() {
+            const amountInput = document.getElementById('withdraw-amount');
+            const displayArea = document.getElementById('fee-calculation-display');
+            const amountToReceive = parseFloat(amountInput.value);
+            
+            const feePercent = appConfig.withdrawFeePercent || 5;
+            const feeRate = feePercent / 100;
+
+            if (isNaN(amountToReceive) || amountToReceive <= 0) {
+                displayArea.innerHTML = '';
+                return;
+            }
+
+            const fee = amountToReceive * feeRate;
+            const totalDeduction = amountToReceive + fee;
+            
+            const maxReceivable = userData.balance / (1 + feeRate);
+            if (amountToReceive > maxReceivable) {
+                amountInput.value = Math.floor(maxReceivable);
+                const correctedAmount = parseFloat(amountInput.value);
+                const correctedFee = correctedAmount * feeRate;
+                displayArea.innerHTML = `
+                    <p class="text-red-500 text-xs mb-2">আপনার ব্যালেন্সের চেয়ে বেশি টাকা তোলা যাবে না।</p>
+                    <p>Withdrawal Fee (${feePercent}%): <span class="font-bold text-red-500">৳${correctedFee.toFixed(2)}</span></p>
+                `;
+                return;
+            }
+
+            displayArea.innerHTML = `<p>Withdrawal Fee (${feePercent}%): <span class="font-bold text-red-500">৳${fee.toFixed(2)}</span></p>`;
+        }
+
+        async function loadWithdrawPage() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন টাকা তোলার জন্য।");
+                checkActivation();
+                return;
+            }
+            const minWithdraw = appConfig.minWithdraw || 100;
+            document.getElementById('withdraw-balance-display').textContent = `৳${(userData.balance || 0).toFixed(2)}`;
+            document.getElementById('min-withdraw-display').textContent = `৳${minWithdraw.toFixed(2)}`;
+            document.getElementById('withdraw-amount').value = '';
+            calculateWithdrawFee();
+            loadWithdrawHistory();
+        }
+
+        async function handleWithdrawRequest() {
+            const method = document.getElementById('withdraw-method').value;
+            const amountToReceive = parseFloat(document.getElementById('withdraw-amount').value);
+            const number = document.getElementById('recipient-number').value.trim();
+            const minWithdraw = appConfig.minWithdraw || 100;
+            const feeRate = (appConfig.withdrawFeePercent || 5) / 100;
+
+            if (!method || !amountToReceive || !number) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
+            if (isNaN(amountToReceive) || amountToReceive <= 0) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
+            if (amountToReceive < minWithdraw) return showAlert(`সর্বনিম্ন ৳${minWithdraw.toFixed(2)} টাকা তোলা যাবে।`);
+
+            const fee = amountToReceive * feeRate;
+            const totalDeduction = amountToReceive + fee;
+
+            if (totalDeduction > userData.balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+
+            loader.style.display = 'flex';
+            try {
+                await addDoc(collection(db, "withdrawals"), {
+                    userId: currentUserId,
+                    userName: userData.name,
+                    method: method,
+                    amount: totalDeduction, 
+                    fee: fee,
+                    netAmount: amountToReceive,
+                    number: number,
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
+                
+                const userRef = doc(db, "users", currentUserId);
+                await updateDoc(userRef, { balance: increment(-totalDeduction) });
+                userData.balance -= totalDeduction; 
+                
+                showAlert("আপনার উইথড্র অনুরোধ সফলভাবে জমা হয়েছে।");
+                updateUI();
+                
+                document.getElementById('withdraw-method').value = '';
+                document.getElementById('recipient-number').value = '';
+                
+                loadWithdrawPage();
+            } catch (error) {
+                showAlert("উইথড্র অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
+                console.error("Withdrawal Error: ", error);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function loadWithdrawHistory() {
+            const historyList = document.getElementById('withdrawal-history-list');
+            historyList.innerHTML = '<p class="text-gray-500">ইতিহাস লোড হচ্ছে...</p>';
+            try {
+                const q = query(collection(db, "withdrawals"), where("userId", "==", currentUserId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-500 text-center">কোনো রেকর্ড পাওয়া যায়নি।</p>';
+
+                historyList.innerHTML = snapshot.docs.map(doc => {
+                    const item = doc.data();
+                    let statusColor, statusIcon;
+                    switch (item.status) {
+                        case 'approved': statusColor = 'text-green-500'; statusIcon = 'check-circle-2'; break;
+                        case 'rejected': statusColor = 'text-red-500'; statusIcon = 'x-circle'; break;
+                        default: statusColor = 'text-yellow-500'; statusIcon = 'hourglass';
+                    }
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
+                    return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold">Withdraw - ${item.method}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg">৳${item.netAmount ? item.netAmount.toFixed(2) : item.amount.toFixed(2)}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                historyList.innerHTML = '<p class="text-red-500 text-center">ইতিহাস লোড করা যায়নি।</p>';
+            }
+        }
+        
+        async function loadSellItems() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            const todaySellQuery = query(
+                collection(db, "sell_requests"),
+                where("userId", "==", currentUserId),
+                where("status", "==", "approved"),
+                where("requestedAt", ">=", today),
+                where("requestedAt", "<", tomorrow)
+            );
+            const totalApprovedSellQuery = query(
+                collection(db, "sell_requests"),
+                where("userId", "==", currentUserId),
+                where("status", "==", "approved")
+            );
+
+            const [todaySellSnapshot, totalApprovedSellSnapshot] = await Promise.all([
+                getDocs(todaySellQuery),
+                getDocs(totalApprovedSellQuery)
+            ]);
+
+            const todaySellIncome = todaySellSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
+            const totalApprovedSellCount = totalApprovedSellSnapshot.size;
+
+            document.getElementById('today-sell-income-display').textContent = `৳${todaySellIncome.toFixed(2)}`;
+            document.getElementById('total-sell-approve-display').textContent = totalApprovedSellCount;
+
+
+            const sellList = document.getElementById('sell-item-list');
+            sellList.innerHTML = '';
+            const sellableItems = (appConfig.sellableItems || []).filter(item => item.isEnabled === true);
+            
+            if (sellableItems.length === 0) {
+                sellList.innerHTML = '<p class="text-gray-500 text-center">বিক্রি করার জন্য কোনো আইটেম এখন উপলব্ধ নেই।</p>';
+                return;
+            }
+            
+            sellableItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'card-bg p-4 rounded-xl space-y-3';
+                let sellButtonDisabled = userData && !userData.isActivated ? 'disabled' : '';
+                let sellButtonClass = userData && !userData.isActivated ? 'btn-disabled' : 'btn-gradient';
+                itemDiv.innerHTML = `<div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo"><h3 class="font-bold text-lg">${item.type}</h3></div><button class="btn-outline-accent px-3 py-1 text-xs rounded-md">Details</button></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">${item.reportText || ''}</span></div><div class="py-2"><p class="font-bold text-lg text-blue-600">৳${parseFloat(item.price).toFixed(2)}</p></div><div class="py-2"><p class="font-semibold text-sky-600">${item.availabilityText || 'N/A'}</p></div></div><button class="${sellButtonClass} w-full py-2 rounded-lg text-md font-bold" ${sellButtonDisabled}>SELL NOW</button>`;
+                
+                itemDiv.querySelector('.btn-outline-accent').onclick = () => showSellDetails(item.details);
+                itemDiv.querySelector(`.${sellButtonClass}`).onclick = () => {
+                    if (!userData.isActivated) {
+                        showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন 'SELL NOW' ব্যবহার করার জন্য।");
+                        checkActivation();
+                        return;
+                    }
+                    openSellModal(item.type, item.details);
+                };
+                sellList.appendChild(itemDiv);
+            });
+            lucide.createIcons();
+        }
+
+        window.showSellDetails = function(details) { showAlert(`Details\n\n${details}`); }
+
+        window.openSellModal = function(type, itemDetails) {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন 'SELL NOW' ব্যবহার করার জন্য।");
+                checkActivation(); 
+                return;
+            }
+            const modal = document.getElementById('sell-modal');
+            const itemConfig = (appConfig.sellableItems || []).find(item => item.type === type && item.details === itemDetails);
+            if (!itemConfig) return showAlert("Error: Item configuration not found.");
+            document.getElementById('sell-modal-title').textContent = `Sell ${itemConfig.type}`;
+            const fieldsContainer = document.getElementById('sell-modal-fields-container');
+            fieldsContainer.innerHTML = '';
+            itemConfig.fields.forEach(field => {
+                fieldsContainer.insertAdjacentHTML('beforeend', `<div><label class="block text-xs font-medium text-gray-600 mb-1">${field.name}</label><input type="${field.type || 'text'}" data-field-name="${field.name}" placeholder="${field.placeholder}" class="w-full p-3 rounded-lg input-field font-mono text-sm"></div>`);
+            });
+            document.getElementById('sell-modal-submit').onclick = () => handleSellRequest(itemConfig);
+            modal.classList.remove('hidden');
+        }
+        
+        async function handleSellRequest(itemConfig) {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন 'SELL NOW' ব্যবহার করার জন্য।");
+                checkActivation(); 
+                return;
+            }
+            const accountDetails = {};
+            let isValid = true;
+            document.querySelectorAll('#sell-modal-fields-container input').forEach(input => {
+                const fieldName = input.dataset.fieldName;
+                const value = input.value.trim();
+                if (!value) isValid = false;
+                accountDetails[fieldName] = value;
+            });
+            if (!isValid) return showAlert("Please fill in all fields.");
+            
+            document.getElementById('sell-modal').classList.add('hidden');
+            loader.style.display = 'flex';
+
+            try {
+                const existingSellQuery = query(
+                    collection(db, "sell_requests"),
+                    where("userId", "==", currentUserId),
+                    where("accountType", "==", itemConfig.type),
+                    where("status", "in", ["pending", "approved"])
+                );
+                const existingSellSnapshot = await getDocs(existingSellQuery);
+
+                if (!existingSellSnapshot.empty) {
+                    showAlert(`আপনি ইতিমধ্যেই এই "${itemConfig.type}" অ্যাকাউন্ট বিক্রির জন্য জমা দিয়েছেন অথবা এটি অনুমোদিত হয়েছে।`);
+                    loader.style.display = 'none';
+                    return;
+                }
+
+                await addDoc(collection(db, "sell_requests"), { userId: currentUserId, userName: userData.name, accountType: itemConfig.type, accountDetails, askingPrice: itemConfig.price, status: "pending", requestedAt: serverTimestamp() });
+                showAlert("Your sell request has been submitted successfully.");
+                loadSellHistory();
+            } catch (error) { showAlert("There was a problem submitting your request."); } 
+            finally { loader.style.display = 'none'; }
+        }
+
+        async function loadSellHistory() {
+            const historyList = document.getElementById('sell-history-list');
+            historyList.innerHTML = '<p class="text-gray-500 text-center">Loading history...</p>';
+            try {
+                const q = query(collection(db, "sell_requests"), where("userId", "==", currentUserId), orderBy("requestedAt", "desc"));
+                const snapshot = await getDocs(q);
+                if (snapshot.empty) return historyList.innerHTML = '<p class="text-gray-500 text-center">You have not submitted any accounts for sale.</p>';
+                historyList.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    const statusColor = item.status === 'approved' ? 'text-green-500' : item.status === 'rejected' ? 'text-red-500' : 'text-yellow-500';
+                    const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString() : 'N/A';
+                    let detailsHtml = typeof item.accountDetails === 'object' ? Object.entries(item.accountDetails).map(([key, value]) => value ? `<div class="grid grid-cols-3 gap-2"><strong class="col-span-1 text-gray-500 text-right">${key}:</strong><span class="col-span-2 text-gray-800 font-mono break-all">${value}</span></div>` : '').join('') : `<p class="text-xs text-gray-500 whitespace-pre-wrap font-mono">${item.accountDetails}</p>`;
+                    historyList.innerHTML += `<div class="card-bg p-3 rounded-lg"><div class="flex items-center justify-between"><div><p class="font-semibold">${item.accountType}</p><p class="text-xs text-gray-500">${date} - <span class="font-bold">৳${parseFloat(item.askingPrice).toFixed(2)}</span></p></div><p class="font-bold ${statusColor} capitalize">${item.status}</p></div><div class="mt-2 pt-2 border-t border-gray-200 space-y-1 text-sm">${detailsHtml}</div></div>`;
+                });
+            } catch (error) { historyList.innerHTML = '<p class="text-red-500 text-center">Could not load sell history.</p>'; }
+        }
+        
+        async function loadUpdates() {
+            const updatesContainer = document.getElementById('updates-content');
+            const reviewFab = document.getElementById('add-review-fab');
+            updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
+
+            reviewFab.href = appConfig.addReviewLink || '#';
+
+            try {
+                const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
+                } else {
+                    let allUpdatesHtml = '';
+                    for (const docSnap of snapshot.docs) {
+                        const updateData = docSnap.data();
+                        const updateId = docSnap.id;
+                        const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
+                        const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
+
+                        const isLiked = userVote === 'liked';
+                        const isDisliked = userVote === 'disliked';
+                        let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
+                        
+                        allUpdatesHtml += `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold">${updateData.title}</h3><p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isLiked ? 'text-blue-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isDisliked ? 'text-red-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
+                    }
+                    updatesContainer.innerHTML = allUpdatesHtml;
+                }
+                
+                lucide.createIcons();
+                await loadUserReviews();
+            } catch (e) {
+                console.error("Error loading updates:", e);
+                updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
+            }
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>';
+                } else {
+                    stars += '<i data-lucide="star" class="w-4 h-4 text-gray-300"></i>';
+                }
+            }
+            return stars;
+        }
+
+        async function loadUserReviews() {
+            const reviewsList = document.getElementById('user-reviews-list');
+            reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
+            try {
+                const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(5));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
+                    return;
+                }
+
+                reviewsList.innerHTML = snapshot.docs.map(doc => {
+                    const review = doc.data();
+                    const starsHtml = renderStars(review.rating || 5);
+                    return `
+                    <div class="card-bg p-4 rounded-xl">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-lg">
+                                ${review.userName.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-semibold">${review.userName}</h4>
+                                    <div class="flex items-center">${starsHtml}</div>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">${review.reviewText}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading reviews:", error);
+                reviewsList.innerHTML = '<p class="text-center text-red-500">Could not load reviews.</p>';
+            }
+        }
+
+        window.handleVote = async function(voteType, updateId) {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ভোট দেওয়ার জন্য।");
+                checkActivation(); 
+                return;
+            }
+            const likeBtn = document.getElementById(`like-btn-${updateId}`);
+            const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            const updateRef = doc(db, "updates", updateId);
+            const userInteractionRef = doc(db, "updates", updateId, "userInteractions", currentUserId);
+            
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userInteractionDoc = await transaction.get(userInteractionRef);
+                    if (userInteractionDoc.exists()) throw new Error("You have already cast your vote.");
+                    
+                    const fieldToUpdate = voteType === 'like' ? 'likes' : 'dislikes';
+                    transaction.update(updateRef, { [fieldToUpdate]: increment(1) });
+                    transaction.set(userInteractionRef, { vote: voteType, votedAt: serverTimestamp() });
+                });
+                const countElement = document.getElementById(`${voteType}-count-${updateId}`);
+                countElement.textContent = parseInt(countElement.textContent) + 1;
+                if(voteType === 'like') likeBtn.classList.add('text-blue-600');
+                if(voteType === 'dislike') dislikeBtn.classList.add('text-red-600');
+            } catch (e) {
+                showAlert(e.message || "Failed to submit your vote.");
+                likeBtn.disabled = false;
+                dislikeBtn.disabled = false;
+            }
+        }
+
         function showAlert(message) {
             document.getElementById('alert-message').innerText = message;
             document.getElementById('custom-alert').classList.remove('hidden');
             document.getElementById('alert-ok-btn').onclick = () => document.getElementById('custom-alert').classList.add('hidden');
         }
+        
         window.copyToClipboard = function(text, element) {
             if (!text) return;
             navigator.clipboard.writeText(text.trim()).then(() => {
@@ -680,288 +1367,483 @@
                 } else showAlert('কপি করা হয়েছে!');
             });
         }
-        function setupBanner() { /* ... (banner logic unchanged) ... */ }
-        
-        // --- ACTIVATION & PROFILE ---
-        function checkActivation() { /* ... (unchanged) ... */ return true; }
-        async function handleActivation() { /* ... (unchanged) ... */ }
-        async function loadProfilePage() { /* ... (unchanged) ... */ }
-        async function handleLinkAccountDetails() { /* ... (unchanged) ... */ }
-        
-        // --- DEPOSIT, WITHDRAW, SEND, FEATURES ---
-        async function handleDepositRequest() { /* ... (unchanged) ... */ }
-        async function loadPaymentHistory() { /* ... (unchanged) ... */ }
-        window.calculateWithdrawFee = function() { /* ... (unchanged) ... */ }
-        async function loadWithdrawPage() { /* ... (unchanged) ... */ }
-        async function handleWithdrawRequest() { /* ... (unchanged) ... */ }
-        async function loadWithdrawHistory() { /* ... (unchanged) ... */ }
-        async function loadFeaturesPage() { /* ... (unchanged) ... */ }
-        async function loadTransferHistory() { /* ... (unchanged) ... */ }
-        function handleReceive() { /* ... (unchanged) ... */ }
-        async function loadSendPage() { /* ... (unchanged) ... */ }
-        window.calculateSendFee = function() { /* ... (unchanged) ... */ }
-        async function handleSendRequest() { /* ... (unchanged) ... */ }
-        
-        // --- SELL PAGE LOGIC ---
-        async function loadSellItems() { /* ... (unchanged) ... */ }
-        window.showSellDetails = function(details) { /* ... (unchanged) ... */ }
-        window.openSellModal = function(type, itemDetails) { /* ... (unchanged) ... */ }
-        async function handleSellRequest(itemConfig) { /* ... (unchanged) ... */ }
-        async function loadSellHistory() { /* ... (unchanged) ... */ }
-        
-        // --- UPDATES & REVIEWS PAGE LOGIC ---
-        async function loadUpdates() { /* ... (unchanged) ... */ }
-        function renderStars(rating) { /* ... (unchanged) ... */ }
-        async function loadUserReviews() { /* ... (unchanged) ... */ }
-        window.handleVote = async function(voteType, updateId) { /* ... (unchanged) ... */ }
 
+        function setupBanner() {
+            const slides = document.querySelectorAll('.slide');
+            const slideContainer = document.getElementById('slides');
+            const dotsContainer = document.getElementById('dots');
+            if (slides.length <= 1) return;
+            let index = 0;
+            dotsContainer.innerHTML = Array.from(slides).map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
+            const dots = dotsContainer.querySelectorAll('.dot');
+            function showSlide(i) {
+                index = i;
+                slideContainer.style.transform = `translateX(${-i * 100}%)`;
+                dots.forEach(d => d.classList.remove('active'));
+                dots[i].classList.add('active');
+            }
+            dotsContainer.addEventListener('click', e => { if(e.target.matches('.dot')) showSlide(parseInt(e.target.dataset.index)); });
+            setInterval(() => showSlide((index + 1) % slides.length), 5000);
+        }
+        
+        async function loadFeaturesPage() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন এই ফিচারগুলো ব্যবহার করার জন্য।");
+                checkActivation();
+                return;
+            }
+            loader.style.display = 'flex';
+            try {
+                const depositQuery = query(collection(db, "deposits"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                const depositSnapshot = await getDocs(depositQuery);
+                const totalDeposit = depositSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-deposit-display').textContent = `৳${totalDeposit.toFixed(2)}`;
 
-        // === NEW TASK SYSTEM LOGIC ===
+                const incomeQuery = query(collection(db, "sell_requests"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                const incomeSnapshot = await getDocs(incomeQuery);
+                const totalIncome = incomeSnapshot.docs.reduce((sum, doc) => sum + doc.data().askingPrice, 0);
+                document.getElementById('total-income-display').textContent = `৳${totalIncome.toFixed(2)}`;
 
-        const taskCategoryDetails = {
-            socal_video: { name: "SOCAL TASKS VIDEO", icon: 'youtube', color: 'text-red-500' },
-            media: { name: "MEDIA TASKS", icon: 'thumbs-up', color: 'text-blue-500' },
-            app: { name: "APP TASKS", icon: 'smartphone', color: 'text-green-500' },
-            website: { name: "WEBSITE TASKS", icon: 'globe', color: 'text-purple-500' },
-            ads: { name: "ADS TASKS", icon: 'gem', color: 'text-yellow-500' },
-        };
+                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", currentUserId));
+                const receivedSnapshot = await getDocs(receivedQuery);
+                const totalReceive = receivedSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-receive-display').textContent = `৳${totalReceive.toFixed(2)}`;
 
-        async function fetchAllTasks() {
-            if (allTasks.length > 0) return; // Use cache if available
-            const tasksQ = query(collection(db, "tasks"), where("isActive", "==", true));
-            const tasksSnap = await getDocs(tasksQ);
-            allTasks = tasksSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const withdrawQuery = query(collection(db, "withdrawals"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                const withdrawSnapshot = await getDocs(withdrawQuery);
+                const totalWithdraw = withdrawSnapshot.docs.reduce((sum, doc) => sum + doc.data().amount, 0);
+                document.getElementById('total-withdraw-display').textContent = `৳${totalWithdraw.toFixed(2)}`;
+
+                await loadTransferHistory();
+            } catch (error) { console.error("Error loading features page data:", error); showAlert("Could not load page data."); } 
+            finally { loader.style.display = 'none'; }
+        }
+
+        async function loadTransferHistory() {
+            const historyList = document.getElementById('transfer-history-list');
+            historyList.innerHTML = '<p class="text-gray-500 text-center">Loading history...</p>';
+            const sentQuery = query(collection(db, "transfers"), where("fromId", "==", currentUserId), orderBy("timestamp", "desc"));
+            const receivedQuery = query(collection(db, "transfers"), where("toId", "==", currentUserId), orderBy("timestamp", "desc"));
+            const [sentSnapshot, receivedSnapshot] = await Promise.all([getDocs(sentQuery), getDocs(receivedQuery)]);
+            const transactions = [];
+            sentSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+            receivedSnapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
+            transactions.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+            if (transactions.length === 0) {
+                historyList.innerHTML = '<p class="text-gray-500 text-center">No transfer history found.</p>';
+                return;
+            }
+            historyList.innerHTML = transactions.map(item => {
+                const isSent = item.fromId === currentUserId;
+                const date = item.timestamp.toDate().toLocaleString('en-GB');
+                const sign = isSent ? '-' : '+';
+                const color = isSent ? 'text-red-500' : 'text-green-500';
+                const actionText = isSent ? `Sent to ${item.toName}` : `Received from ${item.fromName}`;
+                return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div><p class="font-semibold">${actionText}</p><p class="text-xs text-gray-500">${date}</p></div><p class="font-bold text-lg ${color}">${sign}৳${item.amount.toFixed(2)}</p></div>`;
+            }).join('');
+        }
+
+        function handleReceive() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ব্যালেন্স রিসিভ করার জন্য।");
+                checkActivation(); 
+                return;
+            }
+            const message = `আপনার রিসিভ আইডি:\n\n${currentUserId}\n\nএই আইডি ব্যবহার করে অন্য ব্যবহারকারীর থেকে ব্যালেন্স রিসিভ করতে পারবেন।`;
+            copyToClipboard(currentUserId, null);
+            showAlert(message);
+        }
+
+        async function loadSendPage() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ব্যালেন্স পাঠানোর জন্য।");
+                checkActivation();
+                return;
+            }
+            document.getElementById('send-balance-display').textContent = `৳${(userData.balance || 0).toFixed(2)}`;
+            document.getElementById('recipient-id').value = '';
+            document.getElementById('send-amount').value = '';
+            calculateSendFee();
+        }
+
+        window.calculateSendFee = function() {
+            const amountInput = document.getElementById('send-amount');
+            const displayArea = document.getElementById('send-fee-calculation-display');
+            const amountToSend = parseFloat(amountInput.value);
+            
+            const feePercent = 5; // 5% fee for sending
+            const feeRate = feePercent / 100;
+
+            if (isNaN(amountToSend) || amountToSend <= 0) {
+                displayArea.innerHTML = '';
+                return;
+            }
+
+            const fee = amountToSend * feeRate;
+            const totalDeduction = amountToSend + fee;
+            
+            if (totalDeduction > userData.balance) {
+                displayArea.innerHTML = `<p class="text-red-500">Total with fee (৳${totalDeduction.toFixed(2)}) exceeds your balance.</p>`;
+            } else {
+                displayArea.innerHTML = `<p>Transfer Fee (${feePercent}%): <span class="font-bold text-red-500">৳${fee.toFixed(2)}</span></p>
+                                        <p>Total to be Deducted: <span class="font-bold">৳${totalDeduction.toFixed(2)}</span></p>`;
+            }
+        }
+
+        async function handleSendRequest() {
+            if (!userData.isActivated) {
+                showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ব্যালেন্স পাঠানোর জন্য।");
+                checkActivation(); 
+                return;
+            }
+            const recipientId = document.getElementById('recipient-id').value.trim();
+            const amount = parseFloat(document.getElementById('send-amount').value);
+
+            if (!recipientId) return showAlert("অনুগ্রহ করে প্রাপকের User ID দিন।");
+            if (recipientId === currentUserId) return showAlert("আপনি নিজের একাউন্টে ব্যালেন্স পাঠাতে পারবেন না।");
+            if (isNaN(amount) || amount <= 0) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
+            
+            const sendFeeRate = 0.05; // 5% fee
+            const feeAmount = amount * sendFeeRate;
+            const totalDeductionFromSender = amount + feeAmount; 
+
+            if (totalDeductionFromSender > userData.balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+
+            if (!confirm(`আপনি ৳${amount.toFixed(2)} টাকা পাঠাতে চাচ্ছেন।\nচার্জ (৫%): ৳${feeAmount.toFixed(2)}\nআপনার অ্যাকাউন্ট থেকে মোট কাটা হবে: ৳${totalDeductionFromSender.toFixed(2)}\nআপনি কি নিশ্চিত?`)) return;
+
+            loader.style.display = 'flex';
+            const senderRef = doc(db, "users", currentUserId);
+            const recipientRef = doc(db, "users", recipientId);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const senderDoc = await transaction.get(senderRef);
+                    const recipientDoc = await transaction.get(recipientRef);
+                    
+                    if (!senderDoc.exists() || senderDoc.data().balance < totalDeductionFromSender) throw "আপনার পর্যাপ্ত ব্যালেন্স নেই।";
+                    if (!recipientDoc.exists()) throw "প্রাপক আইডি (Recipient ID) খুঁজে পাওয়া যায়নি।";
+                    
+                    transaction.update(senderRef, { balance: increment(-totalDeductionFromSender) });
+                    transaction.update(recipientRef, { balance: increment(amount) }); 
+
+                    const transferLogRef = doc(collection(db, "transfers"));
+                    transaction.set(transferLogRef, {
+                        fromId: currentUserId, fromName: userData.name, toId: recipientId,
+                        toName: recipientDoc.data().name, amount: amount, fee: feeAmount, timestamp: serverTimestamp()
+                    });
+                });
+                
+                await fetchUserData();
+                updateUI();
+                showAlert(`সফলভাবে ৳${amount.toFixed(2)} পাঠানো হয়েছে।\nচার্জ বাবদ ৳${feeAmount.toFixed(2)} কাটা হয়েছে।`);
+                loadSendPage(); 
+                loadFeaturesPage();
+            } catch (error) {
+                console.error("Transfer failed: ", error);
+                showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // ===============================================
+        // =========== NEW TASK SYSTEM FUNCTIONS =========
+        // ===============================================
+
+        window.goBackToCategories = function() {
+            navigateTo('tasks-page');
         }
 
         async function loadTaskCategories() {
             if (!checkActivation()) return;
-            loader.style.display = 'flex';
-            const container = document.getElementById('task-categories-container');
-            container.innerHTML = '';
-            document.getElementById('task-list-container').classList.add('hidden');
-            container.classList.remove('hidden');
-            
-            await fetchAllTasks();
 
-            const categories = allTasks.reduce((acc, task) => {
-                const category = task.category || 'media'; // Default category
-                if (!acc[category]) acc[category] = 0;
-                acc[category]++;
-                return acc;
-            }, {});
+            const categoryList = document.getElementById("task-category-list");
+            categoryList.innerHTML = '<p class="text-gray-400 text-center">Loading categories...</p>';
+            try {
+                // Update total approved tasks count
+                const allApprovedTasksQuery = query(collection(db, "taskSubmissions"), where("userId", "==", currentUserId), where("status", "==", "approved"));
+                const allApprovedTasksSnapshot = await getCountFromServer(allApprovedTasksQuery);
+                document.getElementById('total-tasks-approved-display').textContent = allApprovedTasksSnapshot.data().count;
 
-            if (Object.keys(categories).length === 0) {
-                container.innerHTML = '<p class="text-center text-gray-500">No tasks available right now.</p>';
-                loader.style.display = 'none';
-                return;
-            }
+                const tasksQ = query(collection(db, "tasks"), where("isActive", "==", true));
+                const tasksSnap = await getDocs(tasksQ);
+                
+                const categories = {
+                    'SOCIAL TASKS VIDEO': { icon: 'video', count: 0 },
+                    'MEDIA TASKS': { icon: 'share-2', count: 0 },
+                    'APP TASKS': { icon: 'smartphone', count: 0 },
+                    'WEBSITE TASKS': { icon: 'globe', count: 0 },
+                    'ADS TASKS': { icon: 'zap', count: 0 }
+                };
 
-            for (const categoryId in taskCategoryDetails) {
-                if (categories[categoryId] > 0) {
-                    const details = taskCategoryDetails[categoryId];
-                    const card = document.createElement('div');
-                    card.className = 'premium-card p-4 flex items-center justify-between';
-                    card.innerHTML = `
-                        <div class="flex items-center gap-4">
-                            <div class="p-3 bg-gray-100 rounded-full">
-                                <i data-lucide="${details.icon}" class="w-6 h-6 ${details.color}"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg text-gray-800">${details.name}</h4>
-                                <p class="text-sm text-gray-500">Complete tasks and earn</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                             <span class="text-lg font-bold ${details.color}">${categories[categoryId]}</span>
-                             <p class="text-xs text-gray-400">Tasks</p>
-                        </div>
-                    `;
-                    card.onclick = () => showTasksForCategory(categoryId);
-                    container.appendChild(card);
-                }
-            }
-            lucide.createIcons();
-            loader.style.display = 'none';
-        }
-
-        async function showTasksForCategory(categoryId) {
-            const details = taskCategoryDetails[categoryId];
-            document.getElementById('task-categories-container').classList.add('hidden');
-            document.getElementById('task-list-container').classList.remove('hidden');
-            document.getElementById('task-list-title').textContent = details.name;
-            const contentDiv = document.getElementById('task-list-content');
-            contentDiv.innerHTML = '<p class="text-center text-gray-500">Loading tasks...</p>';
-
-            const tasks = allTasks.filter(t => t.category === categoryId);
-            const submissionsQ = query(collection(db, "taskSubmissions"), where("userId", "==", currentUserId), where("category", "==", categoryId));
-            const cooldownsQ = query(collection(db, "userTaskCooldowns"), where("userId", "==", currentUserId));
-            const [submissionsSnap, cooldownsSnap] = await Promise.all([getDocs(submissionsQ), getDocs(cooldownsQ)]);
-            
-            const userSubmissions = {};
-            submissionsSnap.forEach(doc => userSubmissions[doc.data().taskId] = doc.data());
-            const userCooldowns = {};
-            cooldownsSnap.forEach(doc => userCooldowns[doc.data().taskId] = doc.data());
-
-            contentDiv.innerHTML = '';
-            tasks.forEach(task => {
-                const taskDiv = document.createElement('div');
-                taskDiv.className = 'card-bg p-4 rounded-xl space-y-3';
-                const submission = userSubmissions[task.id];
-                const cooldown = userCooldowns[task.id];
-                let contentHTML = '';
-
-                // Header
-                contentHTML += `<div class="flex items-center justify-between"><h3 class="text-lg font-bold">${task.title}</h3><p class="font-semibold text-green-500">৳${task.reward || 0}</p></div><p class="text-sm text-gray-500">${task.description || ''}</p>`;
-
-                if (submission) {
-                    const statusColor = submission.status === 'approved' ? 'bg-green-100 text-green-700' : submission.status === 'rejected' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700';
-                    contentHTML += `<div class="text-center p-2 rounded-lg ${statusColor} font-bold capitalize mt-2">${submission.status}</div>`;
-                } else if (cooldown && cooldown.cooldownUntil.toDate() > new Date()) {
-                     const remaining = Math.ceil((cooldown.cooldownUntil.toDate() - new Date()) / 1000);
-                     contentHTML += `<div class="text-center p-2 rounded-lg bg-orange-100 text-orange-600 font-bold mt-2">Try again in: <span id="timer-${task.id}">${Math.floor(remaining/60)}:${(remaining%60).toString().padStart(2,'0')}</span></div>`;
-                } else {
-                    // Task-specific submission UI
-                    switch(task.category) {
-                        case 'socal_video':
-                            contentHTML += `<div class="space-y-2 pt-2"><input type="text" id="code-${task.id}" placeholder="Enter video code" class="w-full p-2 input-field"><button class="w-full p-2 btn-gradient" onclick="submitSocalVideoTask('${task.id}', '${task.code}', ${task.reward})">Submit</button></div>`;
-                            break;
-                        case 'media':
-                            contentHTML += `<div class="space-y-2 pt-2"><input type="text" id="username-${task.id}" placeholder="Enter your username" class="w-full p-2 input-field"><a href="${task.link}" target="_blank" class="block w-full text-center p-2 btn-outline-accent">Go to Link</a><button class="w-full p-2 btn-gradient" onclick="submitMediaTask('${task.id}')">Submit for Review</button></div>`;
-                            break;
-                        case 'app':
-                             contentHTML += `<div class="space-y-2 pt-2"><input type="email" id="email-${task.id}" placeholder="Your Email" class="w-full p-2 input-field"><input type="text" id="password-${task.id}" placeholder="Your Password" class="w-full p-2 input-field"><input type="tel" id="whatsapp-${task.id}" placeholder="Your WhatsApp Number" class="w-full p-2 input-field"><button class="w-full p-2 btn-gradient" onclick="submitAppTask('${task.id}')">Submit for Review</button></div>`;
-                            break;
-                        case 'website':
-                            contentHTML += `<div class="space-y-2 pt-2"><div id="website-task-area-${task.id}"><button class="w-full p-2 btn-outline-accent" onclick="startWebsiteTask('${task.id}', '${task.link}')">Visit Website (1 min)</button></div></div>`;
-                            break;
-                        case 'ads':
-                             contentHTML += `<div class="space-y-2 pt-2"><input type="text" id="key-${task.id}" placeholder="Enter Secret Key" class="w-full p-2 input-field"><button class="w-full p-2 btn-gradient" onclick="submitAdsTask('${task.id}', ${task.reward})">Submit Key</button></div>`;
-                            break;
+                tasksSnap.forEach(doc => {
+                    const task = doc.data();
+                    if (categories[task.category]) {
+                        categories[task.category].count++;
                     }
-                }
-                taskDiv.innerHTML = contentHTML;
-                contentDiv.appendChild(taskDiv);
-                if (cooldown && cooldown.cooldownUntil.toDate() > new Date()) { // Start timer if on cooldown
-                    let remaining = Math.ceil((cooldown.cooldownUntil.toDate() - new Date()) / 1000);
-                    const timerEl = document.getElementById(`timer-${task.id}`);
-                    const interval = setInterval(() => {
-                        remaining--;
-                        if (remaining <= 0) { clearInterval(interval); showTasksForCategory(categoryId); } 
-                        else { timerEl.textContent = `${Math.floor(remaining/60)}:${(remaining%60).toString().padStart(2,'0')}`; }
-                    }, 1000);
-                }
-            });
-            lucide.createIcons();
-        }
-        window.showTasksForCategory = showTasksForCategory;
-
-        // --- Task Submission Handlers ---
-        window.submitSocalVideoTask = async function(taskId, correctCode, reward) {
-            const inputCode = document.getElementById(`code-${taskId}`).value.trim();
-            if (!inputCode) return showAlert("Please enter the code.");
-
-            if (inputCode.toUpperCase() !== correctCode.toUpperCase()) {
-                showAlert("Incorrect code. Please try again in 10 minutes.");
-                const cooldownRef = doc(db, "userTaskCooldowns", `${currentUserId}_${taskId}`);
-                const cooldownUntil = Timestamp.fromMillis(Date.now() + 10 * 60 * 1000);
-                await setDoc(cooldownRef, { userId: currentUserId, taskId, cooldownUntil });
-                showTasksForCategory('socal_video');
-                return;
-            }
-
-            loader.style.display = 'flex';
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const userRef = doc(db, "users", currentUserId);
-                    const submissionRef = doc(collection(db, "taskSubmissions"));
-                    transaction.update(userRef, { balance: increment(reward) });
-                    transaction.set(submissionRef, { userId: currentUserId, taskId, category: 'socal_video', reward, status: 'approved', submittedAt: serverTimestamp() });
                 });
-                await fetchUserData(); updateUI();
-                showAlert(`Congratulations! ৳${reward.toFixed(2)} has been added to your balance.`);
-                showTasksForCategory('socal_video');
-            } catch (e) { showAlert("An error occurred. Please try again."); console.error(e); } 
-            finally { loader.style.display = 'none'; }
-        }
 
-        async function createManualSubmission(taskId, category, submissionData) {
-            loader.style.display = 'flex';
+                categoryList.innerHTML = Object.entries(categories).map(([name, data]) => `
+                    <button onclick="navigateToCategory('${name}')" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500">
+                        <div class="flex items-center gap-4">
+                            <i data-lucide="${data.icon}" class="w-8 h-8 text-blue-500"></i>
+                            <div>
+                                <h3 class="font-bold text-lg">${name}</h3>
+                                <p class="text-xs text-gray-500">Available Tasks: ${data.count}</p>
+                            </div>
+                        </div>
+                        <span class="bg-blue-100 text-blue-700 text-lg font-bold px-4 py-2 rounded-full">${data.count}</span>
+                    </button>
+                `).join('');
+
+                if (tasksSnap.empty) {
+                    categoryList.innerHTML = '<p class="text-gray-400 text-center">New tasks coming soon.</p>';
+                }
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Error loading task categories:", error);
+                categoryList.innerHTML = '<p class="text-red-400 text-center">Failed to load categories.</p>';
+            }
+        }
+        
+        window.navigateToCategory = function(category) {
+            currentCategory = category;
+            navigateTo('task-list-page');
+        }
+        
+        async function loadTasksByCategory() {
+            if (!checkActivation()) return;
+            document.getElementById('task-list-title').textContent = currentCategory;
+            const taskListContainer = document.getElementById("task-list-container");
+            taskListContainer.innerHTML = '<p class="text-gray-400 text-center">Loading tasks...</p>';
+
             try {
-                await addDoc(collection(db, "taskSubmissions"), { userId: currentUserId, taskId, category, submissionData, status: 'pending', submittedAt: serverTimestamp() });
-                showAlert("Task submitted for review. Thank you!");
-                showTasksForCategory(category);
-            } catch (e) { showAlert("Submission failed. Please try again."); } 
-            finally { loader.style.display = 'none'; }
+                const subQ = query(collection(db, "taskSubmissions"), where("userId", "==", currentUserId), where("category", "==", currentCategory));
+                const tasksQ = query(collection(db, "tasks"), where("isActive", "==", true), where("category", "==", currentCategory), orderBy("createdAt", "desc"));
+                const [subSnap, tasksSnap] = await Promise.all([getDocs(subQ), getDocs(tasksQ)]);
+                
+                const userSubmissions = {};
+                subSnap.forEach(doc => userSubmissions[doc.data().taskId] = doc.data());
+
+                if (tasksSnap.empty) {
+                    taskListContainer.innerHTML = '<p class="text-gray-400 text-center">No tasks available in this category.</p>';
+                    return;
+                }
+
+                taskListContainer.innerHTML = '';
+                tasksSnap.forEach(docSnap => {
+                    const task = { id: docSnap.id, ...docSnap.data() };
+                    const submission = userSubmissions[task.id];
+                    const taskDiv = document.createElement("div");
+                    taskDiv.className = "card-bg p-4 rounded-xl space-y-3";
+                    
+                    let contentHTML = '';
+                    if (submission && submission.status !== 'rejected') { // Don't show rejected tasks to retry
+                        const statusColor = submission.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700';
+                        contentHTML = `<div class="text-center p-2 rounded-lg ${statusColor} flex items-center justify-center gap-2 mt-3"><i data-lucide="${submission.status === 'approved' ? 'check-circle' : 'loader'}" class="w-5 h-5"></i><p class="font-bold capitalize">${submission.status}</p></div>`;
+                    } else {
+                       contentHTML = buildTaskInteractiveArea(task);
+                    }
+                    
+                    taskDiv.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold">${task.title}</h3>
+                            <p class="text-sm text-gray-400">Reward: <span class="font-semibold text-[#0d6efd]">৳${task.reward || 0}</span></p>
+                        </div>
+                        <p class="text-sm text-gray-600 whitespace-pre-wrap pt-2 border-t">${task.description || ''}</p>
+                        ${contentHTML}
+                    `;
+                    taskListContainer.appendChild(taskDiv);
+                });
+                lucide.createIcons();
+            } catch (error) {
+                console.error(`Error loading tasks for ${currentCategory}:`, error);
+                taskListContainer.innerHTML = '<p class="text-red-400 text-center">Failed to load tasks.</p>';
+            }
         }
 
-        window.submitMediaTask = async function(taskId) {
-            const username = document.getElementById(`username-${taskId}`).value.trim();
-            if (!username) return showAlert("Please enter your username.");
-            createManualSubmission(taskId, 'media', { username });
+        function buildTaskInteractiveArea(task) {
+            const taskId = `'${task.id}'`;
+            const taskReward = task.reward || 0;
+            const taskStr = `'${JSON.stringify(task).replace(/'/g, "\\'")}'`;
+
+            switch(task.category) {
+                case 'SOCIAL TASKS VIDEO':
+                    const cooldownEnd = localStorage.getItem(`cooldown_${task.id}`);
+                    if (cooldownEnd && Date.now() < parseInt(cooldownEnd)) {
+                        return `<div id="task-timer-area-${task.id}" class="text-center text-red-500 font-semibold p-2"></div><script>startCooldownTimer(${taskId}, ${cooldownEnd})<\/script>`;
+                    }
+                    return `<div class="space-y-2 pt-2"><input type="text" id="code-${task.id}" placeholder="Enter video code here" class="w-full p-2 rounded-lg input-field"/><button class="w-full p-2 rounded-lg btn-gradient" onclick="submitVideoTask(${taskId}, '${task.code}', ${taskReward})">Submit Code</button></div>`;
+                
+                case 'WEBSITE TASKS':
+                     return `<div id="task-interactive-area-${task.id}" class="mt-3"><div id="task-timer-area-${task.id}" class="hidden text-center text-gray-600 font-semibold p-2"></div><div id="task-input-area-${task.id}" class="hidden space-y-2"><input type="text" id="comment-${task.id}" placeholder="আপনার মন্তব্য লিখুন" class="w-full p-2 rounded-lg input-field"/><button class="w-full p-2 rounded-lg btn-outline-accent" onclick="submitWebsiteTask(${taskId}, ${taskReward})">Submit Comment</button></div><button id="start-btn-${task.id}" class="w-full p-2 rounded-lg btn-gradient" onclick="startTaskTimer(${taskId}, ${task.duration || 60}, '${task.videoUrl}')">Visit Website</button></div>`;
+
+                default: // For MEDIA, APP, ADS tasks
+                    return `<button class="w-full p-2 rounded-lg btn-gradient mt-2" onclick="openManualTaskModal(${taskStr})">Start Task</button>`;
+            }
         }
         
-        window.submitAppTask = async function(taskId) {
-            const email = document.getElementById(`email-${taskId}`).value.trim();
-            const password = document.getElementById(`password-${taskId}`).value.trim();
-            const whatsapp = document.getElementById(`whatsapp-${taskId}`).value.trim();
-            if (!email || !password || !whatsapp) return showAlert("Please fill all fields.");
-            createManualSubmission(taskId, 'app', { email, password, whatsapp });
-        }
-        
-        window.startWebsiteTask = function(taskId, link) {
-            window.open(link, '_blank');
-            const area = document.getElementById(`website-task-area-${taskId}`);
-            area.innerHTML = `<div id="website-timer-${taskId}" class="text-center p-2 font-bold text-blue-600"></div>`;
-            let timeLeft = 60;
-            const timerEl = document.getElementById(`website-timer-${taskId}`);
+        window.startCooldownTimer = function(taskId, cooldownEnd) {
+            const timerArea = document.getElementById(`task-timer-area-${taskId}`);
+            if (!timerArea) return;
             const interval = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = `Please wait: ${timeLeft}s`;
+                const timeLeft = Math.round((cooldownEnd - Date.now()) / 1000);
                 if (timeLeft <= 0) {
                     clearInterval(interval);
-                    area.innerHTML = `<textarea id="comment-${taskId}" class="w-full p-2 input-field" placeholder="Write your comment here"></textarea><button class="w-full p-2 btn-gradient mt-2" onclick="submitWebsiteTask('${taskId}')">Submit Comment</button>`;
+                    localStorage.removeItem(`cooldown_${taskId}`);
+                    loadTasksByCategory(); // Refresh list
+                } else {
+                    timerArea.innerHTML = `ভুল কোড। আবার চেষ্টা করুন: ${timeLeft} সেকেন্ড পর।`;
                 }
             }, 1000);
         }
 
-        window.submitWebsiteTask = async function(taskId) {
+        window.submitVideoTask = async function(taskId, correctCode, reward) {
+            if (!checkActivation()) return;
+            const inputCode = document.getElementById(`code-${taskId}`).value.trim();
+            if (!inputCode) return showAlert("❌ অনুগ্রহ করে কোড দিন।");
+
+            if (inputCode.toUpperCase() === correctCode.toUpperCase()) {
+                loader.style.display = 'flex';
+                try {
+                    const userRef = doc(db, "users", currentUserId);
+                    await runTransaction(db, async (transaction) => {
+                        const submissionRef = doc(collection(db, "taskSubmissions"));
+                        transaction.set(submissionRef, { userId: currentUserId, userName: userData.name, taskId: taskId, category: 'SOCIAL TASKS VIDEO', reward: parseFloat(reward), submissionData: { submittedCode: inputCode }, status: "approved", submittedAt: serverTimestamp() });
+                        transaction.update(userRef, { balance: increment(parseFloat(reward)) });
+                    });
+                    await fetchUserData();
+                    updateUI();
+                    showAlert(`✅ অভিনন্দন! ৳${reward.toFixed(2)} আপনার ব্যালেন্সে যোগ করা হয়েছে।`);
+                    loadTasksByCategory();
+                } catch (error) { console.error("Auto approval error:", error); showAlert("Submission failed."); } 
+                finally { loader.style.display = 'none'; }
+            } else {
+                showAlert("❌ কোডটি সঠিক নয়। অনুগ্রহ করে আবার চেষ্টা করুন।");
+                const cooldownDuration = 10 * 60 * 1000; // 10 minutes
+                localStorage.setItem(`cooldown_${taskId}`, Date.now() + cooldownDuration);
+                loadTasksByCategory();
+            }
+        }
+        
+        window.submitWebsiteTask = async function(taskId, reward) {
             const comment = document.getElementById(`comment-${taskId}`).value.trim();
-            if (!comment) return showAlert("Please write a comment.");
-            createManualSubmission(taskId, 'website', { comment });
+            if(!comment) return showAlert('অনুগ্রহ করে মন্তব্য লিখুন।');
+            const submissionData = { comment: comment };
+            await submitManualTask(taskId, 'WEBSITE TASKS', reward, submissionData);
+        }
+        
+        window.openManualTaskModal = function(task) {
+            if (!checkActivation()) return;
+            const modal = document.getElementById('manual-task-modal');
+            document.getElementById('manual-task-modal-title').textContent = task.title;
+            document.getElementById('manual-task-modal-description').textContent = task.description;
+            const fieldsContainer = document.getElementById('manual-task-modal-fields');
+            fieldsContainer.innerHTML = '';
+
+            let fields = [];
+            switch(task.category) {
+                case 'MEDIA TASKS': fields = [{name: 'Username', placeholder: 'আপনার ইউজারনেম দিন', id: 'username'}]; break;
+                case 'APP TASKS': fields = [{name: 'Email', placeholder: 'আপনার ইমেইল দিন', id: 'email'}, {name: 'Password', placeholder: 'পাসওয়ার্ড দিন', id: 'password'}, {name: 'WhatsApp Number', placeholder: 'হোয়াটসঅ্যাপ নম্বর দিন', id: 'whatsapp'}]; break;
+                case 'ADS TASKS': fields = [{name: 'KEY', placeholder: 'প্রাপ্ত KEY টি এখানে দিন', id: 'key'}]; break;
+            }
+
+            fields.forEach(field => {
+                fieldsContainer.insertAdjacentHTML('beforeend', `<div><label class="block text-xs font-medium text-gray-600 mb-1">${field.name}</label><input type="text" id="modal-field-${field.id}" placeholder="${field.placeholder}" class="w-full p-3 rounded-lg input-field font-mono text-sm"></div>`);
+            });
+
+            document.getElementById('manual-task-modal-submit').onclick = () => handleManualSubmission(task);
+            modal.classList.remove('hidden');
         }
 
-        window.submitAdsTask = async function(taskId, reward) {
-            const key = document.getElementById(`key-${taskId}`).value.trim();
-            if (!key) return showAlert("Please enter the key.");
-            loader.style.display = 'flex';
-            try {
+        async function handleManualSubmission(task) {
+            let submissionData = {};
+            let isValid = true;
+            switch(task.category) {
+                case 'MEDIA TASKS':
+                    submissionData.username = document.getElementById('modal-field-username').value.trim();
+                    if (!submissionData.username) isValid = false;
+                    break;
+                case 'APP TASKS':
+                    submissionData.email = document.getElementById('modal-field-email').value.trim();
+                    submissionData.password = document.getElementById('modal-field-password').value.trim();
+                    submissionData.whatsapp = document.getElementById('modal-field-whatsapp').value.trim();
+                    if (!submissionData.email || !submissionData.password || !submissionData.whatsapp) isValid = false;
+                    break;
+                case 'ADS TASKS':
+                    submissionData.key = document.getElementById('modal-field-key').value.trim();
+                    if (!submissionData.key) isValid = false;
+                    break;
+            }
+            if(!isValid) return showAlert('অনুগ্রহ করে সকল তথ্য পূরণ করুন।');
+
+            document.getElementById('manual-task-modal').classList.add('hidden');
+            
+            if(task.category === 'ADS TASKS') {
+                await submitAdsTask(task.id, task.reward, submissionData.key);
+            } else {
+                await submitManualTask(task.id, task.category, task.reward, submissionData);
+            }
+        }
+        
+        async function submitAdsTask(taskId, reward, key) {
+             loader.style.display = 'flex';
+             const keyRef = doc(db, "task_keys", key);
+             const userRef = doc(db, "users", currentUserId);
+             try {
                 await runTransaction(db, async (transaction) => {
-                    const taskRef = doc(db, "tasks", taskId);
-                    const taskDoc = await transaction.get(taskRef);
-                    if (!taskDoc.exists()) throw "Task not found.";
+                    const keyDoc = await transaction.get(keyRef);
+                    if (!keyDoc.exists() || keyDoc.data().isUsed) throw "এই KEY টি সঠিক নয় অথবা ব্যবহৃত হয়েছে।";
                     
-                    const taskData = taskDoc.data();
-                    const keys = taskData.keys || [];
-                    const keyIndex = keys.findIndex(k => k.key === key && k.status === 'available');
-
-                    if (keyIndex === -1) throw "This key is invalid or has already been used.";
-
-                    const userRef = doc(db, "users", currentUserId);
+                    transaction.update(keyRef, { isUsed: true, usedBy: currentUserId, usedAt: serverTimestamp() });
                     const submissionRef = doc(collection(db, "taskSubmissions"));
-
-                    keys[keyIndex].status = 'used';
-                    keys[keyIndex].usedBy = currentUserId;
-                    keys[keyIndex].usedAt = Timestamp.now();
-                    
-                    transaction.update(taskRef, { keys: keys });
-                    transaction.update(userRef, { balance: increment(reward) });
-                    transaction.set(submissionRef, { userId: currentUserId, taskId, category: 'ads', reward, status: 'approved', submittedAt: serverTimestamp(), submissionData: { usedKey: key } });
+                    transaction.set(submissionRef, { userId: currentUserId, userName: userData.name, taskId: taskId, category: 'ADS TASKS', reward: parseFloat(reward), submissionData: { submittedKey: key }, status: "approved", submittedAt: serverTimestamp() });
+                    transaction.update(userRef, { balance: increment(parseFloat(reward)) });
                 });
                 await fetchUserData(); updateUI();
-                showAlert(`Congratulations! ৳${reward.toFixed(2)} has been added for the correct key.`);
-                showTasksForCategory('ads');
-            } catch(e) { showAlert(typeof e === 'string' ? e : "An error occurred."); }
+                showAlert(`✅ কী সফলভাবে গৃহীত হয়েছে! ৳${reward.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে।`);
+                loadTasksByCategory();
+             } catch(error) {
+                showAlert(typeof error === 'string' ? error : "KEY সাবমিট করতে সমস্যা হয়েছে।");
+             } finally {
+                loader.style.display = 'none';
+             }
+        }
+        
+        async function submitManualTask(taskId, category, reward, submissionData) {
+            loader.style.display = 'flex';
+            try {
+                await addDoc(collection(db, "taskSubmissions"), { userId: currentUserId, userName: userData.name, taskId: taskId, category: category, reward: parseFloat(reward), submissionData, status: "pending", submittedAt: serverTimestamp() });
+                showAlert("✅ আপনার টাস্ক পর্যালোচনার জন্য জমা দেওয়া হয়েছে।");
+                loadTasksByCategory();
+            } catch (error) { console.error("Manual task submission error:", error); showAlert("Submission failed."); } 
             finally { loader.style.display = 'none'; }
+        }
+
+        window.startTaskTimer = function(taskId, duration, url) {
+            if (!checkActivation()) return;
+            if (url && url !== 'undefined') window.open(url, '_blank');
+            const startBtn = document.getElementById(`start-btn-${taskId}`);
+            const timerArea = document.getElementById(`task-timer-area-${taskId}`);
+            const inputArea = document.getElementById(`task-input-area-${taskId}`);
+            
+            startBtn.classList.add('hidden');
+            timerArea.classList.remove('hidden');
+            
+            let timeLeft = duration;
+            timerArea.innerHTML = `<div class="flex items-center justify-center gap-2"><i data-lucide="timer" class="w-5 h-5 animate-spin"></i><span>Please wait ${timeLeft} seconds...</span></div>`;
+            lucide.createIcons();
+            
+            const timerInt = setInterval(() => {
+                timeLeft--;
+                timerArea.querySelector('span').textContent = `Please wait ${timeLeft} seconds...`;
+                if (timeLeft <= 0) { 
+                    clearInterval(timerInt); 
+                    timerArea.classList.add('hidden');
+                    inputArea.classList.remove('hidden');
+                }
+            }, 1000);
         }
 
     </script>
