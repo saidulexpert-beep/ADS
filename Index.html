@@ -427,22 +427,10 @@
                 <div>
                     <h2 class="text-xl font-bold text-center">🎯 Complete Tasks & Earn</h2>
                     <p class="text-gray-400 text-center mb-4">কাজের বিভাগ নির্বাচন করুন</p>
-                    <div class="card-bg p-4 rounded-xl text-center mb-6">
-                        <p class="text-sm text-gray-500 mb-1">My Approved Tasks</p>
-                        <p id="total-tasks-approved-display" class="text-xl font-bold text-blue-500">0</p>
-                    </div>
                     <div id="task-category-list" class="space-y-4">
                     </div>
                 </div>
             </div>
-
-            <div id="task-list-page" class="p-4 space-y-6 sub-page relative">
-                <button onclick="goBackToCategories()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 z-10"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
-                <h2 id="task-list-title" class="text-xl font-bold text-center mt-2">Tasks</h2>
-                <div id="task-list-container" class="space-y-4">
-                </div>
-            </div>
-
 
             <div id="features-page" class="p-4 space-y-8 sub-page">
                 <div class="grid grid-cols-2 gap-4 text-center">
@@ -573,24 +561,28 @@
                     <p class="font-bold text-lg">SELL BALANCE</p>
                     <p id="modal-sell-balance" class="text-xl font-bold text-green-600">৳0.00</p>
                 </button>
+                <button onclick="selectWithdrawSource('referral')" class="w-full text-left p-4 rounded-lg border-2 border-transparent bg-gray-100 hover:border-purple-500 hover:bg-white transition-all">
+                    <p class="font-bold text-lg">REFERRAL BALANCE</p>
+                    <p id="modal-referral-balance" class="text-xl font-bold text-purple-600">৳0.00</p>
+                </button>
             </div>
             <button onclick="document.getElementById('withdraw-source-modal').classList.add('hidden')" class="w-full p-2 mt-4 rounded-lg bg-red-100 text-red-700 font-semibold">Cancel</button>
         </div>
     </div>
     
     <script type="module">
-const firebaseConfig = {
-  apiKey: "AIzaSyBsWj3avV989M-5gLSRBwWG9xNto5hSTlQ",
-  authDomain: "bast-market.firebaseapp.com",
-  databaseURL: "https://bast-market-default-rtdb.firebaseio.com",
-  projectId: "bast-market",
-  storageBucket: "bast-market.firebasestorage.app",
-  messagingSenderId: "255389950261",
-  appId: "1:255389950261:web:5ff3d19637f79df0a22c7c"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsWj3avV989M-5gLSRBwWG9xNto5hSTlQ",
+            authDomain: "bast-market.firebaseapp.com",
+            databaseURL: "https://bast-market-default-rtdb.firebaseio.com",
+            projectId: "bast-market",
+            storageBucket: "bast-market.firebasestorage.app",
+            messagingSenderId: "255389950261",
+            appId: "1:255389950261:web:5ff3d19637f79df0a22c7c"
+        };
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, writeBatch, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -600,8 +592,7 @@ const firebaseConfig = {
         let userData = null;
         let appConfig = {};
         let previousPageId = 'home-page'; 
-        let currentCategory = null; 
-        let currentWithdrawSource = 'main'; // 'main' or 'sell'
+        let currentWithdrawSource = 'main'; // 'main', 'sell', or 'referral'
         
         const loader = document.getElementById('loader');
         const activationPrompt = document.getElementById('activation-prompt');
@@ -660,21 +651,28 @@ const firebaseConfig = {
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
-                // Migration for old users who only have 'balance'
+                // Migration for users who might not have the new balance fields
+                const updates = {};
                 if (typeof userData.mainBalance === 'undefined') {
-                    await updateDoc(userRef, {
-                        mainBalance: userData.balance || 0,
-                        sellBalance: 0,
-                        balance: null // Can be removed later
-                    });
-                     userData.mainBalance = userData.balance || 0;
-                     userData.sellBalance = 0;
+                    updates.mainBalance = userData.balance || 0;
+                    userData.mainBalance = userData.balance || 0;
                 }
-
-                if (userData.referralCode !== currentUserId) {
-                    await updateDoc(userRef, { referralCode: currentUserId });
+                if (typeof userData.sellBalance === 'undefined') {
+                    updates.sellBalance = 0;
+                    userData.sellBalance = 0;
+                }
+                if (typeof userData.referralBalance === 'undefined') {
+                    updates.referralBalance = 0;
+                    userData.referralBalance = 0;
+                }
+                 if (userData.referralCode !== currentUserId) {
+                    updates.referralCode = currentUserId;
                     userData.referralCode = currentUserId; 
                 }
+                if (Object.keys(updates).length > 0) {
+                     await updateDoc(userRef, updates);
+                }
+
             } else {
                 const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
                 const newUserData = {
@@ -684,6 +682,7 @@ const firebaseConfig = {
                     mobileNumber: null,
                     mainBalance: 0,
                     sellBalance: 0,
+                    referralBalance: 0,
                     createdAt: serverTimestamp(),
                     isBlocked: false,
                     isActivated: false,
@@ -726,7 +725,6 @@ const firebaseConfig = {
             const configRef = doc(db, "config", "main");
             const configSnap = await getDoc(configRef);
             appConfig = configSnap.exists() ? configSnap.data() : { 
-                mails: [], 
                 sellableItems: [], 
                 activationFee: 50, 
                 referralBonus: 10, 
@@ -740,7 +738,8 @@ const firebaseConfig = {
             if (!userData) return;
             const mainBalance = userData.mainBalance || 0;
             const sellBalance = userData.sellBalance || 0;
-            const totalBalance = (mainBalance + sellBalance).toFixed(2);
+            const referralBalance = userData.referralBalance || 0;
+            const totalBalance = (mainBalance + sellBalance + referralBalance).toFixed(2);
             document.getElementById('balance-display').textContent = `৳${totalBalance}`;
             document.getElementById('header-balance-display').textContent = `৳${totalBalance}`;
         }
@@ -778,7 +777,6 @@ const firebaseConfig = {
                 'profile-page': loadProfilePage,
                 'features-page': loadFeaturesPage,
                 'tasks-page': loadTaskCategories,
-                'task-list-page': loadTasksByCategory,
                 'withdraw-page': loadWithdrawPage,
                 'send-page': loadSendPage
             };
@@ -790,7 +788,6 @@ const firebaseConfig = {
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
             
-            // All withdraw buttons now open the modal
             document.getElementById('header-withdraw-btn').addEventListener('click', openWithdrawSourceModal);
             document.getElementById('home-withdraw-btn').addEventListener('click', openWithdrawSourceModal);
             document.getElementById('features-withdraw-btn').addEventListener('click', openWithdrawSourceModal);
@@ -851,7 +848,7 @@ const firebaseConfig = {
                         const referrerSnap = await transaction.get(referrerRef);
                         if (referrerSnap.exists() && referrerSnap.data().isActivated) {
                             const referralBonus = appConfig.referralBonus || 0;
-                            transaction.update(referrerRef, { mainBalance: increment(referralBonus) });
+                            transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
                         }
                     }
                 });
@@ -1058,8 +1055,13 @@ const firebaseConfig = {
             
             const feePercent = appConfig.withdrawFeePercent || 5;
             const feeRate = feePercent / 100;
-
-            const balance = currentWithdrawSource === 'sell' ? (userData.sellBalance || 0) : (userData.mainBalance || 0);
+            
+            let balance = 0;
+            switch(currentWithdrawSource) {
+                case 'sell': balance = userData.sellBalance || 0; break;
+                case 'referral': balance = userData.referralBalance || 0; break;
+                default: balance = userData.mainBalance || 0;
+            }
 
             if (isNaN(amountToReceive) || amountToReceive <= 0) {
                 displayArea.innerHTML = '';
@@ -1084,11 +1086,11 @@ const firebaseConfig = {
             displayArea.innerHTML = `<p>Withdrawal Fee (${feePercent}%): <span class="font-bold text-red-500">৳${fee.toFixed(2)}</span></p>`;
         }
         
-        // --- MODIFIED WITHDRAW FUNCTIONS ---
         function openWithdrawSourceModal() {
             if (!checkActivation()) return;
             document.getElementById('modal-main-balance').textContent = `৳${(userData.mainBalance || 0).toFixed(2)}`;
             document.getElementById('modal-sell-balance').textContent = `৳${(userData.sellBalance || 0).toFixed(2)}`;
+            document.getElementById('modal-referral-balance').textContent = `৳${(userData.referralBalance || 0).toFixed(2)}`;
             document.getElementById('withdraw-source-modal').classList.remove('hidden');
         }
 
@@ -1101,8 +1103,22 @@ const firebaseConfig = {
         async function loadWithdrawPage() {
             if (!checkActivation()) return;
             
-            const balance = currentWithdrawSource === 'sell' ? (userData.sellBalance || 0) : (userData.mainBalance || 0);
-            const titleText = currentWithdrawSource === 'sell' ? 'Withdraw from Sell Balance' : 'Withdraw from Tasks Balance';
+            let balance = 0;
+            let titleText = '';
+            
+            switch(currentWithdrawSource) {
+                case 'sell':
+                    balance = userData.sellBalance || 0;
+                    titleText = 'Withdraw from Sell Balance';
+                    break;
+                case 'referral':
+                    balance = userData.referralBalance || 0;
+                    titleText = 'Withdraw from Referral Balance';
+                    break;
+                default: //'main'
+                    balance = userData.mainBalance || 0;
+                    titleText = 'Withdraw from Tasks Balance';
+            }
             
             document.getElementById('withdraw-page-title').querySelector('span').textContent = titleText;
             document.getElementById('withdraw-balance-display').textContent = `৳${balance.toFixed(2)}`;
@@ -1121,8 +1137,22 @@ const firebaseConfig = {
             const minWithdraw = appConfig.minWithdraw || 100;
             const feeRate = (appConfig.withdrawFeePercent || 5) / 100;
             
-            const balance = currentWithdrawSource === 'sell' ? (userData.sellBalance || 0) : (userData.mainBalance || 0);
-            const balanceFieldToUpdate = currentWithdrawSource === 'sell' ? 'sellBalance' : 'mainBalance';
+            let balance = 0;
+            let balanceFieldToUpdate = 'mainBalance';
+
+            switch(currentWithdrawSource) {
+                case 'sell':
+                    balance = userData.sellBalance || 0;
+                    balanceFieldToUpdate = 'sellBalance';
+                    break;
+                case 'referral':
+                    balance = userData.referralBalance || 0;
+                    balanceFieldToUpdate = 'referralBalance';
+                    break;
+                default: //'main'
+                    balance = userData.mainBalance || 0;
+                    balanceFieldToUpdate = 'mainBalance';
+            }
 
             if (!method || !amountToReceive || !number) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
             if (isNaN(amountToReceive) || amountToReceive <= 0) return showAlert("অনুগ্রহ করে সঠিক পরিমাণ লিখুন।");
@@ -1143,7 +1173,7 @@ const firebaseConfig = {
                     fee: fee,
                     netAmount: amountToReceive,
                     number: number,
-                    source: currentWithdrawSource, // Storing the source
+                    source: currentWithdrawSource,
                     status: "pending",
                     requestedAt: serverTimestamp()
                 });
@@ -1183,7 +1213,7 @@ const firebaseConfig = {
                         case 'rejected': statusColor = 'text-red-500'; statusIcon = 'x-circle'; break;
                         default: statusColor = 'text-yellow-500'; statusIcon = 'hourglass';
                     }
-                    const sourceText = item.source === 'sell' ? ' (Sell)' : ' (Tasks)';
+                    const sourceText = item.source ? ` (${item.source.charAt(0).toUpperCase() + item.source.slice(1)})` : '';
                     const date = item.requestedAt ? item.requestedAt.toDate().toLocaleDateString('en-GB') : 'N/A';
                     return `<div class="card-bg p-3 rounded-lg flex items-center justify-between"><div class="flex items-center gap-3"><i data-lucide="${statusIcon}" class="w-6 h-6 ${statusColor}"></i><div><p class="font-semibold">Withdraw - ${item.method}${sourceText}</p><p class="text-xs text-gray-500">${date}</p></div></div><div class="text-right"><p class="font-bold text-lg">৳${item.netAmount ? item.netAmount.toFixed(2) : item.amount.toFixed(2)}</p><p class="font-semibold ${statusColor} capitalize text-xs">${item.status}</p></div></div>`;
                 }).join('');
@@ -1371,9 +1401,7 @@ const firebaseConfig = {
                 updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
             }
         }
-
-        // --- NEW AND IMPROVED USER REVIEWS SECTION ---
-
+        
         function formatRelativeTime(date) {
             if (!date) return '';
             const now = new Date();
@@ -1661,54 +1689,46 @@ const firebaseConfig = {
             }
         }
         
-        window.goBackToCategories = function() {
-            navigateTo('tasks-page');
-        }
-
+        // =================================================================
+        // NEW AND MODIFIED TASK FUNCTIONS
+        // =================================================================
+        
         async function loadTaskCategories() {
             if (!checkActivation()) return;
 
             const categoryList = document.getElementById("task-category-list");
             categoryList.innerHTML = '<p class="text-gray-400 text-center">Loading categories...</p>';
+            
             try {
-                const allApprovedTasksQuery = query(collection(db, "taskSubmissions"), where("userId", "==", currentUserId), where("status", "==", "approved"));
-                const allApprovedTasksSnapshot = await getCountFromServer(allApprovedTasksQuery);
-                document.getElementById('total-tasks-approved-display').textContent = allApprovedTasksSnapshot.data().count;
+                // Query the new `task_categories` collection
+                const categoriesQuery = query(
+                    collection(db, "task_categories"), 
+                    where("isActive", "==", true), 
+                    orderBy("order")
+                );
+                const snapshot = await getDocs(categoriesQuery);
 
-                const tasksQ = query(collection(db, "tasks"), where("isActive", "==", true));
-                const tasksSnap = await getDocs(tasksQ);
-                
-                const categories = {
-                    'SOCIAL TASKS VIDEO': { icon: 'video', count: 0 },
-                    'MEDIA TASKS': { icon: 'share-2', count: 0 },
-                    'APP TASKS': { icon: 'smartphone', count: 0 },
-                    'WEBSITE TASKS': { icon: 'globe', count: 0 },
-                    'ADS TASKS': { icon: 'zap', count: 0 }
-                };
+                if (snapshot.empty) {
+                    categoryList.innerHTML = '<p class="text-gray-400 text-center">New tasks coming soon.</p>';
+                    return;
+                }
 
-                tasksSnap.forEach(doc => {
-                    const task = doc.data();
-                    if (categories[task.category]) {
-                        categories[task.category].count++;
-                    }
-                });
-
-                categoryList.innerHTML = Object.entries(categories).map(([name, data]) => `
-                    <button onclick="navigateToCategory('${name}')" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500">
+                categoryList.innerHTML = snapshot.docs.map(doc => {
+                    const category = doc.data();
+                    // Each card is now a link that opens in a new tab
+                    return `
+                    <a href="${category.link}" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500 no-underline">
                         <div class="flex items-center gap-4">
-                            <i data-lucide="${data.icon}" class="w-8 h-8 text-blue-500"></i>
+                            <i data-lucide="${category.icon || 'list-checks'}" class="w-8 h-8 text-blue-500"></i>
                             <div>
-                                <h3 class="font-bold text-lg">${name}</h3>
-                                <p class="text-xs text-gray-500">Available Tasks: ${data.count}</p>
+                                <h3 class="font-bold text-lg">${category.name}</h3>
+                                <p class="text-xs text-gray-500">Available Tasks: ${category.availableTasks || 0}</p>
                             </div>
                         </div>
-                        <span class="bg-blue-100 text-blue-700 text-lg font-bold px-4 py-2 rounded-full">${data.count}</span>
-                    </button>
-                `).join('');
-
-                if (tasksSnap.empty) {
-                    categoryList.innerHTML = '<p class="text-gray-400 text-center">New tasks coming soon.</p>';
-                }
+                        <span class="bg-blue-100 text-blue-700 text-lg font-bold px-4 py-2 rounded-full">${category.availableTasks || 0}</span>
+                    </a>
+                `;
+                }).join('');
 
                 lucide.createIcons();
             } catch (error) {
@@ -1716,246 +1736,6 @@ const firebaseConfig = {
                 categoryList.innerHTML = '<p class="text-red-400 text-center">Failed to load categories.</p>';
             }
         }
-        
-        window.navigateToCategory = function(category) {
-            currentCategory = category;
-            navigateTo('task-list-page');
-        }
-        
-        async function loadTasksByCategory() {
-            if (!checkActivation()) return;
-            document.getElementById('task-list-title').textContent = currentCategory;
-            const taskListContainer = document.getElementById("task-list-container");
-            taskListContainer.innerHTML = '<p class="text-gray-400 text-center">Loading tasks...</p>';
-
-            try {
-                const subQ = query(collection(db, "taskSubmissions"), where("userId", "==", currentUserId), where("category", "==", currentCategory));
-                const tasksQ = query(collection(db, "tasks"), where("isActive", "==", true), where("category", "==", currentCategory), orderBy("createdAt", "desc"));
-                const [subSnap, tasksSnap] = await Promise.all([getDocs(subQ), getDocs(tasksQ)]);
-                
-                const userSubmissions = {};
-                subSnap.forEach(doc => userSubmissions[doc.data().taskId] = doc.data());
-
-                if (tasksSnap.empty) {
-                    taskListContainer.innerHTML = '<p class="text-gray-400 text-center">No tasks available in this category.</p>';
-                    return;
-                }
-
-                taskListContainer.innerHTML = '';
-                tasksSnap.forEach(docSnap => {
-                    const task = { id: docSnap.id, ...docSnap.data() };
-                    const submission = userSubmissions[task.id];
-                    const taskDiv = document.createElement("div");
-                    taskDiv.className = "card-bg p-4 rounded-xl space-y-3";
-                    
-                    let contentHTML = '';
-                    if (submission && submission.status !== 'rejected') { 
-                        const statusColor = submission.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700';
-                        contentHTML = `<div class="text-center p-2 rounded-lg ${statusColor} flex items-center justify-center gap-2 mt-3"><i data-lucide="${submission.status === 'approved' ? 'check-circle' : 'loader'}" class="w-5 h-5"></i><p class="font-bold capitalize">${submission.status}</p></div>`;
-                    } else {
-                       contentHTML = buildTaskInteractiveArea(task);
-                    }
-                    
-                    taskDiv.innerHTML = `
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-bold">${task.title}</h3>
-                            <p class="text-sm text-gray-400">Reward: <span class="font-semibold text-[#0d6efd]">৳${task.reward || 0}</span></p>
-                        </div>
-                        <p class="text-sm text-gray-600 whitespace-pre-wrap pt-2 border-t">${task.description || ''}</p>
-                        ${contentHTML}
-                    `;
-                    taskListContainer.appendChild(taskDiv);
-                });
-                lucide.createIcons();
-            } catch (error) {
-                console.error(`Error loading tasks for ${currentCategory}:`, error);
-                taskListContainer.innerHTML = '<p class="text-red-400 text-center">Failed to load tasks.</p>';
-            }
-        }
-
-        function buildTaskInteractiveArea(task) {
-            const taskId = `'${task.id}'`;
-            const taskReward = task.reward || 0;
-            const taskStr = `'${JSON.stringify(task).replace(/'/g, "\\'")}'`;
-
-            switch(task.category) {
-                case 'SOCIAL TASKS VIDEO':
-                    const cooldownEnd = localStorage.getItem(`cooldown_${task.id}`);
-                    if (cooldownEnd && Date.now() < parseInt(cooldownEnd)) {
-                        return `<div id="task-timer-area-${task.id}" class="text-center text-red-500 font-semibold p-2"></div><script>startCooldownTimer(${taskId}, ${cooldownEnd})<\/script>`;
-                    }
-                    return `<div class="space-y-2 pt-2"><input type="text" id="code-${task.id}" placeholder="Enter video code here" class="w-full p-2 rounded-lg input-field"/><button class="w-full p-2 rounded-lg btn-gradient" onclick="submitVideoTask(${taskId}, '${task.code}', ${taskReward})">Submit Code</button></div>`;
-                
-                case 'WEBSITE TASKS':
-                     return `<div id="task-interactive-area-${task.id}" class="mt-3"><div id="task-timer-area-${task.id}" class="hidden text-center text-gray-600 font-semibold p-2"></div><div id="task-input-area-${task.id}" class="hidden space-y-2"><input type="text" id="comment-${task.id}" placeholder="আপনার মন্তব্য লিখুন" class="w-full p-2 rounded-lg input-field"/><button class="w-full p-2 rounded-lg btn-outline-accent" onclick="submitWebsiteTask(${taskId}, ${taskReward})">Submit Comment</button></div><button id="start-btn-${task.id}" class="w-full p-2 rounded-lg btn-gradient" onclick="startTaskTimer(${taskId}, ${task.duration || 60}, '${task.videoUrl}')">Visit Website</button></div>`;
-
-                default: 
-                    return `<button class="w-full p-2 rounded-lg btn-gradient mt-2" onclick="openManualTaskModal(${taskStr})">Start Task</button>`;
-            }
-        }
-        
-        window.startCooldownTimer = function(taskId, cooldownEnd) {
-            const timerArea = document.getElementById(`task-timer-area-${taskId}`);
-            if (!timerArea) return;
-            const interval = setInterval(() => {
-                const timeLeft = Math.round((cooldownEnd - Date.now()) / 1000);
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    localStorage.removeItem(`cooldown_${taskId}`);
-                    loadTasksByCategory(); 
-                } else {
-                    timerArea.innerHTML = `ভুল কোড। আবার চেষ্টা করুন: ${timeLeft} সেকেন্ড পর।`;
-                }
-            }, 1000);
-        }
-
-        window.submitVideoTask = async function(taskId, correctCode, reward) {
-            if (!checkActivation()) return;
-            const inputCode = document.getElementById(`code-${taskId}`).value.trim();
-            if (!inputCode) return showAlert("❌ অনুগ্রহ করে কোড দিন।");
-
-            if (inputCode.toUpperCase() === correctCode.toUpperCase()) {
-                loader.style.display = 'flex';
-                try {
-                    const userRef = doc(db, "users", currentUserId);
-                    await runTransaction(db, async (transaction) => {
-                        const submissionRef = doc(collection(db, "taskSubmissions"));
-                        transaction.set(submissionRef, { userId: currentUserId, userName: userData.name, taskId: taskId, category: 'SOCIAL TASKS VIDEO', reward: parseFloat(reward), submissionData: { submittedCode: inputCode }, status: "approved", submittedAt: serverTimestamp() });
-                        transaction.update(userRef, { mainBalance: increment(parseFloat(reward)) });
-                    });
-                    await fetchUserData();
-                    updateBalanceDisplays();
-                    showAlert(`✅ অভিনন্দন! ৳${reward.toFixed(2)} আপনার ব্যালেন্সে যোগ করা হয়েছে।`);
-                    loadTasksByCategory();
-                } catch (error) { console.error("Auto approval error:", error); showAlert("Submission failed."); } 
-                finally { loader.style.display = 'none'; }
-            } else {
-                showAlert("❌ কোডটি সঠিক নয়। অনুগ্রহ করে আবার চেষ্টা করুন।");
-                const cooldownDuration = 10 * 60 * 1000;
-                localStorage.setItem(`cooldown_${taskId}`, Date.now() + cooldownDuration);
-                loadTasksByCategory();
-            }
-        }
-        
-        window.submitWebsiteTask = async function(taskId, reward) {
-            const comment = document.getElementById(`comment-${taskId}`).value.trim();
-            if(!comment) return showAlert('অনুগ্রহ করে মন্তব্য লিখুন।');
-            const submissionData = { comment: comment };
-            await submitManualTask(taskId, 'WEBSITE TASKS', reward, submissionData);
-        }
-        
-        window.openManualTaskModal = function(task) {
-            if (!checkActivation()) return;
-            const modal = document.getElementById('manual-task-modal');
-            document.getElementById('manual-task-modal-title').textContent = task.title;
-            document.getElementById('manual-task-modal-description').textContent = task.description;
-            const fieldsContainer = document.getElementById('manual-task-modal-fields');
-            fieldsContainer.innerHTML = '';
-
-            let fields = [];
-            switch(task.category) {
-                case 'MEDIA TASKS': fields = [{name: 'Username', placeholder: 'আপনার ইউজারনেম দিন', id: 'username'}]; break;
-                case 'APP TASKS': fields = [{name: 'Email', placeholder: 'আপনার ইমেইল দিন', id: 'email'}, {name: 'Password', placeholder: 'পাসওয়ার্ড দিন', id: 'password'}, {name: 'WhatsApp Number', placeholder: 'হোয়াটসঅ্যাপ নম্বর দিন', id: 'whatsapp'}]; break;
-                case 'ADS TASKS': fields = [{name: 'KEY', placeholder: 'প্রাপ্ত KEY টি এখানে দিন', id: 'key'}]; break;
-            }
-
-            fields.forEach(field => {
-                fieldsContainer.insertAdjacentHTML('beforeend', `<div><label class="block text-xs font-medium text-gray-600 mb-1">${field.name}</label><input type="text" id="modal-field-${field.id}" placeholder="${field.placeholder}" class="w-full p-3 rounded-lg input-field font-mono text-sm"></div>`);
-            });
-
-            document.getElementById('manual-task-modal-submit').onclick = () => handleManualSubmission(task);
-            modal.classList.remove('hidden');
-        }
-
-        async function handleManualSubmission(task) {
-            let submissionData = {};
-            let isValid = true;
-            switch(task.category) {
-                case 'MEDIA TASKS':
-                    submissionData.username = document.getElementById('modal-field-username').value.trim();
-                    if (!submissionData.username) isValid = false;
-                    break;
-                case 'APP TASKS':
-                    submissionData.email = document.getElementById('modal-field-email').value.trim();
-                    submissionData.password = document.getElementById('modal-field-password').value.trim();
-                    submissionData.whatsapp = document.getElementById('modal-field-whatsapp').value.trim();
-                    if (!submissionData.email || !submissionData.password || !submissionData.whatsapp) isValid = false;
-                    break;
-                case 'ADS TASKS':
-                    submissionData.key = document.getElementById('modal-field-key').value.trim();
-                    if (!submissionData.key) isValid = false;
-                    break;
-            }
-            if(!isValid) return showAlert('অনুগ্রহ করে সকল তথ্য পূরণ করুন।');
-
-            document.getElementById('manual-task-modal').classList.add('hidden');
-            
-            if(task.category === 'ADS TASKS') {
-                await submitAdsTask(task.id, task.reward, submissionData.key);
-            } else {
-                await submitManualTask(task.id, task.category, task.reward, submissionData);
-            }
-        }
-        
-        async function submitAdsTask(taskId, reward, key) {
-             loader.style.display = 'flex';
-             const keyRef = doc(db, "task_keys", key);
-             const userRef = doc(db, "users", currentUserId);
-             try {
-                await runTransaction(db, async (transaction) => {
-                    const keyDoc = await transaction.get(keyRef);
-                    if (!keyDoc.exists() || keyDoc.data().isUsed) throw "এই KEY টি সঠিক নয় অথবা ব্যবহৃত হয়েছে।";
-                    
-                    transaction.update(keyRef, { isUsed: true, usedBy: currentUserId, usedAt: serverTimestamp() });
-                    const submissionRef = doc(collection(db, "taskSubmissions"));
-                    transaction.set(submissionRef, { userId: currentUserId, userName: userData.name, taskId: taskId, category: 'ADS TASKS', reward: parseFloat(reward), submissionData: { submittedKey: key }, status: "approved", submittedAt: serverTimestamp() });
-                    transaction.update(userRef, { mainBalance: increment(parseFloat(reward)) });
-                });
-                await fetchUserData(); updateBalanceDisplays();
-                showAlert(`✅ কী সফলভাবে গৃহীত হয়েছে! ৳${reward.toFixed(2)} আপনার ব্যালেন্সে যোগ হয়েছে।`);
-                loadTasksByCategory();
-             } catch(error) {
-                showAlert(typeof error === 'string' ? error : "KEY সাবমিট করতে সমস্যা হয়েছে।");
-             } finally {
-                loader.style.display = 'none';
-             }
-        }
-        
-        async function submitManualTask(taskId, category, reward, submissionData) {
-            loader.style.display = 'flex';
-            try {
-                await addDoc(collection(db, "taskSubmissions"), { userId: currentUserId, userName: userData.name, taskId: taskId, category: category, reward: parseFloat(reward), submissionData, status: "pending", submittedAt: serverTimestamp() });
-                showAlert("✅ আপনার টাস্ক পর্যালোচনার জন্য জমা দেওয়া হয়েছে।");
-                loadTasksByCategory();
-            } catch (error) { console.error("Manual task submission error:", error); showAlert("Submission failed."); } 
-            finally { loader.style.display = 'none'; }
-        }
-
-        window.startTaskTimer = function(taskId, duration, url) {
-            if (!checkActivation()) return;
-            if (url && url !== 'undefined') window.open(url, '_blank');
-            const startBtn = document.getElementById(`start-btn-${taskId}`);
-            const timerArea = document.getElementById(`task-timer-area-${taskId}`);
-            const inputArea = document.getElementById(`task-input-area-${taskId}`);
-            
-            startBtn.classList.add('hidden');
-            timerArea.classList.remove('hidden');
-            
-            let timeLeft = duration;
-            timerArea.innerHTML = `<div class="flex items-center justify-center gap-2"><i data-lucide="timer" class="w-5 h-5 animate-spin"></i><span>Please wait ${timeLeft} seconds...</span></div>`;
-            lucide.createIcons();
-            
-            const timerInt = setInterval(() => {
-                timeLeft--;
-                timerArea.querySelector('span').textContent = `Please wait ${timeLeft} seconds...`;
-                if (timeLeft <= 0) { 
-                    clearInterval(timerInt); 
-                    timerArea.classList.add('hidden');
-                    inputArea.classList.remove('hidden');
-                }
-            }, 1000);
-        }
-
     </script>
 </body>
 </html>
