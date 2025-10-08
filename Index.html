@@ -148,37 +148,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* Review Card Style */
-        .review-card {
-            background-color: #fff;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-        .review-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #fff;
-            background-image: linear-gradient(to top right, #0d6efd, #6c757d);
-            flex-shrink: 0;
-        }
-        .review-content { flex-grow: 1; }
-        .review-name { font-weight: 700; font-size: 1.1rem; }
-        .review-stars .lucide-star { fill: #ffc107; }
-        .review-text {
-            color: #343a40;
-            font-size: 0.9rem;
-            margin-top: 4px;
-        }
         
         /* New vote button styles */
         .vote-btn {
@@ -196,6 +165,71 @@
             transform: scale(1.2);
         }
 
+        /* New Premium Review Card Styles */
+        .review-card-premium {
+            background-color: #ffffff;
+            border: 1px solid #eef2f7;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .review-avatar-premium {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+            background: linear-gradient(135deg, #1e90ff, #0d6efd);
+            flex-shrink: 0;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .review-name-premium {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #212529;
+        }
+        .review-date {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        .review-stars .lucide-star { fill: #ffc107; color: #ffc107; }
+        .review-body {
+            position: relative;
+            padding-left: 28px;
+            padding-top: 8px;
+        }
+        .review-body .lucide-quote {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            color: #e9ecef;
+        }
+        .review-text-premium {
+            color: #343a40;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
     </style>
 </head>
@@ -885,12 +919,23 @@
 
                     const referrerId = userDoc.data().referredBy;
                     if (referrerId) {
-                        const referrerRef = doc(db, "users", referrerId);
-                        const referrerSnap = await transaction.get(referrerRef);
-                        // ✅ MODIFICATION: Removed the check for referrer's activation status. Bonus is now always given.
-                        if (referrerSnap.exists()) {
-                            const referralBonus = appConfig.referralBonus || 0;
-                            transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
+                        const creationTimestamp = userDoc.data().createdAt;
+                        if (creationTimestamp) {
+                            const creationDate = creationTimestamp.toDate();
+                            const now = new Date();
+                            const hoursDiff = (now.getTime() - creationDate.getTime()) / (1000 * 60 * 60);
+
+                            // *** CHANGE: বোনাস শুধুমাত্র অ্যাকাউন্ট খোলার ৬ ঘন্টার মধ্যে অ্যাক্টিভ করলে দেওয়া হবে ***
+                            if (hoursDiff <= 6) {
+                                const referrerRef = doc(db, "users", referrerId);
+                                const referrerSnap = await transaction.get(referrerRef);
+                                if (referrerSnap.exists()) {
+                                    const referralBonus = appConfig.referralBonus || 0;
+                                    transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
+                                }
+                            } else {
+                                console.log(`Referral bonus for ${referrerId} skipped. User activated after 6 hours.`);
+                            }
                         }
                     }
                 });
@@ -1512,22 +1557,31 @@
                     reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
                     return;
                 }
-
-                // ✅ MODIFICATION: Simplified the review card layout as requested.
+                
+                // *** CHANGE: Updated review card to a more premium design ***
                 reviewsList.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     const starsHtml = renderStars(review.rating || 5);
                     const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'U';
+                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('en-GB', {
+                        day: 'numeric', month: 'long', year: 'numeric'
+                    }) : '';
 
                     return `
-                    <div class="review-card">
-                        <div class="review-avatar">${initial}</div>
-                        <div class="review-content">
-                            <div class="flex items-center justify-between">
-                                <div class="review-name">${review.userName}</div>
-                                ${starsHtml}
+                    <div class="review-card-premium">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="review-avatar-premium">${initial}</div>
+                                <div>
+                                    <div class="review-name-premium">${review.userName}</div>
+                                    <div class="review-date">${date}</div>
+                                </div>
                             </div>
-                            <p class="review-text">"${review.reviewText}"</p>
+                            ${starsHtml}
+                        </div>
+                        <div class="review-body">
+                             <i data-lucide="quote" class="lucide-quote"></i>
+                            <p class="review-text-premium">${review.reviewText}</p>
                         </div>
                     </div>`;
                 }).join('');
