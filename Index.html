@@ -915,17 +915,21 @@
                     if (!userDoc.exists() || userDoc.data().isActivated) throw "অ্যাকাউন্ট ইতিমধ্যে অ্যাক্টিভ আছে।";
                     if (userDoc.data().mainBalance < activationFee) throw "অপর্যাপ্ত ব্যালেন্স।";
 
+                    // === START: IMPROVED AND SAFER LOGIC ===
+
                     transaction.update(userRef, { mainBalance: increment(-activationFee), isActivated: true });
 
                     const referrerId = userDoc.data().referredBy;
                     if (referrerId) {
                         const creationTimestamp = userDoc.data().createdAt;
-                        if (creationTimestamp) {
+                        
+                        // Check if creationTimestamp is a valid Firestore Timestamp object before proceeding
+                        if (creationTimestamp && typeof creationTimestamp.toDate === 'function') {
                             const creationDate = creationTimestamp.toDate();
                             const now = new Date();
                             const hoursDiff = (now.getTime() - creationDate.getTime()) / (1000 * 60 * 60);
 
-                            // *** CHANGE: বোনাস শুধুমাত্র অ্যাকাউন্ট খোলার ৬ ঘন্টার মধ্যে অ্যাক্টিভ করলে দেওয়া হবে ***
+                            // বোনাস শুধুমাত্র অ্যাকাউন্ট খোলার ৬ ঘন্টার মধ্যে অ্যাক্টিভ করলে দেওয়া হবে
                             if (hoursDiff <= 6) {
                                 const referrerRef = doc(db, "users", referrerId);
                                 const referrerSnap = await transaction.get(referrerRef);
@@ -934,10 +938,14 @@
                                     transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
                                 }
                             } else {
-                                console.log(`Referral bonus for ${referrerId} skipped. User activated after 6 hours.`);
+                                console.log(`Referral bonus for ${referrerId} skipped. User activated after the 6-hour window.`);
                             }
+                        } else {
+                            // If createdAt is missing or invalid, log it but don't crash the activation
+                            console.error(`User ${currentUserId} is missing a valid 'createdAt' timestamp. Cannot calculate referral bonus window.`);
                         }
                     }
+                    // === END: IMPROVED AND SAFER LOGIC ===
                 });
 
                 await fetchUserData(); 
