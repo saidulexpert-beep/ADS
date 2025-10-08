@@ -15,6 +15,7 @@
             font-family: 'Inter', sans-serif; 
             background-color: #f8f9fa; 
             color: #212529;
+            overflow: hidden; /* Prevent scrolling during splash screen */
         }
         .card-bg { 
             background-color: #ffffff;
@@ -123,15 +124,32 @@
         .dot { display: inline-block; height: 8px; width: 8px; margin: 0 4px; background: #adb5bd; border-radius: 50%; cursor: pointer; transition: background 0.3s; }
         .dot.active { background: #0d6efd; }
         
-        /* Loader Styles */
-        #loader { display: flex; } /* Make loader visible by default */
-        #loader .container { --uib-size: 45px; --uib-color: #0d6efd; --uib-speed: 1.75s; --uib-bg-opacity: .1; height: 31.25px; width: 50px; }
-        #loader .car { stroke: var(--uib-color); stroke-dasharray: 100; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; animation: travel var(--uib-speed) ease-in-out infinite, fade var(--uib-speed) ease-out infinite; }
-        #loader .track { stroke-linecap: round; stroke-linejoin: round; stroke: var(--uib-color); opacity: var(--uib-bg-opacity); }
-        @keyframes travel { 0% { stroke-dashoffset: 100; } 75% { stroke-dashoffset: 0; } }
-        @keyframes fade { 0% { opacity: 0; } 20%, 55% { opacity: 1; } 100% { opacity: 0; } }
+        /* New Splash Screen Styles */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #ffffff;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity 0.5s ease-out;
+        }
+        .splash-loader {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 5px solid #f1f3f5;
+            border-top-color: #0d6efd;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        /* New Review Card Style */
+        /* Review Card Style */
         .review-card {
             background-color: #fff;
             border-radius: 16px;
@@ -183,14 +201,13 @@
 </head>
 <body class="max-w-md mx-auto">
 
-    <div id="loader" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[102]">
-        <svg class="container" x="0px" y="0px" viewBox="0 0 50 31.25" height="31.25" width="50" preserveAspectRatio='xMidYMid meet'>
-          <path class="track" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
-          <path class="car" stroke-width="4" fill="none" pathlength="100" d="M0.625 21.5 h10.25 l3.75 -5.875 l7.375 15 l9.75 -30 l7.375 20.875 v0 h10.25"/>
-        </svg>
+    <div id="splash-screen">
+        <h1 class="text-3xl font-bold text-accent-gradient">𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭</h1>
+        <div class="splash-loader"></div>
+        <p class="text-gray-500">Loading Your Dashboard...</p>
     </div>
 
-    <div id="app-container" class="min-h-screen flex-col main-page">
+    <div id="app-container" class="min-h-screen flex-col main-page" style="display: none;">
         <header class="header flex items-center justify-between p-4 sticky top-0 z-10">
             <div class="flex items-center space-x-2">
                 <h1 class="text-xl font-bold text-accent-gradient">𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭</h1>
@@ -594,7 +611,7 @@
         let previousPageId = 'home-page'; 
         let currentWithdrawSource = 'main'; // 'main', 'sell', or 'referral'
         
-        const loader = document.getElementById('loader');
+        const splashScreen = document.getElementById('splash-screen');
         const activationPrompt = document.getElementById('activation-prompt');
         
         window.onload = async () => {
@@ -606,7 +623,7 @@
 
                 if (!currentUser) {
                     document.body.innerHTML = `<div class="flex items-center justify-center h-screen text-center p-4"> <p class="text-red-500 font-bold">This application can only be accessed through Telegram.</p> </div>`;
-                    loader.style.display = 'none';
+                    splashScreen.style.display = 'none';
                     return;
                 }
                 
@@ -617,9 +634,8 @@
             } catch (e) {
                 console.error("Initialization failed:", e);
                 document.body.innerHTML = `<div class="flex items-center justify-center h-screen text-center p-4"> <p class="text-red-500 font-bold">An error occurred. Please try again later.</p> </div>`;
-            } finally {
-                loader.style.display = 'none';
-            }
+            } 
+            // The splash screen is hidden inside initializeAppLogic after everything is loaded.
         };
         
         async function initializeAppLogic() {
@@ -636,9 +652,16 @@
             }
             
             updateBalanceDisplays();
-            showMainPage('app-container');
             navigateTo('home-page', true); 
             checkActivation();
+
+            // Hide splash screen and show the main app
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.body.style.overflow = 'auto';
+            }, 500); // Match this with CSS transition duration
         }
 
         async function fetchOrCreateUser() {
@@ -651,7 +674,6 @@
 
             if (userSnap.exists()) {
                 userData = userSnap.data();
-                // Migration for users who might not have the new balance fields
                 const updates = {};
                 if (typeof userData.mainBalance === 'undefined') {
                     updates.mainBalance = userData.balance || 0;
@@ -727,11 +749,23 @@
             appConfig = configSnap.exists() ? configSnap.data() : { 
                 sellableItems: [], 
                 activationFee: 50, 
-                referralBonus: 10, 
-                minWithdraw: 100,
-                withdrawFeePercent: 5,
-                addReviewLink: '#'
+                referralBonus: 10,
+                addReviewLink: '#',
+                // NEW: Default withdrawal settings
+                withdrawSettings: {
+                    main: { min: 100, feePercent: 5 },
+                    sell: { min: 150, feePercent: 4 },
+                    referral: { min: 50, feePercent: 10 }
+                }
             };
+            // Ensure withdrawSettings exists for backward compatibility
+            if (!appConfig.withdrawSettings) {
+                appConfig.withdrawSettings = {
+                    main: { min: 100, feePercent: 5 },
+                    sell: { min: 150, feePercent: 4 },
+                    referral: { min: 50, feePercent: 10 }
+                };
+            }
         }
         
         function updateBalanceDisplays() {
@@ -831,7 +865,9 @@
 
             if (!confirm(`আপনি কি ৳${activationFee.toFixed(2)} দিয়ে আপনার অ্যাকাউন্টটি অ্যাক্টিভ করতে চান? এই টাকা আপনার Tasks Balance থেকে কাটা হবে।`)) return;
             
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
+
             const userRef = doc(db, "users", currentUserId);
 
             try {
@@ -863,7 +899,8 @@
                 console.error("Activation failed:", error);
                 showAlert(typeof error === 'string' ? error : "অ্যাকাউন্ট অ্যাক্টিভ করতে সমস্যা হয়েছে।");
             } finally {
-                loader.style.display = 'none';
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
             }
         }
         
@@ -953,12 +990,14 @@
             if (!mobile) return showAlert("অনুগ্রহ করে আপনার WhatsApp নম্বরটি পূরণ করুন।");
             if (!/^01\d{9}$/.test(mobile)) return showAlert("অনুগ্রহ করে একটি সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন যা 01 দিয়ে শুরু হয়।");
             
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
             try {
                 const mobileQuery = query(collection(db, "users"), where("mobileNumber", "==", mobile), limit(1));
                 const mobileSnapshot = await getDocs(mobileQuery);
                 if (!mobileSnapshot.empty) {
-                    loader.style.display = 'none';
+                    splashScreen.style.display = 'none';
+                    splashScreen.style.opacity = '0';
                     return showAlert("এই WhatsApp নম্বরটি দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট লিঙ্ক করা হয়েছে।");
                 }
                 
@@ -967,13 +1006,15 @@
                 
                 if (referralCode && !userData.referredBy) {
                     if (referralCode === currentUserId) {
-                        loader.style.display = 'none';
+                        splashScreen.style.display = 'none';
+                        splashScreen.style.opacity = '0';
                         return showAlert("আপনি নিজের রেফার কোড ব্যবহার করতে পারবেন না।");
                     }
                     const referrerRef = doc(db, "users", referralCode);
                     const referrerSnap = await getDoc(referrerRef);
                     if (!referrerSnap.exists()) {
-                         loader.style.display = 'none';
+                        splashScreen.style.display = 'none';
+                        splashScreen.style.opacity = '0';
                         return showAlert("দুঃখিত, এই রেফার কোডটি সঠিক নয়।");
                     }
                     updateData.referredBy = referralCode;
@@ -988,7 +1029,8 @@
                 console.error("Link details error:", error);
                 showAlert("তথ্য যোগ করতে সমস্যা হয়েছে।");
             } finally {
-                loader.style.display = 'none';
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
             }
         }
         
@@ -998,12 +1040,15 @@
             const senderNumber = document.getElementById('sender-number').value.trim();
             const transactionId = document.getElementById('deposit-txid').value.trim();
             if (!method || !amount || amount <= 0 || !senderNumber || !transactionId) return showAlert("অনুগ্রহ করে সমস্ত তথ্য সঠিকভাবে পূরণ করুন।");
-            loader.style.display = 'flex';
+            
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
             try {
                 const depositQuery = query(collection(db, "deposits"), where("transactionId", "==", transactionId), where("status", "in", ["pending", "approved"]));
                 const querySnapshot = await getDocs(depositQuery);
                 if (!querySnapshot.empty) {
-                    loader.style.display = 'none';
+                    splashScreen.style.display = 'none';
+                    splashScreen.style.opacity = '0';
                     return showAlert("এই Transaction ID দিয়ে ইতিমধ্যে একটি ডিপোজিট অনুরোধ জমা দেওয়া হয়েছে।");
                 }
                 await addDoc(collection(db, "deposits"), {
@@ -1019,7 +1064,8 @@
             } catch (error) {
                 showAlert("ডিপোজিট অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
             } finally {
-                loader.style.display = 'none';
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
             }
         }
 
@@ -1053,7 +1099,9 @@
             const displayArea = document.getElementById('fee-calculation-display');
             const amountToReceive = parseFloat(amountInput.value);
             
-            const feePercent = appConfig.withdrawFeePercent || 5;
+            // MODIFIED: Use specific fee settings
+            const settings = appConfig.withdrawSettings[currentWithdrawSource] || appConfig.withdrawSettings.main;
+            const feePercent = settings.feePercent;
             const feeRate = feePercent / 100;
             
             let balance = 0;
@@ -1115,7 +1163,7 @@
                     balance = userData.referralBalance || 0;
                     titleText = 'Withdraw from Referral Balance';
                     break;
-                default: //'main'
+                default:
                     balance = userData.mainBalance || 0;
                     titleText = 'Withdraw from Tasks Balance';
             }
@@ -1123,8 +1171,11 @@
             document.getElementById('withdraw-page-title').querySelector('span').textContent = titleText;
             document.getElementById('withdraw-balance-display').textContent = `৳${balance.toFixed(2)}`;
             
-            const minWithdraw = appConfig.minWithdraw || 100;
+            // MODIFIED: Get specific min withdraw amount
+            const settings = appConfig.withdrawSettings[currentWithdrawSource] || appConfig.withdrawSettings.main;
+            const minWithdraw = settings.min;
             document.getElementById('min-withdraw-display').textContent = `৳${minWithdraw.toFixed(2)}`;
+            
             document.getElementById('withdraw-amount').value = '';
             calculateWithdrawFee();
             loadWithdrawHistory();
@@ -1134,9 +1185,12 @@
             const method = document.getElementById('withdraw-method').value;
             const amountToReceive = parseFloat(document.getElementById('withdraw-amount').value);
             const number = document.getElementById('recipient-number').value.trim();
-            const minWithdraw = appConfig.minWithdraw || 100;
-            const feeRate = (appConfig.withdrawFeePercent || 5) / 100;
             
+            // MODIFIED: Use specific settings for validation and calculation
+            const settings = appConfig.withdrawSettings[currentWithdrawSource] || appConfig.withdrawSettings.main;
+            const minWithdraw = settings.min;
+            const feeRate = settings.feePercent / 100;
+
             let balance = 0;
             let balanceFieldToUpdate = 'mainBalance';
 
@@ -1149,7 +1203,7 @@
                     balance = userData.referralBalance || 0;
                     balanceFieldToUpdate = 'referralBalance';
                     break;
-                default: //'main'
+                default:
                     balance = userData.mainBalance || 0;
                     balanceFieldToUpdate = 'mainBalance';
             }
@@ -1163,19 +1217,13 @@
 
             if (totalDeduction > balance) return showAlert("আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
 
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
             try {
                 await addDoc(collection(db, "withdrawals"), {
-                    userId: currentUserId,
-                    userName: userData.name,
-                    method: method,
-                    amount: totalDeduction, 
-                    fee: fee,
-                    netAmount: amountToReceive,
-                    number: number,
-                    source: currentWithdrawSource,
-                    status: "pending",
-                    requestedAt: serverTimestamp()
+                    userId: currentUserId, userName: userData.name, method: method,
+                    amount: totalDeduction, fee: fee, netAmount: amountToReceive,
+                    number: number, source: currentWithdrawSource, status: "pending", requestedAt: serverTimestamp()
                 });
                 
                 const userRef = doc(db, "users", currentUserId);
@@ -1193,7 +1241,8 @@
                 showAlert("উইথড্র অনুরোধ জমা দিতে একটি সমস্যা হয়েছে।");
                 console.error("Withdrawal Error: ", error);
             } finally {
-                loader.style.display = 'none';
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
             }
         }
         
@@ -1322,7 +1371,8 @@
             if (!isValid) return showAlert("Please fill in all fields.");
             
             document.getElementById('sell-modal').classList.add('hidden');
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
 
             try {
                 const existingSellQuery = query(
@@ -1335,7 +1385,8 @@
 
                 if (!existingSellSnapshot.empty) {
                     showAlert(`আপনি ইতিমধ্যেই এই "${itemConfig.type}" অ্যাকাউন্ট বিক্রির জন্য জমা দিয়েছেন অথবা এটি অনুমোদিত হয়েছে।`);
-                    loader.style.display = 'none';
+                    splashScreen.style.display = 'none';
+                    splashScreen.style.opacity = '0';
                     return;
                 }
 
@@ -1343,7 +1394,10 @@
                 showAlert("Your sell request has been submitted successfully.");
                 loadSellHistory();
             } catch (error) { showAlert("There was a problem submitting your request."); } 
-            finally { loader.style.display = 'none'; }
+            finally { 
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
+            }
         }
 
         async function loadSellHistory() {
@@ -1547,7 +1601,8 @@
         
         async function loadFeaturesPage() {
             if (!checkActivation()) return;
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
             try {
                 const depositQuery = query(collection(db, "deposits"), where("userId", "==", currentUserId), where("status", "==", "approved"));
                 const depositSnapshot = await getDocs(depositQuery);
@@ -1571,7 +1626,10 @@
 
                 await loadTransferHistory();
             } catch (error) { console.error("Error loading features page data:", error); showAlert("Could not load page data."); } 
-            finally { loader.style.display = 'none'; }
+            finally { 
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
+            }
         }
 
         async function loadTransferHistory() {
@@ -1654,7 +1712,8 @@
 
             if (!confirm(`আপনি ৳${amount.toFixed(2)} টাকা পাঠাতে চাচ্ছেন।\nচার্জ (৫%): ৳${feeAmount.toFixed(2)}\nআপনার অ্যাকাউন্ট থেকে মোট কাটা হবে: ৳${totalDeductionFromSender.toFixed(2)}\nআপনি কি নিশ্চিত?`)) return;
 
-            loader.style.display = 'flex';
+            splashScreen.style.display = 'flex';
+            splashScreen.style.opacity = '1';
             const senderRef = doc(db, "users", currentUserId);
             const recipientRef = doc(db, "users", recipientId);
 
@@ -1685,13 +1744,10 @@
                 console.error("Transfer failed: ", error);
                 showAlert(typeof error === 'string' ? error : "ব্যালেন্স পাঠাতে সমস্যা হয়েছে।");
             } finally {
-                loader.style.display = 'none';
+                splashScreen.style.display = 'none';
+                splashScreen.style.opacity = '0';
             }
         }
-        
-        // =================================================================
-        // NEW AND MODIFIED TASK FUNCTIONS
-        // =================================================================
         
         async function loadTaskCategories() {
             if (!checkActivation()) return;
@@ -1700,7 +1756,6 @@
             categoryList.innerHTML = '<p class="text-gray-400 text-center">Loading categories...</p>';
             
             try {
-                // Query the new `task_categories` collection
                 const categoriesQuery = query(
                     collection(db, "task_categories"), 
                     where("isActive", "==", true), 
@@ -1715,7 +1770,6 @@
 
                 categoryList.innerHTML = snapshot.docs.map(doc => {
                     const category = doc.data();
-                    // Each card is now a link that opens in a new tab
                     return `
                     <a href="${category.link}" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500 no-underline">
                         <div class="flex items-center gap-4">
