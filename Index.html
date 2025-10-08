@@ -172,30 +172,13 @@
             flex-shrink: 0;
         }
         .review-content { flex-grow: 1; }
-        .review-header { display: flex; justify-content: space-between; align-items: center; }
         .review-name { font-weight: 700; font-size: 1.1rem; }
-        .review-time { font-size: 0.8rem; color: #6c757d; }
-        .review-active-badge {
-            background-image: linear-gradient(to right, #0d6efd, #0b5ed7);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .review-text-bubble {
-            background-color: #f1f3f5;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-style: italic;
+        .review-stars .lucide-star { fill: #ffc107; }
+        .review-text {
             color: #343a40;
-            position: relative;
+            font-size: 0.9rem;
+            margin-top: 4px;
         }
-        .review-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-        .review-stars .lucide-star { color: #ffc107; fill: #ffc107; }
-        .review-heart { color: #dc3545; cursor: pointer; transition: transform 0.2s; }
-        .review-heart:hover { transform: scale(1.1); }
         
         /* New vote button styles */
         .vote-btn {
@@ -904,7 +887,8 @@
                     if (referrerId) {
                         const referrerRef = doc(db, "users", referrerId);
                         const referrerSnap = await transaction.get(referrerRef);
-                        if (referrerSnap.exists() && referrerSnap.data().isActivated) {
+                        // ✅ MODIFICATION: Removed the check for referrer's activation status. Bonus is now always given.
+                        if (referrerSnap.exists()) {
                             const referralBonus = appConfig.referralBonus || 0;
                             transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
                         }
@@ -1455,13 +1439,11 @@
                     updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
                 } else {
                     let allUpdatesHtml = '';
-                    const batch = writeBatch(db); // *** MODIFICATION: Create a batch for view updates
-
+                    const batch = writeBatch(db); 
                     for (const docSnap of snapshot.docs) {
                         const updateData = docSnap.data();
                         const updateId = docSnap.id;
 
-                        // *** MODIFICATION: Increment view count efficiently ***
                         const updateRef = doc(db, "updates", updateId);
                         batch.update(updateRef, { views: increment(1) });
 
@@ -1471,7 +1453,6 @@
                         const isLiked = userVote === 'liked';
                         const isDisliked = userVote === 'disliked';
                         
-                        // *** MODIFICATION: Updated HTML structure ***
                         allUpdatesHtml += `
                         <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
                             <a href="${updateData.linkUrl || '#'}" target="_blank" class="block w-full aspect-video">
@@ -1499,7 +1480,7 @@
                             </div>
                         </div>`;
                     }
-                    await batch.commit(); // Commit all view updates at once
+                    await batch.commit(); 
                     updatesContainer.innerHTML = allUpdatesHtml;
                 }
                 
@@ -1510,28 +1491,11 @@
                 updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
             }
         }
-        
-        function formatRelativeTime(date) {
-            if (!date) return '';
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-            let interval = seconds / 31536000;
-            if (interval > 1) return Math.floor(interval) + " বছর আগে";
-            interval = seconds / 2592000;
-            if (interval > 1) return Math.floor(interval) + " মাস আগে";
-            interval = seconds / 86400;
-            if (interval > 1) return Math.floor(interval) + " দিন আগে";
-            interval = seconds / 3600;
-            if (interval > 1) return Math.floor(interval) + " ঘন্টা আগে";
-            interval = seconds / 60;
-            if (interval > 1) return Math.floor(interval) + " মিনিট আগে";
-            return "এইমাত্র";
-        }
-        
+
         function renderStars(rating) {
             let stars = '<div class="flex items-center gap-1 review-stars">';
             for (let i = 1; i <= 5; i++) {
-                stars += `<i data-lucide="star" class="w-4 h-4 ${i <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}"></i>`;
+                stars += `<i data-lucide="star" class="w-4 h-4 ${i <= rating ? 'text-yellow-400' : 'text-gray-300'}"></i>`;
             }
             stars += '</div>';
             return stars;
@@ -1549,30 +1513,21 @@
                     return;
                 }
 
+                // ✅ MODIFICATION: Simplified the review card layout as requested.
                 reviewsList.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     const starsHtml = renderStars(review.rating || 5);
-                    const relativeTime = review.createdAt ? formatRelativeTime(review.createdAt.toDate()) : '';
                     const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'U';
 
                     return `
                     <div class="review-card">
                         <div class="review-avatar">${initial}</div>
                         <div class="review-content">
-                            <div class="review-header">
-                                <div>
-                                    <div class="review-name">${review.userName}</div>
-                                    <div class="review-time">${relativeTime}</div>
-                                </div>
-                                <div class="review-active-badge">ACTIVE</div>
-                            </div>
-                            <div class="review-text-bubble">
-                                "${review.reviewText}"
-                            </div>
-                            <div class="review-footer">
+                            <div class="flex items-center justify-between">
+                                <div class="review-name">${review.userName}</div>
                                 ${starsHtml}
-                                <i data-lucide="heart" class="w-5 h-5 review-heart"></i>
                             </div>
+                            <p class="review-text">"${review.reviewText}"</p>
                         </div>
                     </div>`;
                 }).join('');
@@ -1609,7 +1564,6 @@
                 const countElement = document.getElementById(`${voteType}-count-${updateId}`);
                 countElement.textContent = parseInt(countElement.textContent) + 1;
                 
-                // *** MODIFICATION: Add animation class on successful vote ***
                 if(voteType === 'like') {
                     likeBtn.classList.remove('text-gray-500');
                     likeBtn.classList.add('voted-like');
@@ -1830,20 +1784,21 @@
                     categoryList.innerHTML = '<p class="text-gray-400 text-center">New tasks coming soon.</p>';
                     return;
                 }
-
+                
+                // ✅ MODIFICATION: Updated the task item layout to include a "GO!" button.
                 categoryList.innerHTML = snapshot.docs.map(doc => {
                     const category = doc.data();
                     return `
-                    <a href="${category.link}" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500 no-underline">
+                    <div class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left">
                         <div class="flex items-center gap-4">
-                            <i data-lucide="${category.icon || 'list-checks'}" class="w-8 h-8 text-blue-500"></i>
+                            <i data-lucide="${category.icon || 'list-checks'}" class="w-10 h-10 text-blue-500"></i>
                             <div>
                                 <h3 class="font-bold text-lg">${category.name}</h3>
                                 <p class="text-xs text-gray-500">Available Tasks: ${category.availableTasks || 0}</p>
                             </div>
                         </div>
-                        <span class="bg-blue-100 text-blue-700 text-lg font-bold px-4 py-2 rounded-full">${category.availableTasks || 0}</span>
-                    </a>
+                        <a href="${category.link}" target="_blank" class="bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm btn">GO!</a>
+                    </div>
                 `;
                 }).join('');
 
