@@ -196,6 +196,23 @@
         .review-stars .lucide-star { color: #ffc107; fill: #ffc107; }
         .review-heart { color: #dc3545; cursor: pointer; transition: transform 0.2s; }
         .review-heart:hover { transform: scale(1.1); }
+        
+        /* New vote button styles */
+        .vote-btn {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+        }
+        .vote-btn:active {
+            transform: scale(0.85);
+        }
+        .vote-btn.voted-like {
+            color: #0d6efd; /* Blue for like */
+            transform: scale(1.2);
+        }
+        .vote-btn.voted-dislike {
+            color: #dc3545; /* Red for dislike */
+            transform: scale(1.2);
+        }
+
 
     </style>
 </head>
@@ -789,6 +806,11 @@
         window.goBack = goBack;
 
         function navigateTo(pageId, isInitial = false) {
+            // *** MODIFICATION: Check for activation before navigating to tasks page ***
+            if (pageId === 'tasks-page' && !checkActivation()) {
+                return; // Stop navigation if account is not active
+            }
+
             if (!isInitial) {
                 const currentPage = document.querySelector('.sub-page.active');
                 if (currentPage) {
@@ -1433,18 +1455,51 @@
                     updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
                 } else {
                     let allUpdatesHtml = '';
+                    const batch = writeBatch(db); // *** MODIFICATION: Create a batch for view updates
+
                     for (const docSnap of snapshot.docs) {
                         const updateData = docSnap.data();
                         const updateId = docSnap.id;
+
+                        // *** MODIFICATION: Increment view count efficiently ***
+                        const updateRef = doc(db, "updates", updateId);
+                        batch.update(updateRef, { views: increment(1) });
+
                         const userInteractionDoc = await getDoc(doc(db, "updates", updateId, "userInteractions", currentUserId));
                         const userVote = userInteractionDoc.exists() ? userInteractionDoc.data().vote : null;
 
                         const isLiked = userVote === 'liked';
                         const isDisliked = userVote === 'disliked';
-                        let linkButtonHtml = updateData.linkUrl ? `<a href="${updateData.linkUrl}" target="_blank" class="btn-gradient px-4 py-2 rounded-lg text-sm flex-1 text-center">Learn More</a>` : '';
                         
-                        allUpdatesHtml += `<div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col"><img src="${updateData.imageUrl}" class="w-full aspect-video object-cover" alt="Update Banner"><div class="p-5 space-y-3 flex flex-col flex-grow"><h3 class="text-xl font-bold">${updateData.title}</h3><p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p><div class="flex items-center justify-between gap-4 pt-3 mt-auto"><div class="flex items-center gap-4"><div class="flex items-center space-x-2"><button id="like-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isLiked ? 'text-blue-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button><span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span></div><div class="flex items-center space-x-2"><button id="dislike-btn-${updateId}" class="like-dislike-btn p-2 rounded-full transition-colors ${isDisliked ? 'text-red-600' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button><span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span></div></div>${linkButtonHtml}</div></div></div>`;
+                        // *** MODIFICATION: Updated HTML structure ***
+                        allUpdatesHtml += `
+                        <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
+                            <a href="${updateData.linkUrl || '#'}" target="_blank" class="block w-full aspect-video">
+                                <img src="${updateData.imageUrl}" class="w-full h-full object-cover" alt="Update Banner">
+                            </a>
+                            <div class="p-5 space-y-3 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold">${updateData.title}</h3>
+                                <p class="text-gray-600 text-sm whitespace-pre-wrap flex-grow">${updateData.content || ''}</p>
+                                <div class="flex items-center justify-between gap-4 pt-3 mt-auto">
+                                    <div class="flex items-center gap-4">
+                                        <div class="flex items-center space-x-2">
+                                            <button id="like-btn-${updateId}" class="vote-btn p-2 rounded-full ${isLiked ? 'voted-like' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('like', '${updateId}')"><i data-lucide="thumbs-up" class="w-5 h-5"></i></button>
+                                            <span id="like-count-${updateId}" class="font-semibold text-sm">${updateData.likes || 0}</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button id="dislike-btn-${updateId}" class="vote-btn p-2 rounded-full ${isDisliked ? 'voted-dislike' : 'text-gray-500'}" ${isLiked || isDisliked ? 'disabled' : ''} onclick="handleVote('dislike', '${updateId}')"><i data-lucide="thumbs-down" class="w-5 h-5"></i></button>
+                                            <span id="dislike-count-${updateId}" class="font-semibold text-sm">${updateData.dislikes || 0}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-500">
+                                        <i data-lucide="eye" class="w-5 h-5"></i>
+                                        <span class="font-semibold text-sm">${(updateData.views || 0) + 1}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
                     }
+                    await batch.commit(); // Commit all view updates at once
                     updatesContainer.innerHTML = allUpdatesHtml;
                 }
                 
@@ -1530,9 +1585,8 @@
 
 
         window.handleVote = async function(voteType, updateId) {
-            if (!userData.isActivated) {
+            if (!checkActivation()) {
                 showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন ভোট দেওয়ার জন্য।");
-                checkActivation(); 
                 return;
             }
             const likeBtn = document.getElementById(`like-btn-${updateId}`);
@@ -1554,8 +1608,17 @@
                 });
                 const countElement = document.getElementById(`${voteType}-count-${updateId}`);
                 countElement.textContent = parseInt(countElement.textContent) + 1;
-                if(voteType === 'like') likeBtn.classList.add('text-blue-600');
-                if(voteType === 'dislike') dislikeBtn.classList.add('text-red-600');
+                
+                // *** MODIFICATION: Add animation class on successful vote ***
+                if(voteType === 'like') {
+                    likeBtn.classList.remove('text-gray-500');
+                    likeBtn.classList.add('voted-like');
+                }
+                if(voteType === 'dislike') {
+                    dislikeBtn.classList.remove('text-gray-500');
+                    dislikeBtn.classList.add('voted-dislike');
+                }
+
             } catch (e) {
                 showAlert(e.message || "Failed to submit your vote.");
                 likeBtn.disabled = false;
