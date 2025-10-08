@@ -148,54 +148,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* Review Card Style */
-        .review-card {
-            background-color: #fff;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-        .review-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #fff;
-            background-image: linear-gradient(to top right, #0d6efd, #6c757d);
-            flex-shrink: 0;
-        }
-        .review-content { flex-grow: 1; }
-        .review-header { display: flex; justify-content: space-between; align-items: center; }
-        .review-name { font-weight: 700; font-size: 1.1rem; }
-        .review-time { font-size: 0.8rem; color: #6c757d; }
-        .review-active-badge {
-            background-image: linear-gradient(to right, #0d6efd, #0b5ed7);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .review-text-bubble {
-            background-color: #f1f3f5;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-style: italic;
-            color: #343a40;
-            position: relative;
-        }
-        .review-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-        .review-stars .lucide-star { color: #ffc107; fill: #ffc107; }
-        .review-heart { color: #dc3545; cursor: pointer; transition: transform 0.2s; }
-        .review-heart:hover { transform: scale(1.1); }
         
         /* New vote button styles */
         .vote-btn {
@@ -213,6 +165,71 @@
             transform: scale(1.2);
         }
 
+        /* New Premium Review Card Styles */
+        .review-card-premium {
+            background-color: #ffffff;
+            border: 1px solid #eef2f7;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .review-avatar-premium {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+            background: linear-gradient(135deg, #1e90ff, #0d6efd);
+            flex-shrink: 0;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .review-name-premium {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #212529;
+        }
+        .review-date {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        .review-stars .lucide-star { fill: #ffc107; color: #ffc107; }
+        .review-body {
+            position: relative;
+            padding-left: 28px;
+            padding-top: 8px;
+        }
+        .review-body .lucide-quote {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            color: #e9ecef;
+        }
+        .review-text-premium {
+            color: #343a40;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
     </style>
 </head>
@@ -569,18 +586,6 @@
         </div>
     </div>
 
-    <div id="sell-details-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
-            <h3 id="sell-details-title" class="text-xl font-bold text-center text-accent-gradient mb-2"></h3>
-            <p id="sell-details-subtitle" class="text-sm text-gray-500 text-center"></p>
-            <div id="sell-details-content" class="text-gray-700 space-y-3 mt-4">
-                </div>
-            <div id="sell-details-example" class="mt-4 p-4 bg-gray-100 rounded-lg text-sm">
-                </div>
-            <button id="sell-details-ok-btn" class="w-full p-3 rounded-lg btn-gradient mt-4">Got It!</button>
-        </div>
-    </div>
-
     <div id="manual-task-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
         <div class="card-bg rounded-2xl p-6 w-full max-w-sm space-y-4">
             <h3 id="manual-task-modal-title" class="text-xl font-bold text-center text-accent-gradient">Submit Task</h3>
@@ -886,9 +891,6 @@
             document.getElementById('close-activation-prompt').addEventListener('click', () => activationPrompt.classList.add('hidden'));
 
             document.getElementById('manual-task-modal-cancel').addEventListener('click', () => document.getElementById('manual-task-modal').classList.add('hidden'));
-            
-            // Listener for the new sell details modal
-            document.getElementById('sell-details-ok-btn').addEventListener('click', () => document.getElementById('sell-details-modal').classList.add('hidden'));
         }
         
         async function handleActivation() {
@@ -913,17 +915,37 @@
                     if (!userDoc.exists() || userDoc.data().isActivated) throw "অ্যাকাউন্ট ইতিমধ্যে অ্যাক্টিভ আছে।";
                     if (userDoc.data().mainBalance < activationFee) throw "অপর্যাপ্ত ব্যালেন্স।";
 
+                    // === START: IMPROVED AND SAFER LOGIC ===
+
                     transaction.update(userRef, { mainBalance: increment(-activationFee), isActivated: true });
 
                     const referrerId = userDoc.data().referredBy;
                     if (referrerId) {
-                        const referrerRef = doc(db, "users", referrerId);
-                        const referrerSnap = await transaction.get(referrerRef);
-                        if (referrerSnap.exists() && referrerSnap.data().isActivated) {
-                            const referralBonus = appConfig.referralBonus || 0;
-                            transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
+                        const creationTimestamp = userDoc.data().createdAt;
+                        
+                        // Check if creationTimestamp is a valid Firestore Timestamp object before proceeding
+                        if (creationTimestamp && typeof creationTimestamp.toDate === 'function') {
+                            const creationDate = creationTimestamp.toDate();
+                            const now = new Date();
+                            const hoursDiff = (now.getTime() - creationDate.getTime()) / (1000 * 60 * 60);
+
+                            // বোনাস শুধুমাত্র অ্যাকাউন্ট খোলার ৬ ঘন্টার মধ্যে অ্যাক্টিভ করলে দেওয়া হবে
+                            if (hoursDiff <= 6) {
+                                const referrerRef = doc(db, "users", referrerId);
+                                const referrerSnap = await transaction.get(referrerRef);
+                                if (referrerSnap.exists()) {
+                                    const referralBonus = appConfig.referralBonus || 0;
+                                    transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
+                                }
+                            } else {
+                                console.log(`Referral bonus for ${referrerId} skipped. User activated after the 6-hour window.`);
+                            }
+                        } else {
+                            // If createdAt is missing or invalid, log it but don't crash the activation
+                            console.error(`User ${currentUserId} is missing a valid 'createdAt' timestamp. Cannot calculate referral bonus window.`);
                         }
                     }
+                    // === END: IMPROVED AND SAFER LOGIC ===
                 });
 
                 await fetchUserData(); 
@@ -1354,12 +1376,10 @@
                 itemDiv.className = 'card-bg p-4 rounded-xl space-y-3';
                 let sellButtonDisabled = userData && !userData.isActivated ? 'disabled' : '';
                 let sellButtonClass = userData && !userData.isActivated ? 'btn-disabled' : 'btn-gradient';
-                itemDiv.innerHTML = `<div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo"><h3 class="font-bold text-lg">${item.type}</h3></div><button class="details-btn btn-outline-accent px-3 py-1 text-xs rounded-md">Details</button></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">${item.reportText || ''}</span></div><div class="py-2"><p class="font-bold text-lg text-blue-600">৳${parseFloat(item.price).toFixed(2)}</p></div><div class="py-2"><p class="font-semibold text-sky-600">${item.availabilityText || 'N/A'}</p></div></div><button class="sell-now-btn ${sellButtonClass} w-full py-2 rounded-lg text-md font-bold" ${sellButtonDisabled}>SELL NOW</button>`;
+                itemDiv.innerHTML = `<div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo"><h3 class="font-bold text-lg">${item.type}</h3></div><button class="btn-outline-accent px-3 py-1 text-xs rounded-md">Details</button></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">${item.reportText || ''}</span></div><div class="py-2"><p class="font-bold text-lg text-blue-600">৳${parseFloat(item.price).toFixed(2)}</p></div><div class="py-2"><p class="font-semibold text-sky-600">${item.availabilityText || 'N/A'}</p></div></div><button class="${sellButtonClass} w-full py-2 rounded-lg text-md font-bold" ${sellButtonDisabled}>SELL NOW</button>`;
                 
-                const detailsBtn = itemDiv.querySelector('.details-btn');
-                detailsBtn.addEventListener('click', () => openSellDetailsModal(item));
-
-                itemDiv.querySelector('.sell-now-btn').onclick = () => {
+                itemDiv.querySelector('.btn-outline-accent').onclick = () => showSellDetails(item.details);
+                itemDiv.querySelector(`.${sellButtonClass}`).onclick = () => {
                     if (!userData.isActivated) {
                         showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন 'SELL NOW' ব্যবহার করার জন্য।");
                         checkActivation();
@@ -1372,54 +1392,7 @@
             lucide.createIcons();
         }
 
-        // *** NEW FUNCTION to show sell details in a modal ***
-        function openSellDetailsModal(item) {
-            const modal = document.getElementById('sell-details-modal');
-            
-            // Default details if not provided in config
-            const details = item.details || {
-                title: `${item.type} বিক্রির নিয়মাবলী`,
-                subtitle: 'অনুগ্রহ করে নিচের নিয়মগুলো অবশ্যই মেনে চলুন।',
-                rules: [
-                    'পাসওয়ার্ড সঠিক থাকতে হবে।',
-                    'পাসওয়ার্ডে অবশ্যই আজকের তারিখ থাকতে হবে।'
-                ]
-            };
-
-            document.getElementById('sell-details-title').textContent = details.title;
-            document.getElementById('sell-details-subtitle').textContent = details.subtitle;
-            
-            const contentDiv = document.getElementById('sell-details-content');
-            contentDiv.innerHTML = `
-                <ol class="list-decimal list-inside space-y-2 text-sm">
-                    ${details.rules.map(rule => `<li>${rule}</li>`).join('')}
-                </ol>
-            `;
-            
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const year = today.getFullYear();
-            const formattedDate = `${day}${month}${year}`;
-            const examplePassword = `SAIDUL@${formattedDate}`;
-
-            const exampleDiv = document.getElementById('sell-details-example');
-            exampleDiv.innerHTML = `
-                <p class="font-semibold mb-2">অনুগ্রহ করে আপনার একাউন্টের সকল তথ্য দিন।</p>
-                <p class="mb-2">আজকের পাসওয়ার্ড হবে এমন:</p>
-                <div class="bg-gray-200 p-2 rounded-lg flex justify-between items-center">
-                    <span class="font-mono text-gray-800">${examplePassword}</span>
-                    <button id="copy-example-pass-btn" class="p-1.5 bg-gray-300 rounded hover:bg-gray-400"><i data-lucide="copy" class="w-4 h-4"></i></button>
-                </div>
-            `;
-            
-            document.getElementById('copy-example-pass-btn').onclick = function() {
-                copyToClipboard(examplePassword, this);
-            };
-
-            modal.classList.remove('hidden');
-            lucide.createIcons();
-        }
+        window.showSellDetails = function(details) { showAlert(`Details\n\n${details}`); }
 
         window.openSellModal = function(type, itemDetails) {
             if (!userData.isActivated) {
@@ -1428,7 +1401,7 @@
                 return;
             }
             const modal = document.getElementById('sell-modal');
-            const itemConfig = (appConfig.sellableItems || []).find(item => item.type === type);
+            const itemConfig = (appConfig.sellableItems || []).find(item => item.type === type && item.details === itemDetails);
             if (!itemConfig) return showAlert("Error: Item configuration not found.");
             document.getElementById('sell-modal-title').textContent = `Sell ${itemConfig.type}`;
             const fieldsContainer = document.getElementById('sell-modal-fields-container');
@@ -1519,13 +1492,11 @@
                     updatesContainer.innerHTML = `<div class="card-bg p-6 rounded-2xl text-center"><h3 class="font-bold text-xl">No new updates right now!</h3><p class="text-gray-500 mt-2">Check back later.</p></div>`;
                 } else {
                     let allUpdatesHtml = '';
-                    const batch = writeBatch(db); // *** MODIFICATION: Create a batch for view updates
-
+                    const batch = writeBatch(db); 
                     for (const docSnap of snapshot.docs) {
                         const updateData = docSnap.data();
                         const updateId = docSnap.id;
 
-                        // *** MODIFICATION: Increment view count efficiently ***
                         const updateRef = doc(db, "updates", updateId);
                         batch.update(updateRef, { views: increment(1) });
 
@@ -1535,7 +1506,6 @@
                         const isLiked = userVote === 'liked';
                         const isDisliked = userVote === 'disliked';
                         
-                        // *** MODIFICATION: Updated HTML structure ***
                         allUpdatesHtml += `
                         <div class="card-bg rounded-2xl overflow-hidden shadow-lg flex flex-col">
                             <a href="${updateData.linkUrl || '#'}" target="_blank" class="block w-full aspect-video">
@@ -1563,7 +1533,7 @@
                             </div>
                         </div>`;
                     }
-                    await batch.commit(); // Commit all view updates at once
+                    await batch.commit(); 
                     updatesContainer.innerHTML = allUpdatesHtml;
                 }
                 
@@ -1574,28 +1544,11 @@
                 updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
             }
         }
-        
-        function formatRelativeTime(date) {
-            if (!date) return '';
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-            let interval = seconds / 31536000;
-            if (interval > 1) return Math.floor(interval) + " বছর আগে";
-            interval = seconds / 2592000;
-            if (interval > 1) return Math.floor(interval) + " মাস আগে";
-            interval = seconds / 86400;
-            if (interval > 1) return Math.floor(interval) + " দিন আগে";
-            interval = seconds / 3600;
-            if (interval > 1) return Math.floor(interval) + " ঘন্টা আগে";
-            interval = seconds / 60;
-            if (interval > 1) return Math.floor(interval) + " মিনিট আগে";
-            return "এইমাত্র";
-        }
-        
+
         function renderStars(rating) {
             let stars = '<div class="flex items-center gap-1 review-stars">';
             for (let i = 1; i <= 5; i++) {
-                stars += `<i data-lucide="star" class="w-4 h-4 ${i <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}"></i>`;
+                stars += `<i data-lucide="star" class="w-4 h-4 ${i <= rating ? 'text-yellow-400' : 'text-gray-300'}"></i>`;
             }
             stars += '</div>';
             return stars;
@@ -1612,31 +1565,31 @@
                     reviewsList.innerHTML = '<p class="text-center text-gray-500">No reviews yet. Be the first!</p>';
                     return;
                 }
-
+                
+                // *** CHANGE: Updated review card to a more premium design ***
                 reviewsList.innerHTML = snapshot.docs.map(doc => {
                     const review = doc.data();
                     const starsHtml = renderStars(review.rating || 5);
-                    const relativeTime = review.createdAt ? formatRelativeTime(review.createdAt.toDate()) : '';
                     const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'U';
+                    const date = review.createdAt ? review.createdAt.toDate().toLocaleDateString('en-GB', {
+                        day: 'numeric', month: 'long', year: 'numeric'
+                    }) : '';
 
                     return `
-                    <div class="review-card">
-                        <div class="review-avatar">${initial}</div>
-                        <div class="review-content">
-                            <div class="review-header">
+                    <div class="review-card-premium">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="review-avatar-premium">${initial}</div>
                                 <div>
-                                    <div class="review-name">${review.userName}</div>
-                                    <div class="review-time">${relativeTime}</div>
+                                    <div class="review-name-premium">${review.userName}</div>
+                                    <div class="review-date">${date}</div>
                                 </div>
-                                <div class="review-active-badge">ACTIVE</div>
                             </div>
-                            <div class="review-text-bubble">
-                                "${review.reviewText}"
-                            </div>
-                            <div class="review-footer">
-                                ${starsHtml}
-                                <i data-lucide="heart" class="w-5 h-5 review-heart"></i>
-                            </div>
+                            ${starsHtml}
+                        </div>
+                        <div class="review-body">
+                             <i data-lucide="quote" class="lucide-quote"></i>
+                            <p class="review-text-premium">${review.reviewText}</p>
                         </div>
                     </div>`;
                 }).join('');
@@ -1673,7 +1626,6 @@
                 const countElement = document.getElementById(`${voteType}-count-${updateId}`);
                 countElement.textContent = parseInt(countElement.textContent) + 1;
                 
-                // *** MODIFICATION: Add animation class on successful vote ***
                 if(voteType === 'like') {
                     likeBtn.classList.remove('text-gray-500');
                     likeBtn.classList.add('voted-like');
@@ -1894,21 +1846,21 @@
                     categoryList.innerHTML = '<p class="text-gray-400 text-center">New tasks coming soon.</p>';
                     return;
                 }
-
-                // *** MODIFIED THIS SECTION FOR TASKS PAGE ***
+                
+                // ✅ MODIFICATION: Updated the task item layout to include a "GO!" button.
                 categoryList.innerHTML = snapshot.docs.map(doc => {
                     const category = doc.data();
                     return `
-                    <a href="${category.link}" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left hover:border-blue-500 no-underline">
+                    <div class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left">
                         <div class="flex items-center gap-4">
-                            <i data-lucide="${category.icon || 'list-checks'}" class="w-8 h-8 text-blue-500"></i>
+                            <i data-lucide="${category.icon || 'list-checks'}" class="w-10 h-10 text-blue-500"></i>
                             <div>
                                 <h3 class="font-bold text-lg">${category.name}</h3>
                                 <p class="text-xs text-gray-500">Available Tasks: ${category.availableTasks || 0}</p>
                             </div>
                         </div>
-                        <span class="bg-blue-100 text-blue-700 text-lg font-bold px-4 py-2 rounded-full">GO!</span>
-                    </a>
+                        <a href="${category.link}" target="_blank" class="bg-blue-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm btn">GO!</a>
+                    </div>
                 `;
                 }).join('');
 
@@ -1921,3 +1873,4 @@
     </script>
 </body>
 </html>
+
