@@ -1331,7 +1331,6 @@
             }
         }
         
-        // ✅ এই নতুন এবং চূড়ান্ত ফাংশনটি পেস্ট করুন ✅
         async function loadSellItems() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -1362,111 +1361,24 @@
             document.getElementById('today-sell-income-display').textContent = `৳${todaySellIncome.toFixed(2)}`;
             document.getElementById('total-sell-approve-display').textContent = totalApprovedSellCount;
 
+
             const sellList = document.getElementById('sell-item-list');
             sellList.innerHTML = '';
             const sellableItems = (appConfig.sellableItems || []).filter(item => item.isEnabled === true);
-
+            
             if (sellableItems.length === 0) {
                 sellList.innerHTML = '<p class="text-gray-500 text-center">বিক্রি করার জন্য কোনো আইটেম এখন উপলব্ধ নেই।</p>';
                 return;
             }
-
+            
             sellableItems.forEach(item => {
                 const itemDiv = document.createElement('div');
-                const uniqueId = `${item.type.replace(/\s+/g, '-')}-${Math.random().toString(36).substr(2, 5)}`;
-                
                 itemDiv.className = 'card-bg p-4 rounded-xl space-y-3';
                 let sellButtonDisabled = userData && !userData.isActivated ? 'disabled' : '';
                 let sellButtonClass = userData && !userData.isActivated ? 'btn-disabled' : 'btn-gradient';
-
-                // আগের ডিজাইনের সাথে নতুন Details ফাংশনালিটি যুক্ত করা হয়েছে
-                itemDiv.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo">
-                            <h3 class="font-bold text-lg">${item.type}</h3>
-                        </div>
-                        <button id="details-toggle-${uniqueId}" class="btn-outline-accent px-3 py-1 text-xs rounded-md flex items-center gap-1">
-                            <span>Details</span>
-                            <i id="details-chevron-${uniqueId}" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300"></i>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200">
-                        <div class="py-2">
-                            <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">${item.reportText || ''}</span>
-                        </div>
-                        <div class="py-2">
-                            <p class="font-bold text-lg text-blue-600">৳${parseFloat(item.price).toFixed(2)}</p>
-                        </div>
-                        <div class="py-2">
-                            <p class="font-semibold text-sky-600">${item.availabilityText || 'N/A'}</p>
-                        </div>
-                    </div>
-
-                    <div id="details-content-${uniqueId}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                        <div class="text-sm text-gray-600 space-y-2 border-t border-gray-200 pt-3 mt-2">
-                             <h4 class="font-semibold text-gray-800">শর্তাবলী:</h4>
-                             <ul class="space-y-2 pt-1">
-                                <li class="flex items-start gap-2">
-                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mt-0.5 shrink-0"></i>
-                                    <span>একাউন্ট অবশ্যই ভালো এবং ফ্রেশ হতে হবে।</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mt-0.5 shrink-0"></i>
-                                    <span>পাসওয়ার্ড এবং অন্যান্য তথ্য সঠিক থাকতে হবে।</span>
-                                </li>
-                                 <li class="flex items-start gap-2">
-                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-green-500 mt-0.5 shrink-0"></i>
-                                    <span>আপনার নিজের কোনো ব্যক্তিগত তথ্য রাখবেন না।</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <button class="${sellButtonClass} w-full py-2 rounded-lg text-md font-bold" ${sellButtonDisabled}>SELL NOW</button>
-                `;
-
-                sellList.appendChild(itemDiv);
+                itemDiv.innerHTML = `<div class="flex justify-between items-center"><div class="flex items-center gap-3"><img src="${item.logoUrl || ''}" class="w-8 h-8 rounded-full object-cover" alt="${item.type} logo"><h3 class="font-bold text-lg">${item.type}</h3></div><button class="btn-outline-accent px-3 py-1 text-xs rounded-md">Details</button></div><div class="grid grid-cols-3 text-center items-center pt-2 border-t border-gray-200"><div class="py-2"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">${item.reportText || ''}</span></div><div class="py-2"><p class="font-bold text-lg text-blue-600">৳${parseFloat(item.price).toFixed(2)}</p></div><div class="py-2"><p class="font-semibold text-sky-600">${item.availabilityText || 'N/A'}</p></div></div><button class="${sellButtonClass} w-full py-2 rounded-lg text-md font-bold" ${sellButtonDisabled}>SELL NOW</button>`;
                 
-                // Details বাটন এবং কন্টেন্ট এর জন্য ভ্যারিয়েবল
-                const toggleBtn = itemDiv.querySelector(`#details-toggle-${uniqueId}`);
-                const contentDiv = itemDiv.querySelector(`#details-content-${uniqueId}`);
-                const chevron = itemDiv.querySelector(`#details-chevron-${uniqueId}`);
-
-                // Details বাটন খোলার এবং বন্ধ করার ফাংশন
-                const closeDetails = () => {
-                    contentDiv.classList.add('max-h-0');
-                    contentDiv.classList.remove('max-h-96');
-                    chevron.classList.remove('rotate-180');
-                };
-                const openDetails = () => {
-                    contentDiv.classList.remove('max-h-0');
-                    contentDiv.classList.add('max-h-96');
-                    chevron.classList.add('rotate-180');
-                    lucide.createIcons();
-                };
-
-                // Details বাটনে ক্লিক করলে টগল হবে
-                toggleBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // এটা কার্ডের ক্লিক ইভেন্টকে 막বে
-                    const isHidden = contentDiv.classList.contains('max-h-0');
-                    if (isHidden) {
-                        openDetails();
-                    } else {
-                        closeDetails();
-                    }
-                });
-
-                // কার্ডের অন্য কোথাও ক্লিক করলে Details বন্ধ হয়ে যাবে
-                itemDiv.addEventListener('click', (e) => {
-                    // যদি ক্লিকটি Details বাটনের উপর না হয়, তাহলে বন্ধ করো
-                    if (!toggleBtn.contains(e.target)) {
-                       closeDetails();
-                    }
-                });
-
-                // Sell Now বাটনের জন্য ক্লিক ইভেন্ট
+                itemDiv.querySelector('.btn-outline-accent').onclick = () => showSellDetails(item.details);
                 itemDiv.querySelector(`.${sellButtonClass}`).onclick = () => {
                     if (!userData.isActivated) {
                         showAlert("আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন 'SELL NOW' ব্যবহার করার জন্য।");
@@ -1475,6 +1387,7 @@
                     }
                     openSellModal(item.type, item.details);
                 };
+                sellList.appendChild(itemDiv);
             });
             lucide.createIcons();
         }
