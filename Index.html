@@ -49,27 +49,17 @@
             box-shadow: 0 6px 20px rgba(13, 110, 253, 0.3);
             background-image: linear-gradient(to right, #0b5ed7, #0d6efd);
         }
-        .input-field { 
-            background-color: #f1f3f5; 
-            border: 1px solid #ced4da; 
-            transition: all 0.2s ease;
-            color: #212529;
-        }
-        .input-field:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
-            outline: none;
-        }
         .main-page { display: none; }
         .main-page.active { display: flex; animation: fadeIn 0.5s ease-in-out; }
         .sub-page { display: none; }
         .sub-page.active { display: block; animation: fadeIn 0.3s ease-in-out; }
         
+        /* Premium Bottom Navigation Bar Styles */
         .bottom-nav {
              border-top: 1px solid #e9ecef;
              background-color: rgba(255, 255, 255, 0.85);
-             backdrop-filter: blur(10px);
-             -webkit-backdrop-filter: blur(10px);
+             backdrop-filter: blur(12px);
+             -webkit-backdrop-filter: blur(12px);
              position: fixed;
              bottom: 0;
              left: 0;
@@ -79,22 +69,66 @@
              display: flex;
              justify-content: space-around;
              align-items: center;
-             padding: 12px 16px;
+             padding: 8px 12px;
              z-index: 50;
+             gap: 8px;
         }
-        .nav-link-premium { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #6c757d; font-size: 0.75rem; font-weight: 500; padding: 8px; border-radius: 12px; transition: all 0.2s ease; position: relative; }
-        .nav-link-premium:hover { color: #212529; }
-        .nav-link-premium.active { 
-            color: #0d6efd; 
-            background: linear-gradient(to top, rgba(13, 110, 253, 0.05), rgba(13, 110, 253, 0));
+        .nav-link-premium { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #495057;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            position: relative;
+            flex: 1;
+        }
+        .nav-link-premium .icon {
+             width: 24px;
+             height: 24px;
+             transition: all 0.3s ease;
+        }
+        .nav-link-premium:hover .icon {
+            color: #0d6efd;
+        }
+        .nav-link-premium.active .icon {
+            color: #0d6efd;
+            transform: scale(1.1);
+        }
+        .nav-link-premium.active span {
+            color: #0d6efd;
         }
         .nav-link-premium:active { transform: scale(0.95); }
-        .nav-link-premium .icon { width: 24px; height: 24px; }
-        .center-home-link { position: relative; transform: translateY(-20px) scale(1.1); background: linear-gradient(to right, #0d6efd, #0b5ed7); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(13, 110, 253, 0.4); transition: all 0.3s ease; color: #ffffff; }
-        .center-home-link:hover { transform: translateY(-20px) scale(1.15); box-shadow: 0 6px 30px rgba(13, 110, 253, 0.6); }
-        .center-home-link.active { background: linear-gradient(to right, #0d6efd, #0b5ed7); } /* Keep original gradient when active */
-        .center-home-link .icon { width: 32px; height: 32px; color: #fff; }
-        
+        .center-home-link { 
+            transform: translateY(-24px); 
+            background: linear-gradient(to right, #0d6efd, #0b5ed7); 
+            border-radius: 50%; 
+            width: 64px; 
+            height: 64px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 6px 25px rgba(13, 110, 253, 0.5); 
+            transition: all 0.3s ease; 
+            color: #ffffff; 
+            border: 4px solid #f8f9fa;
+            flex: 0 0 64px; /* Prevent shrinking/growing */
+        }
+        .center-home-link:hover { 
+            transform: translateY(-24px) scale(1.1); 
+            box-shadow: 0 8px 35px rgba(13, 110, 253, 0.6); 
+        }
+        .center-home-link .icon { 
+            width: 32px; height: 32px; color: #fff; 
+        }
+        .center-home-link.active .icon {
+            color: #fff; /* Keep icon color white when active */
+        }
+
         .header { 
             border-bottom: 1px solid #e9ecef; 
             background-color: rgba(255, 255, 255, 0.8); 
@@ -105,130 +139,35 @@
         
         /* Splash Screen Styles */
         #splash-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #ffffff;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            transition: opacity 0.5s ease-out;
+            position: fixed; inset: 0; background-color: #ffffff; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.5s ease-out;
         }
         .splash-loader {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 5px solid #f1f3f5;
-            border-top-color: #0d6efd;
-            animation: spin 1s linear infinite;
+            width: 50px; height: 50px; border-radius: 50%; border: 5px solid #f1f3f5; border-top-color: #0d6efd; animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         /* Vote button styles */
-        .vote-btn {
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
-        }
-        .vote-btn:active {
-            transform: scale(0.85);
-        }
-        .vote-btn.voted-like {
-            color: #0d6efd; /* Blue for like */
-            transform: scale(1.2);
-        }
-        .vote-btn.voted-dislike {
-            color: #dc3545; /* Red for dislike */
-            transform: scale(1.2);
-        }
+        .vote-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease; }
+        .vote-btn:active { transform: scale(0.85); }
+        .vote-btn.voted-like { color: #0d6efd; transform: scale(1.2); }
+        .vote-btn.voted-dislike { color: #dc3545; transform: scale(1.2); }
 
         /* Premium Review Card Styles */
-        .review-card-premium {
-            background-color: #ffffff;
-            border: 1px solid #eef2f7;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .reviewer-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .review-avatar-premium {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #fff;
-            background: linear-gradient(135deg, #1e90ff, #0d6efd);
-            flex-shrink: 0;
-            border: 2px solid #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .review-name-premium {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #212529;
-        }
-        .review-date {
-            font-size: 0.75rem;
-            color: #6c757d;
-        }
+        .review-card-premium { background-color: #ffffff; border: 1px solid #eef2f7; border-radius: 20px; padding: 20px; box-shadow: 0 8px 24px rgba(0, 30, 80, 0.08); display: flex; flex-direction: column; gap: 12px; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+        .reviewer-info { display: flex; align-items: center; gap: 12px; }
+        .review-avatar-premium { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; color: #fff; background: linear-gradient(135deg, #1e90ff, #0d6efd); flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .review-name-premium { font-weight: 700; font-size: 1.1rem; color: #212529; }
+        .review-date { font-size: 0.75rem; color: #6c757d; }
         .review-stars .lucide-star { fill: #ffc107; color: #ffc107; }
-        .review-body {
-            position: relative;
-            padding-left: 28px;
-            padding-top: 8px;
-        }
-        .review-body .lucide-quote {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            color: #e9ecef;
-        }
-        .review-text-premium {
-            color: #343a40;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
+        .review-body { position: relative; padding-left: 28px; padding-top: 8px; }
+        .review-body .lucide-quote { position: absolute; left: 0; top: 0; width: 20px; height: 20px; color: #e9ecef; }
+        .review-text-premium { color: #343a40; font-size: 0.95rem; line-height: 1.6; }
 
         /* Scrolling Text (Marquee) Styles */
-        @keyframes scroll-left {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .scrolling-text-container {
-            width: 100%;
-            overflow: hidden;
-            background-color: #e9ecef;
-            padding: 10px 0;
-            border-radius: 8px;
-        }
-        .scrolling-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scroll-left 20s linear infinite;
-            font-weight: 500;
-            color: #495057;
-        }
+        @keyframes scroll-left { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .scrolling-text-container { width: 100%; overflow: hidden; background-color: #e9ecef; padding: 10px 0; border-radius: 8px; }
+        .scrolling-text { display: inline-block; white-space: nowrap; animation: scroll-left 20s linear infinite; font-weight: 500; color: #495057; }
     </style>
 </head>
 <body class="max-w-md mx-auto">
@@ -246,15 +185,10 @@
             </div>
         </header>
 
-        <main class="flex-grow pb-20">
-            <div id="home-page" class="p-4 space-y-6 sub-page flex flex-col">
+        <main class="flex-grow pb-24">
+            <div id="home-page" class="p-4 sub-page">
                 <div class="scrolling-text-container">
                     <p class="scrolling-text">Welcome to Best MarketBot ✨ আপনার সকল ডিজিটাল প্রয়োজনের জন্য ওয়ান-স্টপ সমাধান ✨ সর্বশেষ খবর এবং অফারগুলির জন্য আপডেট বিভাগটি দেখুন! ✨</p>
-                </div>
-                <div class="flex-grow flex flex-col items-center justify-center text-center">
-                    <img src="https://i.postimg.cc/mD8cM5yG/40414-2-robot-free-clipart-hd.png" alt="Welcome Bot" class="w-48 h-48">
-                    <h2 class="text-3xl font-bold text-gray-800 mt-4 mb-2">Welcome Back!</h2>
-                    <p class="text-gray-500">নিচের মেনু ব্যবহার করে নেভিগেট করুন।</p>
                 </div>
             </div>
             
@@ -266,7 +200,7 @@
                     </summary>
                     <div class="p-4 border-t border-gray-200">
                         <div class="aspect-w-16 aspect-h-9">
-                             <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/VIDEO_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                             <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 </details>
@@ -302,7 +236,6 @@
                     <h3 id="profile-name" class="text-2xl font-bold">Loading...</h3>
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <p id="profile-id" class="text-sm text-gray-400 mt-2">ID: 123456</p>
-                    <p id="profile-activation-status" class="mt-3 px-3 py-1 rounded-full text-sm font-semibold"></p>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-sm text-gray-600">
                     <div class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-gray-500"></i><span>From Bangladesh</span></div>
@@ -334,16 +267,6 @@
             <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
-    </div>
-    
-    <div id="activation-prompt" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center border border-gray-200 shadow-xl relative">
-            <button id="close-activation-prompt" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <i data-lucide="lock" class="w-12 h-12 text-yellow-500 mx-auto mb-4"></i>
-            <h3 class="text-xl font-bold mb-2">Account Inactive</h3>
-            <p id="activation-message" class="text-gray-600 mb-5">আপনার অ্যাকাউন্টটি অ্যাক্টিভ করা নেই। সম্পূর্ণ সুবিধা পেতে, অনুগ্রহ করে "Activate Now" বাটনে ক্লিক করে অ্যাডমিনের সাথে যোগাযোগ করুন।</p>
-            <a href="https://wa.me/8801864260513" target="_blank" class="btn-gradient block w-full px-8 py-3 rounded-lg">Activate Now</a>
-        </div>
     </div>
 
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[101] p-4 backdrop-blur-sm">
@@ -377,7 +300,6 @@
         let previousPageId = 'home-page'; 
         
         const splashScreen = document.getElementById('splash-screen');
-        const activationPrompt = document.getElementById('activation-prompt');
         
         window.onload = async () => {
             try {
@@ -415,7 +337,6 @@
             }
             
             navigateTo('home-page', true); 
-            checkActivation();
 
             splashScreen.style.opacity = '0';
             setTimeout(() => {
@@ -443,22 +364,11 @@
                     username: currentUser.username || '',
                     createdAt: serverTimestamp(),
                     isBlocked: false,
-                    isActivated: false,
                 };
                 
                 await setDoc(userRef, newUserData);
                 userData = newUserData;
             }
-        }
-
-        function checkActivation() {
-            if (currentUser && userData && !userData.isActivated) {
-                activationPrompt.classList.remove('hidden');
-                lucide.createIcons();
-                return false;
-            }
-            activationPrompt.classList.add('hidden');
-            return true;
         }
 
         async function fetchAppConfig() {
@@ -469,11 +379,6 @@
             };
         }
 
-        function showMainPage(pageId) {
-            document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-        
         function goBack() {
             navigateTo(previousPageId || 'home-page');
         }
@@ -507,7 +412,6 @@
 
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
-            document.getElementById('close-activation-prompt').addEventListener('click', () => activationPrompt.classList.add('hidden'));
         }
         
         async function loadProfilePage() {
@@ -530,14 +434,6 @@
             document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
             document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
 
-            const activationStatusElement = document.getElementById('profile-activation-status');
-            if (userData.isActivated) {
-                activationStatusElement.textContent = 'Active Account';
-                activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-700';
-            } else {
-                activationStatusElement.textContent = 'Inactive Account';
-                activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700';
-            }
             lucide.createIcons();
         }
         
@@ -663,10 +559,6 @@
         }
 
         window.handleVote = async function(voteType, updateId) {
-            if (!checkActivation()) {
-                showAlert("ভোট দেওয়ার জন্য আপনার অ্যাকাউন্ট অ্যাক্টিভ করা প্রয়োজন।");
-                return;
-            }
             const likeBtn = document.getElementById(`like-btn-${updateId}`);
             const dislikeBtn = document.getElementById(`dislike-btn-${updateId}`);
             likeBtn.disabled = true;
@@ -707,18 +599,6 @@
             document.getElementById('alert-message').innerText = message;
             document.getElementById('custom-alert').classList.remove('hidden');
             document.getElementById('alert-ok-btn').onclick = () => document.getElementById('custom-alert').classList.add('hidden');
-        }
-        
-        window.copyToClipboard = function(text, element) {
-            if (!text) return;
-            navigator.clipboard.writeText(text.trim()).then(() => {
-                if(element) {
-                    const originalContent = element.innerHTML;
-                    element.innerHTML = `<i data-lucide="check" class="w-5 h-5 text-green-500"></i>`;
-                    lucide.createIcons();
-                    setTimeout(() => { element.innerHTML = originalContent; lucide.createIcons(); }, 1500);
-                } else showAlert('কপি করা হয়েছে!');
-            });
         }
     </script>
 </body>
