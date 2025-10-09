@@ -31,13 +31,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .btn, .btn-gradient, .btn-outline-accent { 
+        .btn, .btn-gradient { 
             transition: all 0.2s ease-in-out; 
             transform: scale(1); 
             border: none;
             cursor: pointer;
         }
-        .btn:active, .btn-gradient:active, .btn-outline-accent:active { transform: scale(0.96); }
+        .btn:active, .btn-gradient:active { transform: scale(0.96); }
         .btn-gradient { 
             background-image: linear-gradient(to right, #0d6efd, #0b5ed7);
             color: #ffffff; 
@@ -286,14 +286,14 @@
             <div id="updates-page" class="p-4 space-y-6 sub-page relative pb-24">
                 <h2 class="text-xl font-bold text-center">🌟 𝐍𝐞𝐰 𝐔𝐩𝐝𝐚𝐭𝐞</h2>
                 <div id="updates-content" class="space-y-4"><p class="text-center text-gray-500">Loading updates...</p></div>
-                
-                <div id="user-reviews-section" class="mt-8">
-                    <h3 class="text-xl font-bold text-center mb-4">🌟 𝐔𝐬𝐞𝐫 𝐑𝐞𝐯𝐢𝐞𝐰𝐬</h3>
-                    <div id="user-reviews-list" class="space-y-4">
-                        </div>
-                </div>
+            </div>
 
-                <a id="add-review-fab" href="#" target="_blank" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform">
+            <div id="reviews-page" class="p-4 space-y-6 sub-page relative pb-24">
+                <h2 class="text-xl font-bold text-center mb-4">🌟 𝐔𝐬𝐞𝐫 𝐑𝐞𝐯𝐢𝐞𝐰𝐬</h2>
+                <div id="user-reviews-list" class="space-y-4">
+                    <p class="text-center text-gray-500">Loading reviews...</p>
+                </div>
+                 <a id="add-review-fab" href="#" target="_blank" class="btn-gradient fixed bottom-24 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-40 transform hover:scale-110 transition-transform">
                     <i data-lucide="plus" class="w-8 h-8 text-white"></i>
                 </a>
             </div>
@@ -308,7 +308,6 @@
                     <p id="profile-username" class="text-gray-500">@username</p>
                     <p id="profile-id" class="text-sm text-gray-400 mt-2">ID: 123456</p>
                     <p id="profile-activation-status" class="mt-3 px-3 py-1 rounded-full text-sm font-semibold"></p>
-                    <p id="profile-leader" class="mt-3 text-md font-semibold text-gray-600"></p>
                 </div>
                 <div class="mt-4 flex flex-wrap justify-center items-center gap-x-4 gap-y-2 text-sm text-gray-600">
                     <div class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-gray-500"></i><span>From Bangladesh</span></div>
@@ -316,23 +315,7 @@
                     <div class="flex items-center gap-1.5"><i data-lucide="briefcase" class="w-4 h-4 text-gray-500"></i><span>Work at 𝐁𝐞𝐬𝐭 𝐌𝐚𝐫𝐤𝐞𝐭𝐁𝐨𝐭 job</span></div>
                 </div>
                 
-                <div class="card-bg p-4 rounded-xl">
-                    <h3 class="text-sm font-medium text-gray-500 mb-2 text-center">🎁 Referral Code</h3>
-                    <div class="bg-blue-50 border-2 border-dashed border-blue-200 rounded-lg p-3 flex items-center justify-center">
-                        <span id="referral-code-display" class="text-lg font-bold text-gray-700 mr-4 break-all">LOADING...</span>
-                        <button id="copy-referral-btn" class="btn p-2 bg-gray-200 rounded-lg hover:bg-gray-300"><i data-lucide="copy" class="w-5 h-5 text-gray-600"></i></button>
-                    </div>
-                </div>
-
                 <div class="space-y-3">
-                    <button id="toggle-account-details-btn" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
-                        <span>🔑 𝐀𝐜𝐜 𝐃𝐞𝐭𝐚𝐢𝐥𝐬</span>
-                        <i id="account-details-chevron" data-lucide="chevron-down" class="w-6 h-6 text-gray-500 transition-transform duration-300"></i>
-                    </button>
-                    
-                    <div id="account-details-content" class="hidden card-bg p-6 rounded-xl space-y-4">
-                        </div>
-
                     <a href="https://wa.me/8801864260513" target="_blank" class="w-full card-bg p-4 rounded-xl flex justify-between items-center text-left text-lg font-semibold">
                         <span>💬 𝐒𝐮𝐩𝐩𝐨𝐫𝐭 𝐓𝐞𝐚𝐦</span>
                         <i data-lucide="arrow-up-right" class="w-5 h-5 text-gray-500"></i>
@@ -351,8 +334,9 @@
             </main>
 
         <nav class="bottom-nav">
-            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Updates</span></a>
+            <a href="#" class="nav-link-premium" data-page="updates-page"><i data-lucide="bell" class="icon"></i><span>Post</span></a>
             <a href="#" class="nav-link-premium center-home-link" data-page="home-page"><i data-lucide="home" class="icon"></i></a>
+            <a href="#" class="nav-link-premium" data-page="reviews-page"><i data-lucide="star" class="icon"></i><span>Review</span></a>
             <a href="#" class="nav-link-premium" data-page="profile-page"><i data-lucide="user" class="icon"></i><span>Profile</span></a>
         </nav>
     </div>
@@ -467,35 +451,22 @@
                     updates.referralBalance = 0;
                     userData.referralBalance = 0;
                 }
-                 if (userData.referralCode !== currentUserId) {
-                    updates.referralCode = currentUserId;
-                    userData.referralCode = currentUserId; 
-                }
                 if (Object.keys(updates).length > 0) {
                      await updateDoc(userRef, updates);
                 }
-
             } else {
                 const fullName = `${currentUser.first_name || ''} ${currentUser.last_name || ''}`.trim();
                 const newUserData = {
                     uid: currentUserId,
                     name: fullName || currentUser.username || 'New User',
                     username: currentUser.username || '',
-                    mobileNumber: null,
                     mainBalance: 0,
-                    referralBalance: 0,
+                    referralBalance: 0, // Kept for potential future use, but functionality removed
                     createdAt: serverTimestamp(),
                     isBlocked: false,
                     isActivated: false,
-                    referralCode: currentUserId, 
-                    referredBy: null 
                 };
                 
-                const startParam = window.Telegram.WebApp.initDataUnsafe?.start_param;
-                if (startParam && startParam !== currentUserId) {
-                    newUserData.referredBy = startParam;
-                }
-
                 await setDoc(userRef, newUserData);
                 userData = newUserData;
             }
@@ -527,7 +498,6 @@
             const configSnap = await getDoc(configRef);
             appConfig = configSnap.exists() ? configSnap.data() : { 
                 activationFee: 50, 
-                referralBonus: 10,
                 addReviewLink: '#'
             };
         }
@@ -569,6 +539,7 @@
 
             const pageLoadFunctions = {
                 'updates-page': loadUpdates,
+                'reviews-page': loadUserReviews,
                 'profile-page': loadProfilePage,
             };
             if (pageLoadFunctions[pageId]) pageLoadFunctions[pageId]();
@@ -578,13 +549,6 @@
 
         function setupEventListeners() {
             document.querySelectorAll('.nav-link-premium').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); }));
-            
-            document.getElementById('toggle-account-details-btn').addEventListener('click', () => { document.getElementById('account-details-content').classList.toggle('hidden'); document.getElementById('account-details-chevron').classList.toggle('rotate-180'); });
-            
-            document.getElementById('copy-referral-btn').addEventListener('click', () => {
-                const referralLink = `https://t.me/mail_storebot/mail?startapp=${currentUserId}`;
-                copyToClipboard(referralLink, document.getElementById('copy-referral-btn'));
-            });
             document.getElementById('activate-account-btn').addEventListener('click', handleActivation);
             document.getElementById('close-activation-prompt').addEventListener('click', () => activationPrompt.classList.add('hidden'));
         }
@@ -605,36 +569,9 @@
             const userRef = doc(db, "users", currentUserId);
 
             try {
-                await runTransaction(db, async (transaction) => {
-                    const userDoc = await transaction.get(userRef);
-                    if (!userDoc.exists() || userDoc.data().isActivated) throw "অ্যাকাউন্ট ইতিমধ্যে অ্যাক্টিভ আছে।";
-                    if (userDoc.data().mainBalance < activationFee) throw "অপর্যাপ্ত ব্যালেন্স।";
-
-                    transaction.update(userRef, { mainBalance: increment(-activationFee), isActivated: true });
-
-                    const referrerId = userDoc.data().referredBy;
-                    if (referrerId) {
-                        const creationTimestamp = userDoc.data().createdAt;
-                        
-                        if (creationTimestamp && typeof creationTimestamp.toDate === 'function') {
-                            const creationDate = creationTimestamp.toDate();
-                            const now = new Date();
-                            const hoursDiff = (now.getTime() - creationDate.getTime()) / (1000 * 60 * 60);
-
-                            if (hoursDiff <= 6) {
-                                const referrerRef = doc(db, "users", referrerId);
-                                const referrerSnap = await transaction.get(referrerRef);
-                                if (referrerSnap.exists()) {
-                                    const referralBonus = appConfig.referralBonus || 0;
-                                    transaction.update(referrerRef, { referralBalance: increment(referralBonus) });
-                                }
-                            } else {
-                                console.log(`Referral bonus for ${referrerId} skipped. User activated after the 6-hour window.`);
-                            }
-                        } else {
-                            console.error(`User ${currentUserId} is missing a valid 'createdAt' timestamp. Cannot calculate referral bonus window.`);
-                        }
-                    }
+                await updateDoc(userRef, { 
+                    mainBalance: increment(-activationFee), 
+                    isActivated: true 
                 });
 
                 await fetchUserData(); 
@@ -645,7 +582,7 @@
 
             } catch (error) {
                 console.error("Activation failed:", error);
-                showAlert(typeof error === 'string' ? error : "অ্যাকাউন্ট অ্যাক্টিভ করতে সমস্যা হয়েছে।");
+                showAlert("অ্যাকাউন্ট অ্যাক্টিভ করতে সমস্যা হয়েছে।");
             } finally {
                 splashScreen.style.display = 'none';
                 splashScreen.style.opacity = '0';
@@ -655,18 +592,6 @@
         async function loadProfilePage() {
             if (!userData) return;
             
-            const leaderElement = document.getElementById('profile-leader');
-            leaderElement.textContent = ''; 
-            if (userData.referredBy) {
-                const referrerRef = doc(db, "users", userData.referredBy);
-                const referrerSnap = await getDoc(referrerRef);
-                leaderElement.innerHTML = referrerSnap.exists() 
-                    ? `Your Leader: <span class="text-accent-gradient">${referrerSnap.data().name}</span>`
-                    : 'Leader not found';
-            } else {
-                leaderElement.textContent = 'You joined without a referral.';
-            }
-
             const profilePic = document.getElementById('profile-pic');
             const avatarDiv = document.getElementById('profile-initials-avatar');
             if (currentUser.photo_url) {
@@ -683,7 +608,6 @@
             document.getElementById('profile-name').textContent = userData.name;
             document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : 'No Telegram username';
             document.getElementById('profile-id').textContent = `User ID: ${currentUserId}`;
-            document.getElementById('referral-code-display').textContent = userData.referralCode || "Loading...";
 
             const activationStatusElement = document.getElementById('profile-activation-status');
             if (userData.isActivated) {
@@ -693,102 +617,12 @@
                 activationStatusElement.textContent = 'Inactive Account';
                 activationStatusElement.className = 'mt-3 px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-700';
             }
-            
-            const detailsContainer = document.getElementById('account-details-content');
-            if (userData.mobileNumber) {
-                detailsContainer.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <img src="https://i.postimg.cc/JzmGSXBX/images.jpg" alt="WhatsApp" class="w-5 h-5">
-                        <div>
-                            <p class="text-xs text-gray-500">Active WhatsApp Number</p>
-                            <p class="font-semibold text-gray-800">${userData.mobileNumber}</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-center text-gray-400 pt-2">✅ আপনার তথ্য সেভ করা হয়েছে।
-✉️ পরিবর্তন করতে এডমিনের সাথে যোগাযোগ করুন।</p>
-                `;
-            } else {
-                let referralFieldHTML = '';
-                if (!userData.referredBy) {
-                    referralFieldHTML = `
-                    <div>
-                        <label for="link-referral" class="block text-sm font-medium text-gray-600 mb-1">Referral Code (Optional)</label>
-                        <input id="link-referral" type="text" placeholder="আপনার বন্ধুর রেফার কোড দিন" class="w-full p-3 rounded-lg input-field">
-                    </div>`;
-                }
-                
-                detailsContainer.innerHTML = `
-                    <p class="text-sm text-center text-gray-600 pb-2">💬 এডমিন যেন সহজে যোগাযোগ করতে পারে, তাই সঠিক WhatsApp নম্বর দিন।</p>
-                    <div>
-                        <label for="link-mobile" class="block text-sm font-medium text-gray-600 mb-1">Active WhatsApp Number</label>
-                        <input id="link-mobile" type="tel" placeholder="01xxxxxxxxx" class="w-full p-3 rounded-lg input-field">
-                    </div>
-                    ${referralFieldHTML}
-                    <button id="link-details-btn" class="w-full p-3 mt-2 rounded-lg btn-gradient">Save Details</button>
-                `;
-                document.getElementById('link-details-btn').addEventListener('click', handleLinkAccountDetails);
-            }
             lucide.createIcons();
-        }
-
-        async function handleLinkAccountDetails() {
-            const mobile = document.getElementById('link-mobile').value.trim();
-            const referralCodeInput = document.getElementById('link-referral');
-            const referralCode = referralCodeInput ? referralCodeInput.value.trim() : null;
-
-            if (!mobile) return showAlert("অনুগ্রহ করে আপনার WhatsApp নম্বরটি পূরণ করুন।");
-            if (!/^01\d{9}$/.test(mobile)) return showAlert("💬 অনুগ্রহ করে সঠিক WhatsApp নম্বর লিখুন।");
-            
-            splashScreen.style.display = 'flex';
-            splashScreen.style.opacity = '1';
-            try {
-                const mobileQuery = query(collection(db, "users"), where("mobileNumber", "==", mobile), limit(1));
-                const mobileSnapshot = await getDocs(mobileQuery);
-                if (!mobileSnapshot.empty) {
-                    splashScreen.style.display = 'none';
-                    splashScreen.style.opacity = '0';
-                    return showAlert("💬 দুঃখিত, এই WhatsApp নম্বরটি ইতিমধ্যেই অন্য একটি অ্যাকাউন্টে যুক্ত রয়েছে।");
-                }
-                
-                const userRef = doc(db, "users", currentUserId);
-                const updateData = { mobileNumber: mobile };
-                
-                if (referralCode && !userData.referredBy) {
-                    if (referralCode === currentUserId) {
-                        splashScreen.style.display = 'none';
-                        splashScreen.style.opacity = '0';
-                        return showAlert("নিজের রেফার কোড ব্যবহার করা সম্ভব নয়।");
-                    }
-                    const referrerRef = doc(db, "users", referralCode);
-                    const referrerSnap = await getDoc(referrerRef);
-                    if (!referrerSnap.exists()) {
-                        splashScreen.style.display = 'none';
-                        splashScreen.style.opacity = '0';
-                        return showAlert("🚫 Invalid Refer Code!");
-                    }
-                    updateData.referredBy = referralCode;
-                }
-                
-                await updateDoc(userRef, updateData);
-                await fetchUserData(); 
-                showAlert("আপনার তথ্য সফলভাবে যোগ করা হয়েছে।");
-                loadProfilePage();
-
-            } catch (error) {
-                console.error("Link details error:", error);
-                showAlert("তথ্য যোগ করতে সমস্যা হয়েছে।");
-            } finally {
-                splashScreen.style.display = 'none';
-                splashScreen.style.opacity = '0';
-            }
         }
         
         async function loadUpdates() {
             const updatesContainer = document.getElementById('updates-content');
-            const reviewFab = document.getElementById('add-review-fab');
             updatesContainer.innerHTML = '<p class="text-center text-gray-500">Loading updates...</p>';
-
-            reviewFab.href = appConfig.addReviewLink || '#';
 
             try {
                 const q = query(collection(db, "updates"), orderBy("createdAt", "desc"), limit(10));
@@ -844,7 +678,6 @@
                 }
                 
                 lucide.createIcons();
-                await loadUserReviews();
             } catch (e) {
                 console.error("Error loading updates:", e);
                 updatesContainer.innerHTML = `<p class="text-center text-red-500">Failed to load updates.</p>`;
@@ -862,9 +695,12 @@
 
         async function loadUserReviews() {
             const reviewsList = document.getElementById('user-reviews-list');
+            const reviewFab = document.getElementById('add-review-fab');
+            reviewFab.href = appConfig.addReviewLink || '#';
+
             reviewsList.innerHTML = '<p class="text-center text-gray-500">Loading reviews...</p>';
             try {
-                const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(5));
+                const q = query(collection(db, "app_reviews"), orderBy("createdAt", "desc"), limit(10));
                 const snapshot = await getDocs(q);
 
                 if (snapshot.empty) {
